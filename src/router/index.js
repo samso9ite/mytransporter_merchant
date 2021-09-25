@@ -1,23 +1,60 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Auth/Register.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Auth/Login.vue')
+  },
+  {
+    path: '/activate',
+    name: 'ActivateAccount',
+    component: () => import('../views/Auth/ActivateAccount.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import("../views/Dashboard.vue")
+  },
+  {
+    path: '/riders',
+    name: 'Riders',
+    component: () => import("../views/Riders.vue")
+  },
+  {
+    path: '/transactions',
+    name: 'Payments',
+    component: () => import("../views/Payment.vue")
+  },
+  {
+    path: '/rate',
+    name: 'Rate',
+    component: () => import("../views/Rate.vue")
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import("../views/Profile.vue")
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: () => import("../views/Orders.vue")
+  },
+  // {
+  //   path: '/orders',
+  //   name: 'Orders',
+  //   component: () => import("../views/Orders.vue")
+  // },
 ]
 
 const router = new VueRouter({
