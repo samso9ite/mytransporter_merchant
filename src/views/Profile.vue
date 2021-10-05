@@ -19,26 +19,18 @@
                                
                                 <div class="profile-info">
 									<div class="profile-photo">
-										<img src="images/profile/profile.png" class="img-fluid rounded-circle" alt="">
+										<img :src="logo" class="img-fluid rounded-circle" alt="">
 									</div>
 									<div class="profile-details">
 										<div class="profile-name px-3 pt-2">
-											<h4 class="text-primary mb-0">Otedola Logistics</h4>
-											<p>Managing Director</p>
+											<h4 class="text-primary mb-0">{{name}}</h4>
+											<p>RC {{rc_number}}</p>
 										</div>
 										<div class="profile-email px-2 pt-2">
-											<h4 class="text-muted mb-0">info@otedolalogistics.com</h4>
-											<p>Email</p>
+											<h4 class="text-muted mb-0">{{email}}</h4>
+											<p>{{website}}</p>
 										</div>
-										<!-- <div class="dropdown ms-auto">
-											<a href="#" class="btn btn-primary light sharp" data-bs-toggle="dropdown" aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg></a>
-											<ul class="dropdown-menu dropdown-menu-end">
-												<li class="dropdown-item"><i class="fa fa-user-circle text-primary me-2"></i> View profile</li>
-												<li class="dropdown-item"><i class="fa fa-users text-primary me-2"></i> Add to btn-close friends</li>
-												<li class="dropdown-item"><i class="fa fa-plus text-primary me-2"></i> Add to group</li>
-												<li class="dropdown-item"><i class="fa fa-ban text-primary me-2"></i> Block</li>
-											</ul>
-										</div> -->
+										
 									</div>
                                 </div>
                             </div>
@@ -53,166 +45,74 @@
                                 <div class="profile-tab">
                                     <div class="custom-tab-1">
                                         <ul class="nav nav-tabs">
-                                            <li class="nav-item"><a href="#my-posts" data-bs-toggle="tab" class="nav-link active show">Set Team Members</a>
-                                            </li>
-                                           
-                                            <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link">Account Setting</a>
+                                            <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link active show">Account Setting</a>
                                             </li>
                                         </ul>
+                                        <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            </button>
+                                            <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+                                        </div>
                                         <div class="tab-content">
-                                            <div id="my-posts" class="tab-pane fade active show">
-												<div class="pt-3">
-                                                    <div class="settings-form">
-                                                        <!-- <h4 class="text-primary">Account Setting</h4> -->
-														<br>
-                                                        <form>
-                                                            <div class="row">
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">First  Name</label>
-                                                                    <input type="email" placeholder="Email" class="form-control">
-                                                                </div>
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Lastname</label>
-                                                                    <input type="password" placeholder="Password" class="form-control">
-                                                                </div>
-                                                            </div>
-															<div class="row">
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Email</label>
-                                                                    <input type="email" placeholder="Email" class="form-control">
-                                                                </div>
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Contact Nmber</label>
-                                                                    <input type="password" placeholder="Password" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Address</label>
-                                                                <input type="text" placeholder="1234 Main St" class="form-control">
-                                                            </div>
-															<div class="row">
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Referee Name</label>
-                                                                    <input type="email" placeholder="Email" class="form-control">
-                                                                </div>
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Referee Number</label>
-                                                                    <input type="password" placeholder="Password" class="form-control">
-                                                                </div>
-                                                            </div>
-															<div class="mb-3">
-                                                                <label class="form-label">Referee Address</label>
-                                                                <input type="text" placeholder="1234 Main St" class="form-control">
-                                                            </div>
-                                                            <!-- <div class="mb-3">
-                                                                <div class="form-check custom-checkbox">
-																	<input type="checkbox" class="form-check-input" id="gridCheck">
-																	<label class="form-check-label form-label" for="gridCheck"> Check me out</label>
-																</div>
-                                                            </div> -->
-                                                          
-                                                        </form>
-														<div class="row" >
-															<div class="col-lg-6">
-																<button type="button" class="btn btn-rounded btn-primary"><span
-																	class="btn-icon-start text-primary"><i class="fa fa-plus"></i>
-																</span>Add New</button>
-															</div>
-															<div class="col-lg-6" style="float: right;">
-																<button class="btn btn-primary btn-rounded " type="submit">
-																	Save Team</button>
-															</div>
-														</div>
-														<br>
-                                                    </div>
-													
-                                                </div>
-												<div class="col-lg-8"></div>
-												
-                                            </div>
+                                            
                                           
-                                            <div id="profile-settings" class="tab-pane fade">
+                                            <div id="profile-settings" class="tab-pane fade active show">
                                                 <div class="pt-3">
                                                     <div class="settings-form">
-                                                        <form>
                                                             <div class="row">
                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Email</label>
-                                                                    <input type="email" placeholder="Email" class="form-control">
+                                                                    <input type="email" placeholder="Email" class="form-control" v-model="email">
                                                                 </div>
                                                                 <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Password</label>
-                                                                    <input type="password" placeholder="Password" class="form-control">
+                                                                    <label class="form-label">Mobile Number</label>
+                                                                    <input type="number" placeholder="Phone number" class="form-control" v-model="phone">
                                                                 </div>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Address</label>
-                                                                <input type="text" placeholder="1234 Main St" class="form-control">
+                                                              <div class="row mb-3" style="margin-top:15px">
+                                                                <div class="col-lg-6 ">  
+                                                                    <label class="form-label">Upload Company Logo</label>
+                                                                     <div class="input-group mb-3 ">
+                                                                    <span class="input-group-text">Upload</span>
+                                                                    <div class="form-file">
+                                                                        <input type="file" class="form-file-input form-control" ref="image" v-on:change="handleFileUpload()">
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="form-label">Office Address</label>
+                                                                    <GmapAutocomplete placeholder="Input office address" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
+                                                                </div>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Address 2</label>
-                                                                <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
-                                                            </div>
-                                                            <div class="row">
+                                                           
+                                                               <div class="row">
                                                                 <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">City</label>
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="mb-3 col-md-4">
                                                                     <label class="form-label">State</label>
-                                                                    <select class="form-control default-select wide" id="inputState">
-                                                                        <option selected="">Choose...</option>
-                                                                        <option>Option 1</option>
-                                                                        <option>Option 2</option>
-                                                                        <option>Option 3</option>
-                                                                    </select>
+                                                                    <input type="text" class="form-control" v-model="state">
                                                                 </div>
-                                                                <div class="mb-3 col-md-2">
-                                                                    <label class="form-label">Zip</label>
-                                                                    <input type="text" class="form-control">
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label class="form-label">Website</label>
+                                                                    <input type="text" class="form-control" v-model="website">
                                                                 </div>
                                                             </div>
-                                                            <!-- <div class="mb-3">
-                                                                <div class="form-check custom-checkbox">
-																	<input type="checkbox" class="form-check-input" id="gridCheck">
-																	<label class="form-check-label form-label" for="gridCheck"> Check me out</label>
-																</div>
-                                                            </div> -->
-                                                            <button class="btn btn-rounded btn-primary" type="submit">Save
-                                                               </button>
-
-                                                        </form>
+                                                            <div class="row col-mb-3">
+                                                                <div class="col-lg-12">
+                                                                     <label class="form-label">About the Company</label>  
+                                                                    <textarea class="form-control" placeholder="Type your message..." v-model="description"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <button class="btn btn-rounded btn-large btn-primary" type="submit" @click="update_profile">Update Profile  </button>
+                                                        <!-- </form> -->
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-									<!-- Modal -->
-									<div class="modal fade" id="replyModal">
-										<div class="modal-dialog modal-dialog-centered" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Post Reply</h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-												</div>
-												<div class="modal-body">
-													<form>
-														<textarea class="form-control" rows="4">Message</textarea>
-													</form>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger light" data-bs-dismiss="modal">btn-close</button>
-													<button type="button" class="btn btn-primary">Reply</button>
-												</div>
-											</div>
-										</div>
-									</div>
-                                </div>
+								</div>
                             </div>
                         </div>
                     </div>
-
-					<!-- -->
                 </div>
             </div>
         </div>
@@ -221,8 +121,88 @@
 
 <script>
 import SideBar from '../components/SideBar.vue'
+import Api from './Api'
     export default({
         name: 'Profile',
-        components: {SideBar}
+        components: {SideBar},
+       data(){
+			return {
+                name: '',
+                email: '',
+                website: '',
+                address: '',
+                phone: '',
+                state:'',
+                logo:'',
+                rc_number: '',
+                logo: '',
+                pending_wallet_balance: '',
+                wallet_balance: '',
+                latitude: '',
+                longitude: '', 
+                description: '',
+                errors: []  
+			}
+		},
+        methods: {
+            update_profile(){
+                const formData = {
+                address: this.address,
+                state: this.state, 
+                email: this.email,
+                merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
+                description: this.description,
+                latitude: this.latitude,
+                longitude: this.longitude,
+                website: this.website
+
+                }
+                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
+                .then(response => {
+                    this.$toast.success({
+                        title:'Success',
+                        message:'Profile Updated',
+                    })
+                  
+                 console.log(response.data);
+                })
+                .catch(error =>{
+                    console.log(error.response)
+                    if(error.response){
+                        for(const property in error.response.data){
+                            this.errors.push(`${property}:${error.response.data[property]}`)
+                        }
+                        console.log(error.response);
+                    }
+                   
+                })
+            },
+            get_users_details(){
+                const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
+                .then(response => {
+                    this.name = response.data.name
+                    this.address = response.data.address
+                    this.email = response.data.email
+                    this.state = response.data.state
+                    this.website = response.data.website
+                    this.rc_number = response.data.rc_number
+                    this.logo = response.data.logo
+                    this.phone = response.data.phone
+                    this.description = response.data.description
+                })
+                .catch(error =>{
+                    console.log(error.response)
+                })
+            },
+            setAddress(place){
+                this.address = place.formatted_address
+                this.latitude =  place.geometry.location.lat()
+                this.longitude =  place.geometry.location.lng()
+          }
+        },
+        mounted(){
+            this.get_users_details()
+        }
     })
 </script>

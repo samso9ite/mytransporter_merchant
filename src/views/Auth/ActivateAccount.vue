@@ -72,7 +72,7 @@ export default ({
     }
 })
 </script>
-<style >
+<style scoped >
 .sel_style{
      height: 55px;
      margin-right:-1%;

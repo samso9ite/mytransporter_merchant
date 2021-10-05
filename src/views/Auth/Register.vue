@@ -1,10 +1,10 @@
 <template>
 
     <div>
-     <video autoplay muted loop id="myVideo">
+     <!-- <video autoplay muted loop id="myVideo">
         <source src="../../statics/video_preview_h264.mp4" type="video/mp4">
-    </video>
-    <div class="authincation h-100 ontop">
+    </video> -->
+    <div class="authincation h-100 ontop bg">
         <div class="container h-100">
             <div class="row justify-content-center h-100 align-items-center">
                 <div class="col-md-6">
@@ -12,6 +12,11 @@
                         <div class="row no-gutters">
                             <div class="col-xl-12">
                                 <div class="auth-form">
+                                     <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            </button>
+                                            <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+                                        </div>
 									<div class="text-center mb-3">
 										<a href="index.html"><img src="../../statics/fav.png" alt=""></a>
 									</div>
@@ -25,47 +30,8 @@
                                             <label class="mb-2"><strong>Transport Type</strong></label>
                                             <div class="row">
                                                <Multiselect v-model="transport_types" :options="options":multiple="true"  />
-                                        <!-- <div class="col-xl-3 col-xxl-6 col-6">
-                                            <div class="form-check custom-checkbox mb-3">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox1" v-mode >
-                                                <label class="form-check-label" for="customCheckBox1">Bike</label>
-                                            </div>
                                         </div>
-                                        <div class="col-xl-3 col-xxl-6 col-6">
-                                            <div class="form-check custom-checkbox mb-3">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox1" >
-                                                <label class="form-check-label" for="customCheckBox1">Drone</label>
-                                            </div>
                                         </div>
-                                        <div class="col-xl-3 col-xxl-6 col-6">
-                                            <div class="form-check custom-checkbox mb-3">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox1" >
-                                                <label class="form-check-label" for="customCheckBox1">Van</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3  col-xxl-6 col-6">
-                                            <div class="form-check custom-checkbox mb-3">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox1" >
-                                                <label class="form-check-label" for="customCheckBox1">Truck</label>
-                                            </div>
-                                        </div> -->
-									
-								        </div>
-                                            <!-- <select class="default-select form-control wide mb-3" name="transport_types" v-model="transport_types">
-                                                <option value="BIKE">BIKE</option>
-                                                <option value="DRONE">DRONE</option>
-                                                <option value="TRUCK">TRUCK</option>
-                                                <option value="VAN"> VAN </option>
-                                            </select> -->
-                                        </div>
-                                        <!-- <div class="mb-3">
-                                            <label class="mb-1"><strong>First Name</strong></label>
-                                            <input type="text" class="form-control" placeholder="First Name" name="first_name" v-model="first_name">
-                                        </div>
-                                          <div class="mb-3">
-                                            <label class="mb-1"><strong>Last Name</strong></label>
-                                            <input type="text" class="form-control" placeholder="Last Name" name="last_name" v-model="last_name">
-                                        </div> -->
                                          <label class="mb-3"><strong>First & Last Name</strong></label>
                                          <div class="input-group">
 											<!-- <span class="input-group-text">Firstname</span> -->
@@ -100,7 +66,7 @@
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
-                                        <p>Already have an account? <a class="text-primary" ><router-link :to="'/login'"> Sign in </router-link> </a></p>
+                                        <p>Already have an account? <a class="text-primary" ><router-link :to="'/'"> Sign in </router-link> </a></p>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +94,8 @@ export default {
             country:'Nigeria',
             first_name:'',
             transport_types: null,
-            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK']
+            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK'],
+            errors: []
         }
     },
     components: { Multiselect },
@@ -145,26 +112,28 @@ export default {
                 country: this.country,
                 transport_types: this.transport_types
             }
-            Api.axios_instance.post(Api.baseUrl+'api/merchant/portal/register', formData)
+            Api.axios_instance.post(Api.baseUrl+'/merchant/portal/register', formData)
             .then(response => {
-                console.log(response)
-                console.log("jhdkjsjsj")
-                // window.localStorage.setItem('token', JSON.stringify(response.data.token))
+                console.log()
                 this.$router.push('/activate')
                  })
             .catch(error =>{
-              console.log(error);  
+              console.log(error.response);  
+                if(error.response){
+                        for(const property in error.response.data){
+                            this.errors.push(`${property}:${error.response.data[property]}`)
+                        }
+                        console.log(error.response);
+                    }
             })
         }
     }
 }
 </script>
 
-<style >
-.multiselect__tags {
+<style scoped>
+.multiselect_tags {
     min-height: 55px !important;
-    border-radius: 20px !important;
-    margin-right: 30px !important;
     background: #ff6600;
 }
 .multiselect * {
@@ -182,6 +151,15 @@ export default {
 }
 .btn-color{
     background-color: rgb(241 235 235 / 70%);   
+}
+.bg {
+  /* The image used */
+  background-image: url("../../statics/bg13.png");
+ background-blend-mode: overlay;
+-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

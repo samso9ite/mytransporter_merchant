@@ -11,9 +11,13 @@ const routes = [
     component: () => import('../views/Auth/Register.vue')
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
-    component: () => import('../views/Auth/Login.vue')
+    component: () => import('../views/Auth/Login.vue'),
+    meta: {
+      auth: false,
+      notFoundRedirect: '/dashboard'
+    }
   },
   {
     path: '/activate',
@@ -23,38 +27,40 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import("../views/Dashboard.vue")
+    component: () => import("../views/Dashboard.vue"),
+    meta: { requiresAuth: true }
   },
   {
-    path: '/riders',
-    name: 'Riders',
-    component: () => import("../views/Riders.vue")
+    path: '/teams',
+    name: 'Teams',
+    component: () => import("../views/Teams.vue"),
+    meta: { requiresAuth: true }
   },
   {
     path: '/transactions',
     name: 'Payments',
-    component: () => import("../views/Payment.vue")
+    component: () => import("../views/Payment.vue"),
+    meta: { requiresAuth: true }
   },
   {
     path: '/rate',
     name: 'Rate',
-    component: () => import("../views/Rate.vue")
+    component: () => import("../views/Rate.vue"),
+    meta: { requiresAuth: true }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import("../views/Profile.vue")
+    component: () => import("../views/Profile.vue"),
+    meta: { requiresAuth: true }
   },
   {
     path: '/orders',
     name: 'Orders',
-    component: () => import("../views/Orders.vue")
+    component: () => import("../views/Orders.vue"),
+    meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/orders',
-  //   name: 'Orders',
-  //   component: () => import("../views/Orders.vue")
-  // },
+
 ]
 
 const router = new VueRouter({
@@ -63,4 +69,32 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (window.localStorage.getItem('isAuthenticated') === 'true') {
+      next()
+    } else {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    }
+  } else {
+    next() 
+  }
+
+  if(to.name === 'Login' || to.name ==='Register' && window.localStorage.getItem('isAuthenticated') === 'true') next({name: 'Dashboard'})
+  else next()
+})
+
+router.beforeResolve((to, from, next) => {
+  if (to.name) {
+    NProgress.start()
+  }
+  next()
+})
+
+router.afterEach((to, from) => {
+  NProgress.done()
+})
 export default router

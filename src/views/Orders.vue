@@ -1,17 +1,29 @@
 <template>
-    <div>
-        <SideBar />
-         <div class="content-body">
+<div>
+	<SideBar />
+		<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
             <!-- row -->
 			<div class="container-fluid">
 				<div class="row page-titles">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Order List</a></li>
+						<li class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item"><a href="/orders">Order History</a></li>
 					</ol>
                 </div>
-			<div class="row mb-4 align-items-center">
+				<!-- <div class="form-head mb-4 d-flex flex-wrap align-items-center">
+					<div class="me-auto">
+						<h2 class="font-w600 mb-0">Order List</h2>
+						<p class="text-light">View All Orders</p>
+					</div>	
+					
+				</div> -->
+
+				<div class="row mb-4 align-items-center">
 					<div class="col-xl-9">
+						
 						<div class="card m-0 ">
 							<div class="card-body px-4 py-3 py-lg-2">
 								<div class="row align-items-center">
@@ -26,8 +38,8 @@
 												</svg>
 											</span>
 											<div class="media-body ml-1">
-												<p class="mb-0 fs-12">Total Income</p>
-												<h4 class="mb-0 font-w600  fs-22">₦126,000</h4>
+												<p class="mb-0 fs-12">Total Order</p>
+												<h4 class="mb-0 font-w600  fs-22">{{main_order_list.length}}</h4>
 											</div>
 										</div>
 									</div>
@@ -44,8 +56,8 @@
 														</svg>
 													</span>
 													<div class="media-body ml-1">
-														<p class="mb-0 fs-12">Successfull Deliveries</p>
-														<h4 class="mb-0 font-w600  fs-22">16,000</h4>
+														<p class="mb-0 fs-12">Completed Deliveries</p>
+														<h4 class="mb-0 font-w600  fs-22">{{completed_orders}}</h4>
 													</div>
 												</div>
 											</div>
@@ -57,8 +69,8 @@
 														</svg>
 													</span>
 													<div class="media-body ml-1">
-														<p class="mb-0 fs-12">Pending Deliveries</p>
-														<h4 class="mb-0 font-w600  fs-22">765 Person</h4>
+														<p class="mb-0 fs-12">Refunded Deliveries</p>
+														<h4 class="mb-0 font-w600  fs-22">{{refunded_orders}}</h4>
 													</div>
 												</div>
 											</div>
@@ -72,10 +84,11 @@
 													</span>
 													<div class="media-body ml-1">
 														<p class="mb-0 fs-12">Cancelled Deliveries</p>
-														<h4 class="mb-0 font-w600 fs-22">72
+														<h4 class="mb-0 font-w600 fs-22"> 
 															<svg class="ml-2" width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 																<path d="M0 6L6 2.62268e-07L12 6" fill="#13B497"></path>
 															</svg>
+															{{canceled_orders}}
 														</h4>
 													</div>
 												</div>
@@ -87,12 +100,19 @@
 									<div class="col-xl-2 col-xxl-12 my-2">
 										<div class="dropdown d-inline-block">
 											<div class="dropdown-toggle mb-0 fs-18 " data-bs-toggle="dropdown">
-												<span class="font-w400 text-primary">Select  Type</span>
+												<span class="font-w400 text-primary">Filter by status</span>
 											</div>
 											<div class="dropdown-menu dropdown-menu-left">
-												<a class="dropdown-item" href="javascript:void(0);">Successfull Orders</a>
-												<a class="dropdown-item" href="javascript:void(0);">Pending Orders</a>
-												<a class="dropdown-item" href="javascript:void(0);">Cancelled Orders</a>
+												<a class="dropdown-item"  @click="change_status(0)"> Order Assigned</a>
+												<a class="dropdown-item"  @click="change_status(1)">Pending Orders</a>
+												<a class="dropdown-item"  @click="change_status(9)">Cancelled Orders</a>
+												<a class="dropdown-item"  @click="change_status(10)">Refunded</a>
+												<a class="dropdown-item"  @click="change_status(6)">Awaiting Orders</a>
+												<a class="dropdown-item"  @click="change_status(8)">Completed Orders</a>
+												<a class="dropdown-item"  @click="change_status(7)">Enroute Orders</a>
+												<a class="dropdown-item"  @click="change_status(5)">Rider Assigned</a>
+												<a class="dropdown-item"  @click="change_status(3)">Merchant Approved</a>
+												<a class="dropdown-item"  @click="change_status(2)">Merchant Assigned</a>
 											</div>
 										</div>
 									</div>
@@ -101,346 +121,190 @@
 						</div>
 					</div>
 					<div class="col-xl-3 align-self-start mt-3 mt-xl-0 Generate">
-						<a href="#" class="btn btn-secondary d-block"><i class="fa fa-file-text-o scale5 me-3"></i>Generate Order Report</a>
+						<a href="/" class="btn btn-secondary d-block"><i class="fa fa-motorcycle scale5 me-3"></i>Generate Report</a>
 					</div>	
 				</div>
 				<div class="col-12">
 					<div class="card">
-						<div class="card-header">
-							<h4 class="card-title">Successfull Orders</h4>
+						<div class="card-header" v-if="status == 0">
+							<h4 class="card-title">All Orders</h4>
+						</div>
+					
+						<div class="card-header" v-if="status == 1">
+							<h4 class="card-title"> Pending Orders</h4>
+						</div>
+						<div class="card-header" v-if="status == 9">
+							<h4 class="card-title">Canceled Orders</h4>
+						</div>
+						<div class="card-header" v-if="status == 5">
+							<h4 class="card-title">Rider Assigned</h4>
+						</div>
+						<div class="card-header" v-if="status == 6">
+							<h4 class="card-title">Awaiting Pickup</h4>
+						</div>
+						<div class="card-header" v-if="status == 7">
+							<h4 class="card-title">Transport Enroute</h4>
+						</div>
+						<div class="card-header" v-if="status == 8">
+							<h4 class="card-title">Completed  Orders</h4>
+						</div>
+						<div class="card-header" v-if="status == 10">
+							<h4 class="card-title">Refunded</h4>
+						</div>
+						<div class="card-header" v-if="status == 2">
+							<h4 class="card-title">Merchant Assigned</h4>
+						</div>
+						<div class="card-header" v-if="status == 3">
+							<h4 class="card-title">Approved Orders</h4>
+						</div>
+						<div class="card-header" v-if="status == 4">
+							<h4 class="card-title">Rejected Orders</h4>
 						</div>
 						<div class="card-body">
-							<div class="table-responsive">
-								<table id="example4" class="display" style="min-width: 845px">
-									<thead>
-										<tr>
-											<th>Roll No</th>
-											<th>Customer Name</th>
-											<th>Customer number</th>
-											<th>Item Delivered </th>
-											<th>Rider </th>
-											<th>Status </th>
-											<th>Date</th>
-											<th>Amount</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>01</td>
-											<td>Tiger Nixon</td>
-											<td>#54605</td>
-											<td>Library</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2011/04/25</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>02</td>
-											<td>Garrett Winters</td>
-											<td>#54687</td>
-											<td>Library</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2011/07/25</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>03</td>
-											<td>Ashton Cox</td>
-											<td>#35672</td>
-											<td>Tuition</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2009/01/12</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>04</td>
-											<td>Cedric Kelly</td>
-											<td>#57984</td>
-											<td>Annual</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2012/03/29</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>05</td>
-											<td>Airi Satou</td>
-											<td>#12453</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2008/11/28</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>06</td>
-											<td>Brielle Williamson</td>
-											<td>#59723</td>
-											<td>Tuition</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2012/12/02</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>07</td>
-											<td>Herrod Chandler</td>
-											<td>#98726</td>
-											<td>Tuition</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2012/08/06</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>08</td>
-											<td>Rhona Davidson</td>
-											<td>#98721</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2010/10/14</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>09</td>
-											<td>Colleen Hurst</td>
-											<td>#54605</td>
-											<td>Annual</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2009/09/15</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>10</td>
-											<td>Sonya Frost</td>
-											<td>#98734</td>
-											<td>Tuition</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2008/12/13</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>11</td>
-											<td>Jena Gaines</td>
-											<td>#12457</td>
-											<td>Tuition</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2008/12/19</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>12</td>
-											<td>Quinn Flynn</td>
-											<td>#36987</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2013/03/03</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>13</td>
-											<td>Charde Marshall</td>
-											<td>#98756</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2008/10/16</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>14</td>
-											<td>Haley Kennedy</td>
-											<td>#98754</td>
-											<td>Library</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2012/12/18</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>15</td>
-											<td>Tatyana Fitzpatrick</td>
-											<td>#65248</td>
-											<td>Annual</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2010/03/17</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>16</td>
-											<td>Michael Silva</td>
-											<td>#75943</td>
-											<td>Tuition</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2012/11/27</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>17</td>
-											<td>Paul Byrd</td>
-											<td>#87954</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2010/06/09</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>18</td>
-											<td>Gloria Little</td>
-											<td>#98746</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2009/04/10</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>19</td>
-											<td>Bradley Greer</td>
-											<td>#98674</td>
-											<td>Annual</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2012/10/13</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>20</td>
-											<td>Dai Rios</td>
-											<td>#69875</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2012/09/26</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>21</td>
-											<td>Jenette Caldwell</td>
-											<td>#54678</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2011/09/03</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>22</td>
-											<td>Yuri Berry</td>
-											<td>#98756</td>
-											<td>Tuition</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2009/06/25</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>23</td>
-											<td>Caesar Vance</td>
-											<td>#86754</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2011/12/12</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>24</td>
-											<td>Doris Wilder</td>
-											<td>#34251</td>
-											<td>Annual</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2010/09/20</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>25</td>
-											<td>Angelica Ramos</td>
-											<td>#65874</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2009/10/09</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>26</td>
-											<td>Gavin Joyce</td>
-											<td>#54605</td>
-											<td>Female</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2010/12/22</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>27</td>
-											<td>Jennifer Chang</td>
-											<td>#54605</td>
-											<td>Tuition</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2010/11/14</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>28</td>
-											<td>Brenden Wagner</td>
-											<td>#45687</td>
-											<td>Library</td>
-											<td>Cheque</td>
-											<td><span class="badge light badge-danger">Udpaid</span></td>
-											<td>2011/06/07</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>29</td>
-											<td>Fiona Green</td>
-											<td>#23456</td>
-											<td>Tuition</td>
-											<td>Cash</td>
-											<td><span class="badge light badge-success">Paid</span></td>
-											<td>2010/03/11</td>
-											<td><strong>120$</strong></td>
-										</tr>
-										<tr>
-											<td>30</td>
-											<td>Shou Itou</td>
-											<td>#54605</td>
-											<td>Annual</td>
-											<td>Credit Card</td>
-											<td><span class="badge light badge-warning">Panding</span></td>
-											<td>2011/08/14</td>
-											<td><strong>120$</strong></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+								<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive table-hover fs-14">
+							<table class="table mb-4 dataTablesCard card-table" id="orderTable">
+								<thead>
+									<tr>
+										<th>
+											<div class="form-check checkbox-secondary" >
+											  <input class="form-check-input" type="checkbox" value="" id="checkAll">
+											  <label class="form-check-label" for="checkAll">
+											  </label>
+											</div>
+										</th>
+										<th>Order ID</th>
+										<th>Date</th>
+										<th>Cust Name </th>
+										<th> Cust Phone</th>
+										<th>Drop-off</th>
+										<th>Channel</th>
+										<th>Status</th>
+										<th>Amount</th>
+										<th v-if="status == 1"> Action </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="order in order_list" :key='order'>
+										<td>
+											<div class="form-check checkbox-secondary">
+											  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+											  <label class="form-check-label" for="flexCheckDefault2">
+											  </label>
+											</div>
+										</td>
+										<td>{{order.reference}}</td>
+										<td>{{order.order_date}}</td>
+										<td>{{order.user.first_name}} {{order.user.last_name}}</td>
+										<td class="wspace-no">{{order.user.phone}}</td>
+										<td>{{order.destination}}</td>
+										<td>{{order.transport_type.name}}</td>
+											<td><span class="badge light badge-secondary">{{order.status.name}}</span></td>
+										<td><a href="javascript:void(0);" class="btn btn-secondary light btn-sm">₦{{order.transport_fee}}</a></td>
+										<td v-if="order.status.id === 2"> 
+											<div class="dropdown-menu dropdown-menu-end">
+												<a class="dropdown-item" @click="approveOrder(order_reference)">Approve Order</a>
+												<a class="dropdown-item" @click="rejectOrder(order_reference)">Reject Order</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
-            </div>
+			</div>
+		</div>	
+	</div>     
+</div>
 			
-        </div>
-    </div>
+ </div>
+      
+
+</div>
+
 </template>
 
 <script>
 import SideBar from '../components/SideBar.vue'
-    export default({
-        name: 'Orders',
-        components: {SideBar}
-    })
+import Api from "./Api.js"
+	export default ({
+		name: "Orders",
+		components: {SideBar},
+		data(){
+			return {
+			status: '0',
+			order_list: [],
+			main_order_list: [],
+			}
+		},
+		async mounted() {
+			await this.get_orders()
+	},
+	methods: {
+		get_orders(){
+			const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+			console.log("Checking 1");
+			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/get/', {merchant_id:merchant_token})
+			.then(response => {
+				console.log("Checking");
+				this.order_list = response.data.orders.results
+				this.main_order_list = response.data.orders.results
+				console.log(this.order_list);
+				console.log(this.main_order_list);
+			})
+		},
+		change_status(status){
+			this.status = status
+			console.log(this.status);
+			console.log(this.order_list);
+			this.order_list = this.order_list.filter(order => order.status.id === status)
+			console.log(this.order_list);
+		},
+		approveOrder(order_reference){
+			const postData = {
+				merchant_id: JSON.parse(localStorage.getItem('merchant_id'), postData),
+				order_reference: order_reference
+			}
+			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/accept')
+			.then(response => {
+				console.log(response.data);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+		rejectOrder(order_reference){
+			const postData = {
+				merchant_token: JSON.parse(localStorage.getItem('merchant_id')),
+				order_reference: order_reference
+			}
+			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/reject', postData)
+			.then(response => {
+				console.log(response.data);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		}
+	},
+	computed: {
+		completed_orders: function (){
+			return this.main_order_list.filter(order => order.status.id === 8).length
+		},
+		refunded_orders: function (){
+			return this.main_order_list.filter(order => order.status.id === 10).length
+		},
+		canceled_orders: function (){
+			return this.main_order_list.filter(order => order.status.id === 9).length
+		}
+	}
+	})
 </script>
+
+<style scoped>
+.btn:hover{
+	background-color: #ff6905;
+}
+</style>

@@ -5,177 +5,238 @@
             <!-- row -->
 			<div class="container-fluid">
 				<div class="row">
-                    <div class="col-xl-10">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-4 order-lg-2 mb-4">
-                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="text-muted">Upload bike pictures</span>
-                                            <span class="badge badge-primary badge-pill">1</span>
-                                        </h4>
-                                        <ul class="list-group mb-3">
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-												<div class="input-group mb-3">
-													<span class="input-group-text">Front View</span>
-													<div class="form-file">
-														<input type="file" class="form-file-input form-control">
-													</div>
-												</div>
-                                              </li>
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                                <div class="input-group mb-3">
-													<span class="input-group-text">Back View</span>
-													<div class="form-file">
-														<input type="file" class="form-file-input form-control">
-													</div>
-												</div>
-                                            </li>
-                                           
-                                        </ul>
-
-                                        <!-- <form>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Promo code">
-												<button type="submit" class="input-group-text">Redeem</button>
-                                            </div>
-                                        </form> -->
-                                    </div>
-                                    <div class="col-lg-8 order-lg-1">
-                                        <h4 class="mb-3">Bike Details </h4>
-                                        <form class="needs-validation" novalidate="">
-                                            <div class="row">
-												<div class="mb-3">
-													<label for="email"  class="form-label">Plate Number </label>
-													<input type="email" class="form-control" id="email" placeholder="you@example.com">
-													<div class="invalid-feedback">
-														Please enter a valid plate number 
-													</div>
-												</div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="firstName" class="form-label">Bike Make </label>
-                                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
-                                                    <div class="invalid-feedback">
-                                                        Bajaj
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="lastName"  class="form-label">Purchased Date <span
-														class="text-muted">(Optional)</span></label>
-                                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
-                                                    <div class="invalid-feedback">
-                                                       
-                                                    </div>
-                                                </div>
-                                            </div>
-											<hr class="mb-4">
-                                           
-                                        </form>
-                                    </div>
-                                </div>
-
-
-								<div class="row">
-                                    <div class="col-lg-4 order-lg-2 mb-4">
-                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="text-muted">Upload bike pictures</span>
-                                            <span class="badge badge-primary badge-pill">2</span>
-                                        </h4>
-                                        <ul class="list-group mb-3">
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-												<div class="input-group mb-3">
-													<span class="input-group-text">Front View</span>
-													<div class="form-file">
-														<input type="file" class="form-file-input form-control">
-													</div>
-												</div>
-                                              </li>
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                                <div class="input-group mb-3">
-													<span class="input-group-text">Back View</span>
-													<div class="form-file">
-														<input type="file" class="form-file-input form-control">
-													</div>
-												</div>
-                                            </li>
-                                           
-                                        </ul>
-
-                                        <!-- <form>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Promo code">
-												<button type="submit" class="input-group-text">Redeem</button>
-                                            </div>
-                                        </form> -->
-                                    </div>
-                                    <div class="col-lg-8 order-lg-1">
-                                        <!-- <hx4 class="mb-3">Bike Rate Setting</h4> -->
-                                        <form class="needs-validation" novalidate="">
-                                            <div class="row">
-												<div class="mb-3">
-													<label for="email"  class="form-label">Plate Number </label>
-													<input type="email" class="form-control" id="email" placeholder="you@example.com">
-													<div class="invalid-feedback">
-														Please enter a valid plate number 
-													</div>
-												</div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="firstName" class="form-label">Bike Make </label>
-                                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
-                                                    <div class="invalid-feedback">
-                                                        Bajaj
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="lastName"  class="form-label">Purchased Date <span
-														class="text-muted">(Optional)</span></label>
-                                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
-                                                    <div class="invalid-feedback">
-                                                       
-                                                    </div>
-                                                </div>
-                                            </div>
-					 						<hr class="mb-4">
-                                           
-                                        </form>
-										<div class="col-lg-2">
-											<button type="button" class="btn btn-rounded btn-primary"><span
-												class="btn-icon-start text-primary"><i class="fa fa-plus"></i>
-											</span>Add</button>
-										</div>
-                                    </div>
-									
-									
-                                </div>
-								<div class="row" style="margin-top: 2em;">
-									<h4 class="mb-3">Bike Rate Settings </h4>
-									<div class="basic-form">
-										<form>
-											<div class="row">
-												<div class="col-sm-4">
-													<input type="text" class="form-control" placeholder="Kilometre">
-												</div>
-												<div class="col-sm-4 mt-2 mt-sm-0">
-													<input type="text" class="form-control" placeholder="Price">
-												</div>
-												<!-- <div class="col-sm-2 mt-2 mt-sm-0">
-													<input type="text" class="form-control" placeholder="Zip">
-												</div> -->
+                    <div class="col-xl-8">
+						<div class="row">
+							 <div class="col-xl-4 col-xxl-6 col-sm-6 "  v-for="type in Rates" :key="type">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between" >
+										<div class="me-3">
+											 <img src="../statics/scooter.svg" width="80" v-if="type.transport_type.code === 'BIKE'"/>
+                                             <img src="../statics/bicycle.svg" width="80" v-if="type.transport_type.code === 'BICYCLE'"/>
+                                             <img src="../statics/shipped.svg" width="80" v-if="type.transport_type.code === 'VAN'"/>
+											 <img src="../statics/shipped.svg" width="80" v-if="type.transport_type.code === 'TRUCK'"/>
+                                             <img src="../statics/drone.svg" width="80" v-if="type.transport_type.code === 'DRONE'"/>
+                                             <img src="../statics/scooter.svg" width="80" v-if="type.transport_type.code === 'CAR'"/>
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
 											</div>
-										</form>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.856 10.303c.086.554.144 1.118.144 1.697 0 6.075-4.925 11-11 11s-11-4.925-11-11 4.925-11 11-11c2.347 0 4.518.741 6.304 1.993l-1.422 1.457c-1.408-.913-3.082-1.45-4.882-1.45-4.962 0-9 4.038-9 9s4.038 9 9 9c4.894 0 8.879-3.928 8.99-8.795l1.866-1.902zm-.952-8.136l-9.404 9.639-3.843-3.614-3.095 3.098 6.938 6.71 12.5-12.737-3.096-3.096z" fill="#ff6600" v-if="type.is_active === true"/> <path d="M21.856 10.303c.086.554.144 1.118.144 1.697 0 6.075-4.925 11-11 11s-11-4.925-11-11 4.925-11 11-11c2.347 0 4.518.741 6.304 1.993l-1.422 1.457c-1.408-.913-3.082-1.45-4.882-1.45-4.962 0-9 4.038-9 9s4.038 9 9 9c4.894 0 8.879-3.928 8.99-8.795l1.866-1.902zm-.952-8.136l-9.404 9.639-3.843-3.614-3.095 3.098 6.938 6.71 12.5-12.737-3.096-3.096z" fill="#ff6600" v-if="type.is_active === false"/></svg>
+													 <strong> {{type.rate}}</strong>
+													<span class="op-6 text-light"> Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black" v-if="type.transport_type.code === 'BIKE'">Bike </small>
+                                                <small class="text-black" v-if="type.transport_type.code === 'BICYCLE'">Bicycle </small>
+                                                <small class="text-black" v-if="type.transport_type.code === 'TRUCK'">Truck </small>
+                                                <small class="text-black" v-if="type.transport_type.code === 'VAN'">Van </small>
+                                                <small class="text-black" v-if="type.transport_type.code === 'DRONE'">Drone </small>
+                                                <small class="text-black" v-if="type.transport_type.code === 'CAR'">Car </small>
+											</div>
+										</div>	
 									</div>
 								</div>
-								</div>
-
-						
-							
-                        </div>
-							<div class="col-lg-12">
-								<button class="btn btn-primary btn-lg btn-block" type="submit"> Set Rate  </button>
-								
 							</div>
+							 <!-- <div class="col-xl-4 col-xxl-6 col-sm-6 ">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
+										<div class="me-3">
+											 <img src="../statics/bicycle.svg" width="80" />
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
+											</div>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
+														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
+													</svg>
+													2.4%
+													<span class="op-6 text-light">Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black" style="padding-right:4px">Bicycle </small>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div>
+							 <div class="col-xl-4 col-xxl-6 col-sm-6 ">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
+										<div class="me-3">
+											 <img src="../statics/shipped.svg" width="80" />
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
+											</div>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
+														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
+													</svg>
+													2.4%
+													<span class="op-6 text-light">Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black">Van </small>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-4 col-xxl-6 col-sm-6 ">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
+										<div class="me-3">
+											 <img src="../statics/drone.svg" width="80" />
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
+											</div>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
+														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
+													</svg>
+													2.4%
+													<span class="op-6 text-light">Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black">Drone</small>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div>
+                            <div class="col-xl-4 col-xxl-6 col-sm-6 ">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
+										<div class="me-3">
+											 <img src="../statics/record.svg" width="80" />
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
+											</div>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
+														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
+													</svg>
+													2.4%
+													<span class="op-6 text-light">Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black">Truck </small>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div>
+                              <div class="col-xl-4 col-xxl-6 col-sm-6 ">
+								<div class="card">
+									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
+										<div class="me-3">
+											 <img src="../statics/record.svg" width="80" />
+											<div>
+												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
+											</div>
+											<div>
+												<p class="text-primary fs-14 mb-0">
+													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
+														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
+													</svg>
+													2.4%
+													<span class="op-6 text-light">Per Kilometre</span>
+												</p>
+											</div>
+										</div>
+										<div>
+											<div class="d-inline-block position-relative donut-chart-sale">
+												<small class="text-black">Truck </small>
+											</div>
+										</div>	
+									</div>
+								</div>
+							</div> -->
+						</div>
 					</div>
+                     <div class="col-xl-4">
+                          <div class="card card-body px-3 pt-3 pb-0">
+                               <div class="custom-tab-1">
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link active show">Rate Settings</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="profile-settings" class="tab-pane fade active show">
+                                                <div class="pt-3">
+                                                    <div class="settings-form">
+                                                        <form @submit.prevent="update_profile">
+                                                            <div class="row col-mb-3">
+                                                                <div class="row"  style="margin-top:1em">
+                                                                    <div class="col-lg-3">
+                                                                    <h5 style="margin-top:1em"> Set Rate:</h5>
+                                                                    </div> 
+                                                                    <div class="col-lg-9">
+                                                                        <input type="number" class="form-control" id="email" placeholder="100" v-model="rate">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="margin-top:2em">
+                                                                    <div class="col-lg-3">
+                                                                    <h5 style="margin-top:1em"> Set Rate:</h5>
+                                                                    </div> 
+                                                                    <div class="col-lg-9">
+                                                                        <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="transport_type">
+                                                                            <option value="BIKE">Bike</option>
+                                                                            <option value="BICYCLE">Bicycle</option>
+                                                                            <option value="VAN">Van</option>
+                                                                            <option value="TRUCK">Truck</option>
+                                                                            <option value="DRONE"> Drone </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row " style="margin-top:2em; ">
+                                                                    <div class="col-lg-12">    
+                                                                   <div class="form-check">
+                                                                       <label class="form-check-label">
+                                                                           <h5>Set Active Status</h5>
+                                                                        </label>
+                                                                        <input class="form-check-input" type="checkbox" v-model="is_active">
+                                                                        
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                             </div>
+                                                            <div class="row text-center" style="margin-top:2em">
+                                                                <div class="col-lg-2"></div>
+                                                                    <div class="col-lg-8 text-center">
+                                                                        <a class="btn btn-secondary btn-lg btn-block text-white dz-load-more" @click="updateRate">Update Settings</a>
+                                                                    </div>
+                                                                <div class="col-lg-2"></div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                          </div>
+                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -183,8 +244,57 @@
 
 <script>
 import SideBar from '../components/SideBar.vue'
+import Api from './Api'
     export default({
         name: 'Rate',
-        components: {SideBar}
+        components: {SideBar},
+        data(){
+            return{
+                rate: '',
+                transport_type: 'BIKE',
+                is_active: false,
+                types: []
+            }
+        },
+        methods: {
+            updateRate(){
+                const formData = {
+                    rate: this.rate,
+                    transport_type_code: this.transport_type,
+                    is_active: this.is_active,
+                    merchant_id : JSON.parse(localStorage.getItem('merchant_id'))
+                }
+                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/rate/update', formData)
+                .then(response => {
+                    console.log(response.data);
+					this.getRates()
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
+            },
+            getRates(){
+                const merchant_id = JSON.parse(localStorage.getItem('merchant_id'))
+                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/trasnport_types/get', {merchant_id:merchant_id})
+                .then(response => { 
+                    console.log(response.data);
+                    this.types = response.data
+					this.$store.commit('getRates', {all_rate:response.data})
+					console.log(this.$store.state.all_rate);
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
+            }
+        },
+        mounted(){
+            this.getRates()
+        },
+        computed:{
+	         Rates: function(){
+			   return this.$store.state.all_rate
+		   }
+        }
+
     })
 </script>

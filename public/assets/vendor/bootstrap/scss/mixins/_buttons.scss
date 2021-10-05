@@ -23,7 +23,7 @@
   @include box-shadow($btn-box-shadow);
 
   &:hover {
-    color: $hover-color;
+    color: black;
     @include gradient-bg($hover-background);
     border-color: $hover-border;
   }
