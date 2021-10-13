@@ -11,7 +11,7 @@
 	height: 56px;
 	border-radius:$radius;
 	@include respond('laptop') {
-		height: 41px;
+		height: auto !important;
 	}
     &:hover,&:focus,&.active{
         box-shadow: none;

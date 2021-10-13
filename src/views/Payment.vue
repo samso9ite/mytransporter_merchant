@@ -14,7 +14,7 @@
 					</ol>
                 </div>
 				<div class="row mb-4 align-items-center">
-					<div class="col-xl-9">
+					<div class="col-xl-12">
 						
 						<div class="card m-0 ">
 							<div class="card-body px-4 py-3 py-lg-2">
@@ -88,9 +88,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-3 align-self-start mt-3 mt-xl-0 Generate">
+					<!-- <div class="col-xl-3 align-self-start mt-3 mt-xl-0 Generate">
 						<a href="/" class="btn btn-secondary d-block"><i class="fa fa-money scale5 me-3"></i>Generate Report</a>
-					</div>	
+					</div>	 -->
 				</div>
 
 				<div class="row">
@@ -122,17 +122,17 @@
 												<div class="basic-form">
 												<div class="col-lg-12">
 													<div class="table-responsive" >
-														<table class="table table-responsive-md" > 
+														<table class="table header-border  verticle-middle" > 
 															<tbody >
-																<tr v-for="bank in all_account" :key="bank">
+																<tr v-for="bank in all_account" :key="bank" class="bank" :class="{'bank_active' : bank.id  === id}" @click="select_account(bank.id)">
 																	<td>{{bank.account_name}}</td>
 																	<td style="color:#ff6600"><strong>{{bank.account_number}}</strong></td>
 																	<td>{{bank.bank_name}}</td>
-																	<td>
+																	<!-- <td>
 																		<div class="form-check">
 																			<input class="form-check-input" type="radio" name="accnt" v-model="accnt" :value="bank.id" checked>
 																		</div>
-																	</td>
+																	</td> -->
 																</tr>
 															</tbody>
 														</table>
@@ -162,10 +162,10 @@
 							<div class="card-footer pt-0 pb-0 text-center">
 								<div class="row">
 									<div class="col-4 pt-3 pb-3 border-end">
-										<h3 class="mb-1">₦0.00</h3><span>Referal Earnings</span>
+										<h3 class="mb-1">₦{{pending_balance}}</h3><span>Pending Balance</span>
 									</div>
 									<div class="col-4 pt-3 pb-3 border-end">
-										<h3 class="mb-1">₦</h3><span>Available</span>
+										<h3 class="mb-1">₦{{wallet_balance}}</h3><span>Available</span>
 									</div>
 									<div class="col-4 pt-3 pb-3">
 										<h3 class="mb-1">₦0.00</h3><span>Refund</span>
@@ -190,7 +190,7 @@
 									<td>
 										<div class="d-flex">
 											<!-- <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a> -->
-											<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+											<a href="#" class="btn btn-primary shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
 										</div>
 									</td>
 								</tr>
@@ -211,7 +211,7 @@
 												</select>
                                             </div>
                                             <div class="col-sm-6 mt-2 mt-sm-0">
-                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount">
+                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
                                             </div>
 											<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
                                         </div>
@@ -243,7 +243,7 @@
 												</select>
                                             </div>
                                             <div class="col-sm-6 mt-2 mt-sm-0">
-                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount">
+                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
                                             </div>
 											<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
                                         </div>
@@ -330,6 +330,7 @@ import Api from './Api'
 			return{
 				payments : [],
 				total: '',
+				id: '',
 				all_payments: [],
 				banks: [],
 				all_banks: [],
@@ -341,10 +342,15 @@ import Api from './Api'
 				amount: '',
 				accnt: '',
 				loading: false,
-				errors: []
+				errors: [],
+				accnt_num: ''
 			}
 		},
 		methods: {
+			select_account(accnt){
+				this.id = accnt
+				console.log(this.id);
+			},
 			getPaymentHistory(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
 				Api.axios_instance.post(Api.baseUrl +'/merchant/portal/payment/history', {merchant_id: merchant_token})
@@ -358,21 +364,28 @@ import Api from './Api'
 				.catch(err => {
 					console.log(err.response)
 				})
+
+					Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id:merchant_token})
+				.then((res => {
+					const data = {
+						pending_wallet_balance: res.data.pending_wallet_balance,
+						wallet_balance: res.data.wallet_balance
+					}
+					this.$store.commit('storeProfile', data)
+				}))
 			},
+			
 			change_status(status){
 			this.status = status
-			console.log(this.status);
+			this.payments = this.all_payments
 			this.payments = this.payments.filter(payment => payment.transaction_status.id === status)
-			console.log(this.payments);
 			},
 			getBanks(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
 				console.log(merchant_token);
 				Api.axios_instance.post(Api.baseUrl +'/merchant/portal/bank_account/get', {merchant_id: merchant_token})
 				.then(response => {
-					console.log(response.data);
 					this.$store.commit('get_banks', {banks:response.data})
-					console.log(this.$store.state.banks);
 				})
 				.catch(err => {
 					console.log(err.response);
@@ -381,11 +394,9 @@ import Api from './Api'
 			getAllBanks(){
 				Api.axios_instance.get(Api.baseUrl +'/merchant/portal/bank_account/get/banks')
 				.then(response => {
-				console.log(response.data)
 				this.all_banks = response.data
 				})
 				.catch(err => {
-					console.log(err.response);
 				})
 			},
 			verifyAccount(){
@@ -399,7 +410,6 @@ import Api from './Api'
 					console.log(res.data);
 					this.account_name = res.data.data.account_name
 					this.verified_accnt_num = res.data.data.account_number
-					console.log(this.account_name);
 					this.bank_name = res.data.data.bank_name
 					this.bank_id = res.data.data.bank_id
 					})
@@ -419,8 +429,6 @@ import Api from './Api'
 					bank_id: this.bank_id,
 					bank_code: this.bank_code
 				}
-				console.log(this.bank_name[0].name)
-				console.log(formData);
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/bank_account/add', formData)
 				.then(res => {
 					console.log(res.data)
@@ -432,7 +440,6 @@ import Api from './Api'
 					this.getBanks()
 				})
 				.catch(err => {
-					console.log(err.response)
 				})
 				.finally(() => {
 				this.loading = false;
@@ -442,13 +449,11 @@ import Api from './Api'
 				this.loading = true
 				const formData ={
 					merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
-					bank_account: this.accnt,
+					bank_account: this.id,
 					amount: this.amount
 				}
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/bank_account/withdraw', formData)
 				.then(res => {
-					console.log(res.data)
-					console.log(response.data);
 					this.$toast.success({
                         title:'Awesome!!!',
                         message:'Withdrawal Successful',
@@ -486,7 +491,13 @@ import Api from './Api'
 			failed_transactions: 
 				function (){
 					return this.all_payments.filter(payment => payment.transaction_status.id === 1).length
-				}
+			},
+			wallet_balance: function (){
+				return this.$store.state.user.wallet_balance
+			},
+			pending_balance: function (){
+				return this.$store.state.user.pending_wallet_balance
+			}
 				
 		}
     })
@@ -496,4 +507,22 @@ import Api from './Api'
 		background-color: #ff6600 !important;
 		border-color: #ff6600;
 	}
+	.modal { 
+   background-color: rgba(76, 175, 80, 0.3)
+}
+.bank_active{
+	background-color: #473b52;
+	color:#fff !important;
+	border-radius:15px
+}
+.bank:hover{
+	background-color: #473b52;
+	color:#fff !important;
+	cursor:pointer;
+	border-radius:15px
+}
+.modal { 
+   background-color: rgba(0, 0, 0, 0.5)
+}
+
 </style>

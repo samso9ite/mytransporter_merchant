@@ -22,7 +22,7 @@
 				</div> -->
 
 				<div class="row mb-4 align-items-center">
-					<div class="col-xl-9">
+					<div class="col-xl-12">
 						
 						<div class="card m-0 ">
 							<div class="card-body px-4 py-3 py-lg-2">
@@ -120,9 +120,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-3 align-self-start mt-3 mt-xl-0 Generate">
+					<!-- <div class="col-xl-3 align-self-start mt-3 mt-xl-0 Generate">
 						<a href="/" class="btn btn-secondary d-block"><i class="fa fa-motorcycle scale5 me-3"></i>Generate Report</a>
-					</div>	
+					</div>	 -->
 				</div>
 				<div class="col-12">
 					<div class="card">
@@ -202,15 +202,74 @@
 										<td>{{order.transport_type.name}}</td>
 											<td><span class="badge light badge-secondary">{{order.status.name}}</span></td>
 										<td><a href="javascript:void(0);" class="btn btn-secondary light btn-sm">₦{{order.transport_fee}}</a></td>
-										<td v-if="order.status.id === 2"> 
+										<td>
+											<div class="d-flex">
+												<a data-bs-toggle="modal" :data-bs-target="`#viewDetails` + order.reference"  class="btn  shadow btn-xs sharp me-1" style="color:#ff6600"><i class="fa fa-eye"></i></a>
+											</div>
+										</td>
+										<td> 
 											<div class="dropdown-menu dropdown-menu-end">
 												<a class="dropdown-item" @click="approveOrder(order_reference)">Approve Order</a>
 												<a class="dropdown-item" @click="rejectOrder(order_reference)">Reject Order</a>
 											</div>
 										</td>
+										<div class="modal fade" :id="'viewDetails'+order.reference">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<a href="javascript:void(0);" class="btn-close" data-bs-dismiss="modal" ></a>
+										</div>
+										<div class="modal-body profile">
+											<div class="text-center">
+												<img :src="lo" class="img-fluid rounded-circle" alt="" v-if="order.user.image !== null">
+												<img src="../statics/avatar.png" class="img-fluid rounded-circle" alt="" v-else>
+											</div>
+											<br>
+											  <div class="table-responsive">
+                                    <table class="table header-border table-hover verticle-middle">
+                                        <tbody>
+                                            <tr>
+                                                <td><h5>Name: {{order.user.first_name}} {{order.user.last_name}}</h5></td>
+                                                <td>
+                                                <h5>Phone : {{order.user.phone}} </h5>
+                                                </td>
+                                            </tr>
+											 <tr>
+                                                <td><h5>Email: {{order.user.email}} </h5></td>
+                                                <td>
+                                                <h5>Address : {{order.user.address}} </h5>
+                                                </td>
+                                            </tr>
+											<tr>
+												<td v-if="order.payment !== null"><h5>Amount: ₦{{order.payment.transaction_amount}}</h5></td>
+												<td  v-if="order.payment !== null"><h5> Payment Status: {{order.payment.transaction_status.transaction_status_name}}</h5></td>
+											</tr>
+											<tr>
+												<td><h5>Merchant Fee: ₦{{order.merchant_fee}}</h5></td>
+												<td v-if="order.payment !== null"><h5> Transaction Type: {{order.payment.transaction_type.name}}</h5></td>
+											</tr>
+											<tr>
+												<td><h5>Pickup Location: {{order.pickup_location}}</h5></td>
+												<td><h5> Destination: {{order.destination}}</h5></td>
+											</tr>
+											<tr>
+												<td  colspan="2"><h5> Item Description: {{order.item_description}}</h5></td>
+											</tr>
+											<tr>
+												<td  colspan="2"><h5> Extra Description: {{order.extra_description}}</h5></td>
+											</tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+								</div>
+							</div>
+						</div>
+							</div>
 									</tr>
+
 								</tbody>
 							</table>
+							
 						</div>
 					</div>
 				</div>
@@ -245,22 +304,18 @@ import Api from "./Api.js"
 	methods: {
 		get_orders(){
 			const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
-			console.log("Checking 1");
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/get/', {merchant_id:merchant_token})
 			.then(response => {
-				console.log("Checking");
-				this.order_list = response.data.orders.results
-				this.main_order_list = response.data.orders.results
-				console.log(this.order_list);
-				console.log(this.main_order_list);
+				console.log(response.data);
+				this.$store.commit('storeOrders', {orders:response.data.orders.results})
+				this.order_list = this.$store.state.orders
+				this.main_order_list = this.$store.state.orders
 			})
 		},
 		change_status(status){
 			this.status = status
-			console.log(this.status);
-			console.log(this.order_list);
+			this.order_list = this.main_order_list
 			this.order_list = this.order_list.filter(order => order.status.id === status)
-			console.log(this.order_list);
 		},
 		approveOrder(order_reference){
 			const postData = {
@@ -269,10 +324,8 @@ import Api from "./Api.js"
 			}
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/accept')
 			.then(response => {
-				console.log(response.data);
 			})
 			.catch(err => {
-				console.log(err.response);
 			})
 		},
 		rejectOrder(order_reference){
@@ -282,10 +335,8 @@ import Api from "./Api.js"
 			}
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/reject', postData)
 			.then(response => {
-				console.log(response.data);
 			})
 			.catch(err => {
-				console.log(err.response);
 			})
 		}
 	},
@@ -307,4 +358,8 @@ import Api from "./Api.js"
 .btn:hover{
 	background-color: #ff6905;
 }
+.modal { 
+   background-color: rgba(0, 0, 0, 0.5)
+}
+
 </style>

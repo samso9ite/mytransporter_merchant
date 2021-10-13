@@ -20,15 +20,15 @@
 								<path d="M2.33362 22.1669C2.33362 23.0952 2.70237 23.9854 3.35874 24.6418C4.01512 25.2982 4.90536 25.6669 5.83362 25.6669H22.167C23.0952 25.6669 23.9854 25.2982 24.6418 24.6418C25.2982 23.9854 25.667 23.0952 25.667 22.1669V12.8336H2.33362V22.1669Z" fill="#ff6600"/>
 							</svg>
 							<div class="text-left ms-3">
-								<span class="d-block text-black text-start">Change Periode</span>
-								<small class="d-block text-light">August 28th - October 28th, 2021</small>
+								<span class="d-block text-black text-start">Change Period</span>
+								<small class="d-block text-light">September 28th - October 10th, 2021</small>
 							</div>
 							<i class="fa fa-caret-down text-light scale5 ms-3"></i>
 						</div>
-						<div class="dropdown-menu dropdown-menu-end">
+						<!-- <div class="dropdown-menu dropdown-menu-end">
 							<a class="dropdown-item" href="javascript:void(0);">October 29th - November 29th, 2021</a>
 							<a class="dropdown-item" href="javascript:void(0);">July 27th - Auguts 27th, 2021</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="row">
@@ -151,10 +151,10 @@
 										<div class="tab-content">
 											<div class="tab-pane fade active show" id="bikeBicycle">
 												<div class="d-sm-flex d-block align-items-center justify-content-center">
-													<div class="col-xl-6 col-xxl-5 text-center">
+													<!-- <div class="col-xl-12 col-xxl-12 text-center">
 														<div id="donutChart2" class="donutChart2 d-inline-block"></div>
-													</div>	
-													<div class="col-xl-6 col-xxl-7">
+													</div>	 -->
+													<div class="col-xl-12 col-xxl-12">
 														<p class="fs-12 mt-3"></p>
 														<div class="d-flex  mt-4">
 															<div class="me-4">
@@ -185,10 +185,10 @@
 
 											<div class="tab-pane fade " id="vanTruck">
 											<div class="d-sm-flex d-block align-items-center justify-content-center">
-												<div class="col-xl-6 col-xxl-5 text-center">
+												<!-- <div class="col-xl-6 col-xxl-5 text-center">
 													<div id="donutChart2" class="donutChart2 d-inline-block"></div>
-												</div>	
-												<div class="col-xl-6 col-xxl-7">
+												</div>	 -->
+												<div class="col-xl-12 col-xxl-12">
 													<p class="fs-12 mt-3"></p>
 													<div class="d-flex  mt-4">
 														<div class="me-4">
@@ -218,10 +218,10 @@
 											</div>
 											<div class="tab-pane fade " id="Drones">
 											<div class="d-sm-flex d-block align-items-center justify-content-center">
-												<div class="col-xl-6 col-xxl-5 text-center">
+												<!-- <div class="col-xl-12 col-xxl-12 text-center">
 													<div id="donutChart2" class="donutChart2 d-inline-block"></div>
-												</div>	
-												<div class="col-xl-6 col-xxl-7">
+												</div>	 -->
+												<div class="col-xl-12 col-xxl-12">
 													<p class="fs-12 mt-3"></p>
 													<div class="d-flex  mt-4">
 														<div class="me-4">
@@ -303,9 +303,10 @@
 										<div class="card-header border-0 mb-0">
 											<h4 class="fs-20">Pending Orders</h4>
 										</div>
-										<pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
+									
 										<perfect-scrollbar>
 											<div class="card-body pt-0" id="EventListContent">
+													<pulse-loader :loading="loading" color="#ff6600" :size="size"></pulse-loader>
 												
 												<div class="media event-list pb-3 border-bottom mb-3" v-for="order in pending_orders" :key="order">
 													
@@ -355,7 +356,7 @@
 															<span class="ticket-icon-1 mb-3">
 																<i class="fa fa-clock-o" aria-hidden="true"></i>
 															</span>
-															<div class="fs-12 text-primary">{{order.expected_pickup_time}}</div>
+															<div class="fs-12 text-primary">{{moment(order.expected_pickup_time).fromNow()}}</div>
 														</div>
 														<div class="text-center">
 															<span class="ticket-icon-1 mb-3">
@@ -444,6 +445,7 @@ import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import SideBar from '../components/SideBar.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import Api from './Api'
+import moment from 'moment'
 export default ({
     name:'Dashboard',
     components:{SideBar,  PerfectScrollbar, PulseLoader},
@@ -456,8 +458,13 @@ export default ({
 			wallet_balance: JSON.parse(localStorage.getItem('wallet_balance')),
 			pending_wallet_balance: JSON.parse(localStorage.getItem('pending_wallet_balance')),
 			staffs: '',
-			loading: false
+			loading: false,
+			color: 'black',
+			errors: ''
         }
+    },
+	 created: function () {
+        this.moment = moment;
     },
 	props: {
 		color: 'black',
@@ -472,10 +479,8 @@ export default ({
 				this.pending_orders = response.data.pending_orders
 				this.all_orders = response.data.orders.count
 				this.earnings = response.data.earnings
-				console.log(response.data);
 			})
 			.catch(err => {
-				console.log(err.response);
 			})
 			.finally(() => {
 				this.loading = false
@@ -483,10 +488,23 @@ export default ({
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/get/', {merchant_id:merchant_token})
 			.then(res => {
 				this.staffs = res.data.length
-			})
+			})  
+			Api.axios_instance.get(Api.baseUrl+'/notification/user/fetch')
+                .then((res => {
+                    this.$store.commit('store_notifications', {notifications:res.data})
+				}))
+			
+			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id:merchant_token})
+				.then((res => {
+					const data = {
+						pending_wallet_balance: res.data.pending_wallet_balance,
+						wallet_balance: res.data.wallet_balance
+					}
+					this.$store.commit('storeProfile', data)
+				}))
+
 		},
 		approveOrder(order_reference){
-			console.log(order_reference);
 			const postData = {
 				merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
 				order_reference: order_reference
@@ -498,8 +516,14 @@ export default ({
                         message:'Order approved',
                 })
 			})
-			.catch(err => {
-				console.log(err.response);
+			.catch(error => {
+				console.log(error.response);
+				if(error.response){
+					this.$toast.error({
+					title:'Hey!!!',
+					message: error.response.data.detail,
+                })
+                }
 			})
 		},
 		rejectOrder(order_reference){
@@ -515,9 +539,6 @@ export default ({
                 })
 			})
 			.catch(err => {
-				// if(err.response){
-
-				// }
 			})
 		}
 	},
@@ -552,7 +573,7 @@ export default ({
 		DronesCanceledOrders: function (){
 			return this.orders.filter(order => order.transport_type.name === 'DRONES' && order.status.name === 'Cancel').length
 		},
-		
+	
 	}
 })
 </script>

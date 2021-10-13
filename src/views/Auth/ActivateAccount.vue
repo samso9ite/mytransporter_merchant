@@ -1,10 +1,10 @@
 <template>
     <div class="root">
 
-        <video autoplay muted loop id="myVideo">
+        <!-- <video autoplay muted loop id="myVideo">
             <source src="../../statics/video_preview_h264.mp4" type="video/mp4">
-        </video>
-        <div class="authincation h-100 ontop">
+        </video> -->
+        <div class="authincation h-100 ontop bg">
             <div class="container h-100">
                 <div class="row justify-content-center h-100 align-items-center">
                     <div class="col-md-6">
@@ -16,7 +16,7 @@
                                             <a href="index.html">
                                                 <img  src="../../statics/fav.png"  /></a>
                                         </div>
-                                        <h4 class="text-center mb-4">User Signup</h4>
+                                        <h4 class="text-center mb-4">Merchant Signup</h4>
                                          <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
                                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
                                             </button>
@@ -25,10 +25,10 @@
                                         <form @submit.prevent="submitForm">
                                             <div class="mb-3">
                                                 <label class="mb-1"><strong>Enter Verification Code </strong></label>
-                                                <input type="number" class="form-control" name="token" v-model="token">
+                                                <input type="number" class="form-control" name="token" v-model="token" required>
                                             </div>
                                             <div class="text-center">
-                                                <button class="btn btn-primary btn-block">SUBMIT</button>
+                                                <button class="btn btn-primary btn-block" :disabled="loading">SUBMIT</button>
                                             </div>
                                         </form>
                                        
@@ -51,22 +51,24 @@ export default ({
         return{
             token: '',
             errors: '',
+            loading: false
         }
     },
     methods:{
         submitForm(e){
             Api.axios_instance.post(Api.baseUrl+'/merchant/portal/activate/account', {token:this.token})
             .then(response =>{
-                console.log(response);
-                this.$router.push('/login')
+                this.$router.push('/')
             })
             .catch(error => {
                 if (error.response){
                     for(const property in error.response.data){
-                        this.errors.push(`${property}:${error.response.data[property]}`)
+                        this.errors.push(`${error.response.data[property]}`)
                     }
-                    console.log(error.response);
                 }
+            })
+            .finally(() => {
+                this.loading = false
             })
     }
     }
@@ -84,4 +86,13 @@ export default ({
     background-color: rgb(241 235 235 / 70%);   
 }
 
+.bg {
+  /* The image used */
+  background-image: url("../../statics/bg13.png");
+ background-blend-mode: overlay;
+-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 </style>

@@ -24,45 +24,43 @@
                                     <form @submit.prevent="register">
                                         <div class="mb-3">
                                             <label class="mb-1" ><strong>Company Name</strong></label>
-                                            <input type="text" class="form-control" placeholder="Company Name" name="company_name" v-model="company_name">
+                                            <input type="text" class="form-control" placeholder="Company Name" name="company_name" v-model="company_name" required>
                                         </div>
                                           <div class="mb-3">
                                             <label class="mb-2"><strong>Transport Type</strong></label>
                                             <div class="row">
-                                               <Multiselect v-model="transport_types" :options="options":multiple="true"  />
+                                               <Multiselect v-model="transport_types" :options="options" :multiple="true"  />
                                         </div>
                                         </div>
                                          <label class="mb-3"><strong>First & Last Name</strong></label>
                                          <div class="input-group">
 											<!-- <span class="input-group-text">Firstname</span> -->
-                                            <input type="text" class="form-control" placeholder="First Name" v-model="first_name">
-                                            <input type="text" class="form-control" placeholder="Last Name" v-model="last_name">
+                                            <input type="text" class="form-control" placeholder="First Name" v-model="first_name" required>
+                                            <input type="text" class="form-control" placeholder="Last Name" v-model="last_name" required>
                                         </div>
                                         <label class="mb-3"><strong>Mobile Number</strong></label>
-                                               <div class="input-group mb-3">
-                                                 <span class="col-lg-3">                                   
-                                                    <select class="default-select btn-color sel_style wide" name="country" v-model="country">
-                                                    <option value="Nigeria" selected>+234</option>
-                                                    <option value="NG">+235</option>
-                                                    <option value="United">+236</option>
-                                                    <option value="+34">+237</option>
-                                                </select>
-                                            </span>
-										    <input type="text" class="form-control" placeholder="" name="phone" v-model='phone'>
+                                                <div class="input-group mb-3">
+                                                    <span class="col-lg-3">                                   
+                                                        <select class="default-select btn-color sel_style wide" name="country" v-model="country">
+                                                        <option v-for="i in codes" :value="i.country" :key="i.code">{{i.code}}</option>
+                                                    </select>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="" name="phone" v-model='phone' required>
+
                                         </div>
                                         
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" class="form-control" placeholder="hello@example.com" name="email" v-model="email">
+                                            <input type="email" class="form-control" placeholder="hello@example.com" name="email" v-model="email" required>
                                         </div>
                                        
                                         <div class="mb-3">
                                             <label class="mb-1" ><strong>Password</strong></label>
-                                            <input type="password" class="form-control"  v-model="password" name="password">
+                                            <input type="password" class="form-control"  v-model="password" name="password" required>
                                         </div>
                                       
                                         <div class="text-center mt-4">
-                                            <button  class="btn btn-primary btn-block">Sign me up</button>
+                                            <button  class="btn btn-primary btn-block" :disabled="loading">Sign me up</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
@@ -91,21 +89,30 @@ export default {
             email:'',
             password:'',
             phone:'',
-            country:'Nigeria',
+            codes: [{country: "NG", code:"+234"}, {country:"South Africa", code: "+235"}, {country:"Ghana", code: "+233"}],
+            country: 'NG',
             first_name:'',
             transport_types: null,
-            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK'],
-            errors: []
+            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK', 'BICYCLE'],
+            errors: [],
+            loading: false
         }
     },
     components: { Multiselect },
     methods: {
         register(e){
-            console.log(this.transport_types);
+            this.loading = true
+              var output =  this.codes.filter(code => {
+                return code.country == this.country
+              })
+            if (output[0].country === this.country){
+                this.countryCod = output[0].code
+            }
+            var phoneData = this.countryCod + this.phone 
             const formData = {
-                phone:this.phone,
+                phone: phoneData,
                 email:this.email,
-                password: this.email,
+                password: this.password,
                 name: this.company_name,
                 last_name: this.last_name,
                 first_name: this.first_name,
@@ -114,18 +121,31 @@ export default {
             }
             Api.axios_instance.post(Api.baseUrl+'/merchant/portal/register', formData)
             .then(response => {
-                console.log()
-                this.$router.push('/activate')
+                this.$toast.success({
+                        title:'Awesome!!!',
+                        message:'Account Created',
+                    })
+                    console.log(response.data);
+                this.$router.push('/')
                  })
             .catch(error =>{
-              console.log(error.response);  
                 if(error.response){
                         for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data[property]}`)
+                            this.errors.push(`${error.response.data[property]}`)
                         }
-                        console.log(error.response);
                     }
             })
+            .finally(() => {
+                this.loading = false
+            })
+        },
+        computed: {
+            countryCode(){
+                return this.codes.filter(code => {
+                    this.countryCode = code.country
+                    return code.country
+                })
+            }
         }
     }
 }
@@ -134,7 +154,8 @@ export default {
 <style scoped>
 .multiselect_tags {
     min-height: 55px !important;
-    background: #ff6600;
+    background: #ff6600 !important;    
+    margin-right: 20px !important;
 }
 .multiselect * {
     margin-right: 28px !important;
@@ -160,6 +181,9 @@ export default {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.multiselect__content-wrapper {
+    margin-right: 90% !important 
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

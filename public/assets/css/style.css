@@ -271,10 +271,12 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
   font-size: 0.875rem;
+  zoom: 78% !important;
   font-weight: 400;
   line-height: 1.5;
   color: #194039;
   background-color: #fbfbfb;
+  /* -moz-transform: scale(0.9); */
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
@@ -4335,7 +4337,7 @@ textarea.form-control-lg {
   .modal-backdrop.fade {
     opacity: 0; }
   .modal-backdrop.show {
-    opacity: 0.5; }
+    opacity: 0 !important; }
 
 .modal-header {
   display: flex;
@@ -43931,14 +43933,8 @@ $color_pallate_15: #ed0b4c; */
   /* color: #e3e3e3; */
   width: 100%;
   padding: 20px;
+  overflow: auto;
 }
-
-
-
-
-
-
-
 * {
     margin: 0;
     padding: 0

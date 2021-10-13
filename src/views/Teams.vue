@@ -9,34 +9,13 @@
 						<h2 class="font-w600 mb-0">Teams List</h2>
 						<p class="text-light">List of all team members </p>
 					</div>	
-					<div class="input-group search-area2 d-xl-inline-flex mb-2 me-4">
-						<button class="input-group-text"><i class="flaticon-381-search-2 text-primary"></i></button>
-						<input type="text" class="form-control" placeholder="Search here...">
-					</div>
-					<div class="dropdown custom-dropdown mb-2 period-btn">
-						<div class="btn btn-sm  d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" role="button">
-							<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M22.167 5.83362H21.0003V3.50028C21.0003 3.19087 20.8774 2.89412 20.6586 2.67533C20.4398 2.45653 20.143 2.33362 19.8336 2.33362C19.5242 2.33362 19.2275 2.45653 19.0087 2.67533C18.7899 2.89412 18.667 3.19087 18.667 3.50028V5.83362H9.33362V3.50028C9.33362 3.19087 9.2107 2.89412 8.99191 2.67533C8.77312 2.45653 8.47637 2.33362 8.16695 2.33362C7.85753 2.33362 7.56079 2.45653 7.34199 2.67533C7.1232 2.89412 7.00028 3.19087 7.00028 3.50028V5.83362H5.83362C4.90536 5.83362 4.01512 6.20237 3.35874 6.85874C2.70237 7.51512 2.33362 8.40536 2.33362 9.33362V10.5003H25.667V9.33362C25.667 8.40536 25.2982 7.51512 24.6418 6.85874C23.9854 6.20237 23.0952 5.83362 22.167 5.83362Z" fill="#0E8A74"/>
-								<path d="M2.33362 22.1669C2.33362 23.0952 2.70237 23.9854 3.35874 24.6418C4.01512 25.2982 4.90536 25.6669 5.83362 25.6669H22.167C23.0952 25.6669 23.9854 25.2982 24.6418 24.6418C25.2982 23.9854 25.667 23.0952 25.667 22.1669V12.8336H2.33362V22.1669Z" fill="#0E8A74"/>
-							</svg>
-							<div class="text-left ms-3">
-								<span class="d-block text-black text-start">Change Periode</span>
-								<small class="d-block text-light">August 28th - October 28th, 2021</small>
-							</div>
-							<i class="fa fa-caret-down text-light scale5 ms-3"></i>
-						</div>
-						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="#">October 29th - November 29th, 2021</a>
-							<a class="dropdown-item" href="#">July 27th - Auguts 27th, 2021</a>
-						</div>
-					</div>
 				</div>
 				<div class="row mb-4 align-items-center">
 					<div class="col-xl-3 col-lg-4 mb-4 mb-lg-0">
 						<a href="javascript:void(0);" class="btn btn-secondary  btn-lg btn-block rounded text-white" data-bs-toggle="modal" data-bs-target="#addNewRider">+New Team</a>
 						<!-- Add Order -->
-						<div class="modal fade" id="addNewRider">
-							<div class="modal-dialog" role="document">
+						<div class="modal" id="addNewRider" >
+							<div class="modal-dialog" role="document" >
 								<div class="modal-content">
 									<div class="modal-header">
 										<h5 class="modal-title">Create New Team</h5>
@@ -51,11 +30,11 @@
 										<form>
 											<div class="mb-3">
 												<label class="text-black font-w500">First Name</label>
-												<input type="text" class="form-control" v-model="first_name" placeholder="First Name">
+												<input type="text" class="form-control" v-model="first_name" placeholder="First Name" required>
 											</div>
 											<div class="mb-3">
 												<label class="text-black font-w500">Last Name</label>
-												<input type="text" class="form-control" v-model="last_name">
+												<input type="text" class="form-control" v-model="last_name" required>
 											</div>
 												<label class="text-black font-w500">Phone Number</label>
                                                  
@@ -67,7 +46,7 @@
                                                     <option value="+34">+237</option>
                                                 </select>
                                             </span>
-										    <input type="text" class="form-control" placeholder="XXXX XXXXX XXXX" name="phone" v-model='phone' >
+										    <input type="text" class="form-control" placeholder="XXXX XXXXX XXXX" name="phone" v-model='phone' required>
                                         </div>
 											<div class="mb-3">
 												<label class="text-black font-w500">Email</label>
@@ -85,7 +64,7 @@
                                             </div>
 											<div class="mb-3">
 												<label class="text-black font-w500">Password</label>
-												<input type="text" class="form-control" v-model="password" >
+												<input type="text" class="form-control" v-model="password" required>
 											</div>
 											<div class="form-group">
 												<button type="button" class="btn btn-primary" @click="createTeam">Create</button>
@@ -118,9 +97,9 @@
 										</div>
 									</div>
 									<div>
-										<a href="javascript:void(0);" class="btn btn-outline-primary rounded"><i class="fa fa-check-square me-2 scale4" aria-hidden="true"></i>Active</a>
-										<a href="javascript:void(0);" class="btn btn-outline-warning rounded ms-2">Edit</a>
-										<a href="javascript:void(0);" class="btn btn-danger rounded ms-2">Delete</a>
+										<!-- <a href="javascript:void(0);" class="btn btn-outline-primary rounded"><i class="fa fa-check-square me-2 scale4" aria-hidden="true"></i>Active</a> -->
+										<!-- <a href="javascript:void(0);" class="btn btn-outline-warning rounded ms-2">Edit</a>
+										<a href="javascript:void(0);" class="btn btn-danger rounded ms-2">Delete</a> -->
 									</div>
 								</div>							
 							</div>
@@ -179,36 +158,36 @@
 												</a>
 
 												<div class="modal fade" id="changePermission">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<a href="javascript:void(0);" class="btn-close" data-bs-dismiss="modal"></a>
-									</div>
-									<div class="modal-body profile">
-											<div class="text-center">
-												<img src="../statics/avatar.png" class="img-fluid rounded-circle" alt="">
-											</div>
-											<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-                                            </button>
-                                            <span v-for="error in errors" :key="error"><strong>{{error}}</strong></span>
-                                        </div>
-											<div class="col-auto my-3">
-												<select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="permission">
-                                                    <option value="1">Business Owner</option>
-                                                    <option value="2">Admin</option>
-                                                    <option value="3">Staff</option>
-													<option value="4">Customer Support</option>
-                                                </select>
-											</div>
-											<div class="form-group text-center">
-												<button type="button" class="btn btn-primary" @click="changePermission(team.user.email)">Change Permission</button>
-											</div
-											>
-									</div>
-								</div>
-							</div>
-						</div>
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<a href="javascript:void(0);" class="btn-close" data-bs-dismiss="modal"></a>
+															</div>
+															<div class="modal-body profile">
+																	<div class="text-center">
+																		<img src="../statics/avatar.png" class="img-fluid rounded-circle" alt="">
+																	</div>
+																	<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+																	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+																	</button>
+																	<span v-for="error in errors" :key="error"><strong>{{error}}</strong></span>
+																</div>
+																	<div class="col-auto my-3">
+																		<select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="permission">
+																			<option value="1">Business Owner</option>
+																			<option value="2">Admin</option>
+																			<option value="3">Staff</option>
+																			<option value="4">Customer Support</option>
+																		</select>
+																	</div>
+																	<div class="form-group text-center">
+																		<button type="button" class="btn btn-primary" @click="changePermission(team.user.email)">Change Permission</button>
+																	</div
+																	>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</td>
 									</tr>
@@ -251,21 +230,16 @@ import Api from "./Api"
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/get/', {merchant_id: merchant})
                 .then(response => {
 					this.teams = response.data
-					console.log(response.data);
 				})
-				.catch(err => console.log(err.response))
 			},
 			createTeam(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
-				console.log(merchant_token);
-				console.log();
 				const formData = {
 					first_name:this.first_name, last_name: this.last_name, phone: this.phone, country: this.country, password:this.password,
 					email_address: this.email_address, merchant_id: merchant_token, permission: this.permission
 				}
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/user/register', formData) 
 				.then(response => {
-					console.log(response.data);
 					this.$toast.success({
                         title:'Awesome!!!',
                         message:'Staff Account Created',
@@ -273,12 +247,10 @@ import Api from "./Api"
 					$('#addNewRider').modal('hide')
 				})
 				.catch(error => {
-					console.log(error.response);
-					  if(error.response){
+					if(error.response){
                         for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data}`)
+                            this.errors.push(`${property}:${error.response.data[property]}`)
                         }
-                        console.log(error.response);
                     }
 				})
 			},
@@ -290,7 +262,6 @@ import Api from "./Api"
 				}	
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/update/permission', formData)
 				.then(response => {
-					console.log(response.data)
 						this.$toast.success({
                         title:'Awesome!!!',
                         message:'Staff Account Updated',
@@ -298,12 +269,10 @@ import Api from "./Api"
 					$('#changePermission').modal('hide')
 				})
 				.catch(error => {
-					console.log(error.response)
-						if(error.response){
+					if(error.response){
 					for(const property in error.response.data){
-						this.errors.push(`${property}:${error.response.data}`)
+						this.errors.push(`${property}:${error.response.data.detail}`)
 					}
-					console.log(error.response);
 				}
 				})
 			}
@@ -331,4 +300,8 @@ import Api from "./Api"
 		background-color: #ff6600 !important;
 		border-color: #ff6600;
 	}
+.modal { 
+   background-color: rgba(0, 0, 0, 0.5)
+}
+
 </style>

@@ -13,7 +13,7 @@
                 </div>
                 <!-- row -->
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="profile card card-body px-3 pt-3 pb-0">
                             <div class="profile-head">
                                
@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     
-                    <div class="col-xl-8">
+                    <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="profile-tab">
@@ -60,43 +60,50 @@
                                                 <div class="pt-3">
                                                     <div class="settings-form">
                                                             <div class="row">
+                                                                  <div class="mb-3 col-md-6">
+                                                                    <label class="form-label">Name</label>
+                                                                    <input type="text" placeholder="Name" class="form-control" v-model="name">
+                                                                </div>
                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Email</label>
                                                                     <input type="email" placeholder="Email" class="form-control" v-model="email">
                                                                 </div>
-                                                                <div class="mb-3 col-md-6">
+                                                               
+                                                            </div>
+                                                              <div class="row mb-3" style="margin-top:15px">
+                                                                   <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Mobile Number</label>
                                                                     <input type="number" placeholder="Phone number" class="form-control" v-model="phone">
                                                                 </div>
-                                                            </div>
-                                                              <div class="row mb-3" style="margin-top:15px">
                                                                 <div class="col-lg-6 ">  
                                                                     <label class="form-label">Upload Company Logo</label>
                                                                      <div class="input-group mb-3 ">
                                                                     <span class="input-group-text">Upload</span>
                                                                     <div class="form-file">
-                                                                        <input type="file" class="form-file-input form-control" ref="image" v-on:change="handleFileUpload()">
+                                                                        <input type="file" id="file" ref="file" class="form-file-input form-control" v-on:change="handleFileUpload()">
                                                                     </div>
                                                                 </div>
                                                                 </div>
-                                                                <div class="col-lg-6">
-                                                                    <label class="form-label">Office Address</label>
-                                                                    <GmapAutocomplete placeholder="Input office address" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
-                                                                </div>
+                                                               
                                                             </div>
                                                            
                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                    <label class="form-label">Office Address</label>
+                                                                    <GmapAutocomplete placeholder="Input office address" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
+                                                                </div>
                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">State</label>
                                                                     <input type="text" class="form-control" v-model="state">
                                                                 </div>
-                                                                <div class="mb-3 col-md-6">
+                                                               
+                                                            </div>
+                                                            <div class="row col-mb-3">
+                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Website</label>
                                                                     <input type="text" class="form-control" v-model="website">
                                                                 </div>
-                                                            </div>
-                                                            <div class="row col-mb-3">
-                                                                <div class="col-lg-12">
+                                                                <div class="col-lg-6">
                                                                      <label class="form-label">About the Company</label>  
                                                                     <textarea class="form-control" placeholder="Type your message..." v-model="description"></textarea>
                                                                 </div>
@@ -135,48 +142,52 @@ import Api from './Api'
                 state:'',
                 logo:'',
                 rc_number: '',
-                logo: '',
                 pending_wallet_balance: '',
                 wallet_balance: '',
                 latitude: '',
                 longitude: '', 
                 description: '',
-                errors: []  
+                errors: []  ,
+                file:''
 			}
 		},
         methods: {
+             handleFileUpload(){
+                this.file = this.$refs.file.files[0];
+            },
             update_profile(){
-                const formData = {
-                address: this.address,
-                state: this.state, 
-                email: this.email,
-                merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
-                description: this.description,
-                latitude: this.latitude,
-                longitude: this.longitude,
-                website: this.website
-
-                }
+                const merchant = JSON.parse(localStorage.getItem('merchant_id'))
+                const formData = new FormData()
+                formData.append('address', this.address)
+                formData.append('name', this.name)
+                formData.append('state', this.state)
+                formData.append('address', this.email)
+                formData.append('merchant_id', merchant)
+                formData.append('description', this.description)
+                formData.append('latitude', this.latitude)
+                formData.append('longitude', this.longitude)
+                formData.append('website', this.website)
+                formData.append('logo', this.file)
+                console.log(formData.get('merchant_id'))
+                console.log(formData.get('website'))
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
                 .then(response => {
                     this.$toast.success({
                         title:'Success',
                         message:'Profile Updated',
                     })
-                  
-                 console.log(response.data);
+                    get_users_details()
                 })
                 .catch(error =>{
-                    console.log(error.response)
                     if(error.response){
                         for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data[property]}`)
+                            this.errors.push(`${property}:${error.response.data.detail}`)
                         }
-                        console.log(error.response);
                     }
                    
                 })
             },
+           
             get_users_details(){
                 const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
@@ -192,7 +203,6 @@ import Api from './Api'
                     this.description = response.data.description
                 })
                 .catch(error =>{
-                    console.log(error.response)
                 })
             },
             setAddress(place){

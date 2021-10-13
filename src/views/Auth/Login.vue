@@ -23,11 +23,19 @@
                                     <form @submit.prevent="submitForm">
                                           <div class="mb-3">
                                             <label class="mb-1"><strong>Mobile Number</strong></label>
-                                            <input type="number" class="form-control" name="phone" v-model="phone">
+                                             <div class="input-group mb-3">
+                                                 <span class="col-lg-3">                                   
+                                                    <select class="default-select btn-color sel_style wide" name="country" v-model="country" required>
+                                                    <option v-for="i in codes" :value="i.country" :key="i.code">{{i.code}}</option>
+                                                 </select>
+                                            </span>
+										    <input type="text" class="form-control" placeholder="" name="phone" v-model='phone' required>
+
+                                        </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" name="password" v-model="password">
+                                            <input type="password" class="form-control" name="password" v-model="password" required>
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
                                             <div class="mb-3">
@@ -41,7 +49,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                           <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                           <button type="submit" class="btn btn-primary btn-block" :disabled="loading">Sign Me In</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
@@ -66,12 +74,25 @@ import Api from "../Api.js"
             return{
                 password: '',
                 phone: '',
-                errors: []
+                country: 'NG',
+                errors: [],
+                phoneData :'',
+                loading: false,
+                countryCod : '',
+                codes: [{country: "NG", code:"+234"}, {country:"South Africa", code: "+235"}, {country:"Ghana", code: "+233"}],
             }
         },
         methods: {
             submitForm(e){
-                const formData= {password: this.password, email: this.phone}
+                this.loading = true
+                     var output =  this.codes.filter(code => {
+                return code.country == this.country
+              })
+            if (output[0].country === this.country){
+                this.countryCod = output[0].code
+            }
+            this.phoneData = this.countryCod + this.phone
+                const formData = {password: this.password, email: this.phoneData}
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/login', formData)
                 .then(response => {
                     console.log(response.data)
@@ -84,18 +105,18 @@ import Api from "../Api.js"
                     window.localStorage.setItem('pending_wallet_balance', JSON.stringify(response.data.merchants[0].merchant.pending_wallet_balance))
                     window.localStorage.setItem('isAuthenticated', true)
                     this.$router.push('/dashboard')
-                    window.location.href='/dashboard'
-                    // this.$store.commit('set_user_details', data)
                 })
                 .catch(error =>{
                     if(error.response){
                         for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data[property]}`)
+                            this.errors.push(`${error.response.data[property]}`)
                         }
-                        console.log(error.response);
                     }
                 })
-            }
+                .finally(() => {
+                    this.loading = false
+                })
+              }
         }
     }) 
 </script>
@@ -108,5 +129,22 @@ import Api from "../Api.js"
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.sel_style{
+     height: 55px;
+     width: 100%;
+     margin-right:-1%;
+     border-radius: 20px 0px 0px 20px;
+     padding-top:7px;
+     font-weight:400;
+     border-color: transparent;
+    padding: 5px;
+}
+.btn-color{
+    background-color: rgb(241 235 235 / 70%);   
+}
+@media only screen and (max-width: 1400px)
+.form-control {
+    height: auto !important;
 }
 </style>

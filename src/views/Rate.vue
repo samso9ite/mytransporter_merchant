@@ -23,7 +23,7 @@
 											<div>
 												<p class="text-primary fs-14 mb-0">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.856 10.303c.086.554.144 1.118.144 1.697 0 6.075-4.925 11-11 11s-11-4.925-11-11 4.925-11 11-11c2.347 0 4.518.741 6.304 1.993l-1.422 1.457c-1.408-.913-3.082-1.45-4.882-1.45-4.962 0-9 4.038-9 9s4.038 9 9 9c4.894 0 8.879-3.928 8.99-8.795l1.866-1.902zm-.952-8.136l-9.404 9.639-3.843-3.614-3.095 3.098 6.938 6.71 12.5-12.737-3.096-3.096z" fill="#ff6600" v-if="type.is_active === true"/> <path d="M21.856 10.303c.086.554.144 1.118.144 1.697 0 6.075-4.925 11-11 11s-11-4.925-11-11 4.925-11 11-11c2.347 0 4.518.741 6.304 1.993l-1.422 1.457c-1.408-.913-3.082-1.45-4.882-1.45-4.962 0-9 4.038-9 9s4.038 9 9 9c4.894 0 8.879-3.928 8.99-8.795l1.866-1.902zm-.952-8.136l-9.404 9.639-3.843-3.614-3.095 3.098 6.938 6.71 12.5-12.737-3.096-3.096z" fill="#ff6600" v-if="type.is_active === false"/></svg>
-													 <strong> {{type.rate}}</strong>
+													 <strong> ₦{{type.rate}}</strong>
 													<span class="op-6 text-light"> Per Kilometre</span>
 												</p>
 											</div>
@@ -41,143 +41,13 @@
 									</div>
 								</div>
 							</div>
-							 <!-- <div class="col-xl-4 col-xxl-6 col-sm-6 ">
-								<div class="card">
-									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
-										<div class="me-3">
-											 <img src="../statics/bicycle.svg" width="80" />
-											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
-											</div>
-											<div>
-												<p class="text-primary fs-14 mb-0">
-													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
-														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
-													</svg>
-													2.4%
-													<span class="op-6 text-light">Per Kilometre</span>
-												</p>
-											</div>
-										</div>
-										<div>
-											<div class="d-inline-block position-relative donut-chart-sale">
-												<small class="text-black" style="padding-right:4px">Bicycle </small>
-											</div>
-										</div>	
-									</div>
-								</div>
-							</div>
-							 <div class="col-xl-4 col-xxl-6 col-sm-6 ">
-								<div class="card">
-									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
-										<div class="me-3">
-											 <img src="../statics/shipped.svg" width="80" />
-											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
-											</div>
-											<div>
-												<p class="text-primary fs-14 mb-0">
-													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
-														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
-													</svg>
-													2.4%
-													<span class="op-6 text-light">Per Kilometre</span>
-												</p>
-											</div>
-										</div>
-										<div>
-											<div class="d-inline-block position-relative donut-chart-sale">
-												<small class="text-black">Van </small>
-											</div>
-										</div>	
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-4 col-xxl-6 col-sm-6 ">
-								<div class="card">
-									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
-										<div class="me-3">
-											 <img src="../statics/drone.svg" width="80" />
-											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
-											</div>
-											<div>
-												<p class="text-primary fs-14 mb-0">
-													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
-														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
-													</svg>
-													2.4%
-													<span class="op-6 text-light">Per Kilometre</span>
-												</p>
-											</div>
-										</div>
-										<div>
-											<div class="d-inline-block position-relative donut-chart-sale">
-												<small class="text-black">Drone</small>
-											</div>
-										</div>	
-									</div>
-								</div>
-							</div>
-                            <div class="col-xl-4 col-xxl-6 col-sm-6 ">
-								<div class="card">
-									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
-										<div class="me-3">
-											 <img src="../statics/record.svg" width="80" />
-											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
-											</div>
-											<div>
-												<p class="text-primary fs-14 mb-0">
-													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
-														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
-													</svg>
-													2.4%
-													<span class="op-6 text-light">Per Kilometre</span>
-												</p>
-											</div>
-										</div>
-										<div>
-											<div class="d-inline-block position-relative donut-chart-sale">
-												<small class="text-black">Truck </small>
-											</div>
-										</div>	
-									</div>
-								</div>
-							</div>
-                              <div class="col-xl-4 col-xxl-6 col-sm-6 ">
-								<div class="card">
-									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
-										<div class="me-3">
-											 <img src="../statics/record.svg" width="80" />
-											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Delivery Rate</h5>
-											</div>
-											<div>
-												<p class="text-primary fs-14 mb-0">
-													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
-														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
-													</svg>
-													2.4%
-													<span class="op-6 text-light">Per Kilometre</span>
-												</p>
-											</div>
-										</div>
-										<div>
-											<div class="d-inline-block position-relative donut-chart-sale">
-												<small class="text-black">Truck </small>
-											</div>
-										</div>	
-									</div>
-								</div>
-							</div> -->
 						</div>
 					</div>
                      <div class="col-xl-4">
                           <div class="card card-body px-3 pt-3 pb-0">
                                <div class="custom-tab-1">
                                         <ul class="nav nav-tabs">
-                                            <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link active show">Rate Settings</a>
+                                            <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link active show">Set Rate</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -186,17 +56,10 @@
                                                     <div class="settings-form">
                                                         <form @submit.prevent="update_profile">
                                                             <div class="row col-mb-3">
-                                                                <div class="row"  style="margin-top:1em">
-                                                                    <div class="col-lg-3">
-                                                                    <h5 style="margin-top:1em"> Set Rate:</h5>
-                                                                    </div> 
-                                                                    <div class="col-lg-9">
-                                                                        <input type="number" class="form-control" id="email" placeholder="100" v-model="rate">
-                                                                    </div>
-                                                                </div>
+                                                           
                                                                 <div class="row" style="margin-top:2em">
                                                                     <div class="col-lg-3">
-                                                                    <h5 style="margin-top:1em"> Set Rate:</h5>
+                                                                    <h5 style="margin-top:1em"> Transport Type:</h5>
                                                                     </div> 
                                                                     <div class="col-lg-9">
                                                                         <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="transport_type">
@@ -206,6 +69,14 @@
                                                                             <option value="TRUCK">Truck</option>
                                                                             <option value="DRONE"> Drone </option>
                                                                         </select>
+                                                                    </div>
+                                                                </div>
+                                                                     <div class="row"  style="margin-top:1em">
+                                                                    <div class="col-lg-3">
+                                                                    <h5 style="margin-top:1em"> Amount:</h5>
+                                                                    </div> 
+                                                                    <div class="col-lg-9">
+                                                                        <input type="number" class="form-control" id="email" placeholder="100" v-model="rate" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row " style="margin-top:2em; ">
@@ -241,7 +112,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import SideBar from '../components/SideBar.vue'
 import Api from './Api'
@@ -266,11 +136,9 @@ import Api from './Api'
                 }
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/rate/update', formData)
                 .then(response => {
-                    console.log(response.data);
-					this.getRates()
+                   this.getRates()
                 })
                 .catch(err => {
-                    console.log(err.response);
                 })
             },
             getRates(){
@@ -280,10 +148,8 @@ import Api from './Api'
                     console.log(response.data);
                     this.types = response.data
 					this.$store.commit('getRates', {all_rate:response.data})
-					console.log(this.$store.state.all_rate);
-                })
+			    })
                 .catch(err => {
-                    console.log(err.response);
                 })
             }
         },
@@ -298,3 +164,8 @@ import Api from './Api'
 
     })
 </script>
+<style scoped>
+	.donut-chart-sale small, .donut-chart-sale .small {
+		position: relative !important;
+	}
+</style>

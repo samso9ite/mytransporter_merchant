@@ -60,6 +60,12 @@ const routes = [
     component: () => import("../views/Orders.vue"),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import("../views/Notifications.vue"),
+    meta: {requiresAuth: true}
+  }
 
 ]
 
@@ -83,7 +89,7 @@ router.beforeEach((to, from, next) => {
     next() 
   }
 
-  if(to.name === 'Login' || to.name ==='Register' && window.localStorage.getItem('isAuthenticated') === 'true') next({name: 'Dashboard'})
+  if((to.name === 'Login' || to.name ==='Register') && window.localStorage.getItem('isAuthenticated') === 'true') next({name: 'Dashboard'})
   else next()
 })
 

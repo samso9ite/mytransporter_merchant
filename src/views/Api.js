@@ -33,6 +33,11 @@ axios_instance.interceptors.request.use(config => {
 axios_instance.interceptors.response.use(response => {
   NProgress.done()
   return response
+},
+function (error) {  
+  NProgress.done()
+  // console.log(error.response)
+  return Promise.reject(error);  
 })
 export default {
   axios_instance,
