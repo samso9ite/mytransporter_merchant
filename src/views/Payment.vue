@@ -104,7 +104,7 @@
 									</div>
 									<h3 class="mt-4 mb-1">Wallet</h3>
 									<!-- <p class="text-muted">Senior Manager</p> -->
-									<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Withdraw</a>
+									<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Withdraw</a> 	<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#fundWallet">Top Up</a>
 									<div class="modal fade modal fade bd-example-modal-lg" id="exampleModalCenter">
 										<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
 											<div class="modal-content">
@@ -119,7 +119,7 @@
 														</button>
 														<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
 													</div>
-												<div class="basic-form">
+												<div class="basic-form" v-if="all_account">
 												<div class="col-lg-12">
 													<div class="table-responsive" >
 														<table class="table header-border  verticle-middle" > 
@@ -149,12 +149,44 @@
 												</div>
 												<br>
 											</div>
-														
+												<h3 v-else> Please Add a Bank Account </h3>		
 												</div>
 												
 											</div>
 										</div>
 									</div>
+
+									<div class="modal fade modal fade bd-example-modal-lg" id="fundWallet"> 
+										<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title"><b>Input Amount</b></h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal">
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+														<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+														</button>
+														<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+													</div>
+												<div class="basic-form">
+												
+												<div class="row">
+													<div class="mb-2 col-lg-8" >
+														<label class="sr-only">Amount</label>
+														<input type="text" class="form-control" placeholder="Amount" name="amount" v-model="amount">
+													</div>
+													<div class="col-lg-4">
+														<button  class="btn btn-primary mb-2 btn-bg" @click="payWithPaystack" :disabled="loading">Top Up Wallet </button>
+													</div>
+												</div>
+												<br>
+											</div>
+												</div>
+											</div>
+										</div>
+									</div> 
 									
 								</div>
 							</div>
@@ -343,13 +375,86 @@ import Api from './Api'
 				accnt: '',
 				loading: false,
 				errors: [],
-				accnt_num: ''
+				accnt_num: '',
+				scriptLoaded: null,
+				url: '',
 			}
 		},
+		created() {
+			this.scriptLoaded = new Promise(resolve => {
+				this.loadScript(() => {
+					resolve();
+				});
+			});
+		},
 		methods: {
+				loadScript(callback) {
+            const script = document.createElement("script");
+            script.src = "https://js.paystack.co/v1/inline.js";
+            document.getElementsByTagName("head")[0].appendChild(script);
+            if (script.readyState) {
+                // IE
+                script.onreadystatechange = () => {
+                    if (
+                        script.readyState === "loaded" ||
+           	 			script.readyState === "complete"
+                    ) {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                // Others
+                script.onload = () => {
+                    callback();
+                };
+            }
+        },
+        isDynamicSplit() {
+            return this.split.constructor === Object && Object.keys(this.split).length > 0;
+        },
+	    payWithPaystack() {
+			this.scriptLoaded &&
+        	this.scriptLoaded.then(() => {
+            const paystackOptions = {
+                key: 'pk_live_d5c3223d4a02d4f2467144d2009ea4c8bc94e2b9',
+				email: JSON.parse(window.localStorage.getItem('email')),
+                firstname: JSON.parse(window.localStorage.getItem('name)')),
+                lastname: JSON.parse(window.localStorage.getItem('name')),
+				amount: this.amount,
+                ref: Math.random().toString(36),
+				callback: response => {
+					const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+					const data = {token:response.reference, amount:this.amount, merchant_id:merchant_token}
+					Api.axios_instance.post(Api.baseUrl+'/payment/wallet/fund/paystack', data)
+					.then(response => {
+						$('#fundWallet').modal('hide')
+						this.wallet_balance()
+						this.$toast.success({
+							title:'Awesome!!!',
+							message:'Topup Successful',
+						})
+					})
+					.catch(err => {
+						console.log(err.response)
+					})
+                  
+                },
+                onClose: () => {
+                    this.close();
+                },
+            };
+            if (this.embed) {
+                paystackOptions.container = "paystackEmbedContainer";
+            }
+            const handler = window.PaystackPop.setup(paystackOptions);
+            if (!this.embed) {
+                handler.openIframe();
+            }
+        });
+        },
 			select_account(accnt){
 				this.id = accnt
-				console.log(this.id);
 			},
 			getPaymentHistory(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
@@ -364,8 +469,7 @@ import Api from './Api'
 				.catch(err => {
 					console.log(err.response)
 				})
-
-					Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id:merchant_token})
+				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id:merchant_token})
 				.then((res => {
 					const data = {
 						pending_wallet_balance: res.data.pending_wallet_balance,

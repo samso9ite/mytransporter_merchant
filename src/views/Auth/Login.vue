@@ -15,11 +15,11 @@
 										<a href="index.html"><img src="../../statics/fav.png" alt=""></a>
 									</div>
                                     <h4 class="text-center mb-4">Sign in your account</h4>
-                                     <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                    <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
                                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
-                                        </div>
+                                    </div>
                                     <form @submit.prevent="submitForm">
                                           <div class="mb-3">
                                             <label class="mb-1"><strong>Mobile Number</strong></label>
@@ -35,15 +35,17 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" name="password" v-model="password" required>
+                                            <input type="password" class="form-control" name="password" v-model="password" id="PasswordShow" required>
+                                              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="color:#929496" @click="passwordToggle()" ></span>
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
-                                            <div class="mb-3">
+                                            <!-- <div class="mb-3">
                                                <div class="form-check custom-checkbox ms-1">
-													<input type="checkbox" class="form-check-input" id="basic_checkbox_1">
-													<label class="form-check-label" for="basic_checkbox_1">Remember my preference</label>
+													<input type="checkbox" class="form-check-input" id="basic_checkbox_1" >
+                                                   
+													<label class="form-check-label" for="basic_checkbox_1" @click="passwordToggle()">Show Password</label>
 												</div>
-                                            </div>
+                                            </div> -->
                                             <div class="mb-3">
                                                <router-link :to="'/forgot-pwd'"> Forgot Password? </router-link>
                                             </div>
@@ -98,15 +100,26 @@ import Api from "../Api.js"
                     console.log(response.data)
                     window.localStorage.setItem('token', JSON.stringify(response.data.token))
                     window.localStorage.setItem('merchant_id', JSON.stringify(response.data.merchants[0].merchant.merchant_id))
-                    window.localStorage.setItem('email', JSON.stringify(response.data.merchants[0].merchant.email))
-                    window.localStorage.setItem('logo', JSON.stringify(response.data.merchants[0].merchant.logo))
-                    window.localStorage.setItem('name', JSON.stringify(response.data.merchants[0].merchant.name))
-                    window.localStorage.setItem('wallet_balance', JSON.stringify(response.data.merchants[0].merchant.wallet_balance))
-                    window.localStorage.setItem('pending_wallet_balance', JSON.stringify(response.data.merchants[0].merchant.pending_wallet_balance))
                     window.localStorage.setItem('isAuthenticated', true)
-                    this.$router.push('/dashboard')
+                    const data = {
+                        logo: response.data.merchants[0].merchant.logo,
+                        username : response.data.merchants[0].merchant.name,
+                        email: response.data.merchants[0].merchant.email,
+                        // wallet_balance:  response.data.merchants[0].merchant.wallet_balance,
+                        // pending_wallet_balance : response.data.merchants[0].merchant.pending_wallet_balance
+                    }
+                    console.log(data);
+                    this.$store.commit('profileDetails', data)
+                    console.log(this.$store.state.user);
+                    if(response.data.merchants[0].merchant.is_verified){
+                        this.$router.push('/dashboard')
+                    }
+                    else if (response.data.merchants[0].merchant.is_verified == false){
+                        this.$router.push('/headsup')
+                    }
                 })
                 .catch(error =>{
+                    console.log(error)
                     if(error.response){
                         for(const property in error.response.data){
                             this.errors.push(`${error.response.data[property]}`)
@@ -116,7 +129,15 @@ import Api from "../Api.js"
                 .finally(() => {
                     this.loading = false
                 })
-              }
+              },
+            passwordToggle(){
+                var x = document.getElementById("PasswordShow");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
+            }
         }
     }) 
 </script>
@@ -146,5 +167,13 @@ import Api from "../Api.js"
 @media only screen and (max-width: 1400px)
 .form-control {
     height: auto !important;
+}
+
+.field-icon {
+  float: right;
+  /* margin-left: -20px; */
+  margin-top: -2.3em;
+  position: relative;
+  z-index: 2;
 }
 </style>

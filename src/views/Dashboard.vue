@@ -10,6 +10,8 @@
 						<p class="text-light">Hello! How are you doing today!</p>
 					</div>	
 					<div class="input-group search-area2 d-xl-inline-flex mb-2 me-4">
+						<!-- <router-link :to="'/rate'">	<button  class="btn btn-primary mb-2 btn-bg" style="margin-right:10px" >Set Transport Rate </button></router-link>
+					<router-link :to="'/profile'">	<button  class="btn btn-primary mb-2 btn-bg" >Set Profile </button></router-link> -->
 						<button class="input-group-text"><i class="flaticon-381-search-2 text-primary"></i></button>
 						<input type="text" class="form-control" placeholder="Search here...">
 					</div>
@@ -25,10 +27,10 @@
 							</div>
 							<i class="fa fa-caret-down text-light scale5 ms-3"></i>
 						</div>
-						<!-- <div class="dropdown-menu dropdown-menu-end">
+						<div class="dropdown-menu dropdown-menu-end">
 							<a class="dropdown-item" href="javascript:void(0);">October 29th - November 29th, 2021</a>
 							<a class="dropdown-item" href="javascript:void(0);">July 27th - Auguts 27th, 2021</a>
-						</div> -->
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -94,27 +96,27 @@
 									<div class="card-body pt-sm-4 pt-3 d-flex align-items-center justify-content-between">
 										<div class="me-3">
 											<div class="d-flex align-items-center">
-												<h2 class="chart-num font-w600 mb-0">45242</h2>
+												<h2 class="chart-num font-w600 mb-0">{{pending_orders.length}}</h2>
 											</div>
 											<div>
-												<h5 class="text-black font-w500 mb-3 mt-2">Event Held</h5>
+												<h5 class="text-black font-w500 mb-3 mt-2">Pending Orders</h5>
 											</div>
 											<div>
 												<p class="text-primary fs-14 mb-0">
 													<svg class="me-2 primary-icon" width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns=	"http://www.w3.org/2000/svg">
 														<path d="M2.00401 11.1924C0.222201 11.1924 -0.670134 9.0381 0.589795 7.77817L7.78218 0.585786C8.56323 -0.195262 9.82956 -0.195262 10.6106 0.585786L17.803 7.77817C19.0629 9.0381 18.1706 11.1924 16.3888 11.1924H2.00401Z" fill="#ff6600"/>
 													</svg>
-													2.4%
-													<span class="op-6 text-light">than Last Week</span>
+													View All Orders
+													<!-- <span class="op-6 text-light">than Last Week</span> -->
 												</p>
 											</div>
 										</div>
-										<div>
+										<!-- <div>
 											<div class="d-inline-block position-relative donut-chart-sale">
 												<span class="donut1" data-peity='{ "fill": ["rgb(14, 138, 116,1)", "rgba(240, 240, 240)"],   "innerRadius": 35, "radius": 10}'>5/8</span>
 												<small class="text-black">66%</small>
 											</div>
-										</div>	
+										</div>	 -->
 									</div>
 								</div>
 							</div>
@@ -249,10 +251,7 @@
 												</div>
 											</div>
 											</div>
-
 										</div>
-
-										
 									</div>
 								</div> 
 							</div>
@@ -261,8 +260,8 @@
 									<div class="card-body">
 										<div class="d-sm-flex d-block pb-sm-3 align-items-end mb-2">
 											<div class="me-auto pe-3 mb-3 mb-sm-0">
-												<span class="chart-num-3 font-w200 d-block mb-sm-3 mb-2 text-white">Deliveries Made Today</span>
-												<h2 class="chart-num-2 text-white mb-0">456,502<span class="fs-18 me-2 ms-3">pcs</span></h2>
+												<span class="chart-num-3 font-w200 d-block mb-sm-3 mb-2 text-white">Deliveries Made</span>
+												<h2 class="chart-num-2 text-white mb-0">{{completed_orders}}<span class="fs-18 me-2 ms-3">Successful</span></h2>
 											</div>
 											<div class="d-flex flex-wrap mb-3 mb-sm-0">
 												<svg width="87" height="58" viewBox="0 0 87 58" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -283,7 +282,7 @@
 										</div>
 										<div class="progress style-1" style="height:15px;">
 											<div class="progress-bar bg-white progress-animated" style="width: 55%; height:15px;" role="progressbar">
-												<span class="sr-only">55% Complete</span>
+												<span class="sr-only">10% Complete</span>
 												<span class="bg-white arrow"></span>
 												<span class="font-w600 counter-bx text-black"><strong class="counter font-w400">985pcs Left</strong></span>
 											</div>
@@ -366,7 +365,6 @@
 																<div class="dropdown-menu dropdown-menu-end">
 																	<a class="dropdown-item" @click="approveOrder(order.reference)">Approve Order</a>
 																	<a class="dropdown-item" @click="rejectOrder(order.reference)">Reject Order</a>
-																	<!-- <a class="dropdown-item" href="#">Option 3</a> -->
 																</div>
 															</span>
 															<div class="fs-12 text-primary">Action</div>
@@ -432,6 +430,8 @@
 						
 					</div>
 
+				
+
 				</div>
             </div>
 			
@@ -455,12 +455,13 @@ export default ({
 			orders : [],
 			all_orders: '',
 			earnings: '',
-			wallet_balance: JSON.parse(localStorage.getItem('wallet_balance')),
-			pending_wallet_balance: JSON.parse(localStorage.getItem('pending_wallet_balance')),
+			wallet_balance: this.$store.state.user.wallet_balance,
+			pending_wallet_balance: this.$store.state.user.pending_wallet_balance,
 			staffs: '',
 			loading: false,
 			color: 'black',
-			errors: ''
+			errors: '',
+			orders_details: ''
         }
     },
 	 created: function () {
@@ -468,7 +469,6 @@ export default ({
     },
 	props: {
 		color: 'black',
-		
 	},
 	methods: {
 		getPendingOrders(){
@@ -478,6 +478,7 @@ export default ({
 			.then(response =>{
 				this.pending_orders = response.data.pending_orders
 				this.all_orders = response.data.orders.count
+				this.orders_details = response.data.orders.results
 				this.earnings = response.data.earnings
 			})
 			.catch(err => {
@@ -546,6 +547,9 @@ export default ({
 		this.getPendingOrders()
 	},
 	computed: {
+		completed_orders: function (){
+			return this.orders_details.filter(order => order.status.id === 8).length
+		},
 		bikeBicyclePendingOrders: function () {
 			return this.pending_orders.filter(order => order.transport_type.name === 'BIKE' || order.transport_type.name === 'BICYCLE').length
 		},

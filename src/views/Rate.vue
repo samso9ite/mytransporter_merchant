@@ -4,8 +4,14 @@
           <div class="content-body">
             <!-- row -->
 			<div class="container-fluid">
+                <div class="row page-titles">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item "><a href="/dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item active" ><a href="/rate">Transport Rate</a></li>
+					</ol>
+                </div>
 				<div class="row">
-                    <div class="col-xl-8">
+                    <div class="col-xl-8">     
 						<div class="row">
 							 <div class="col-xl-4 col-xxl-6 col-sm-6 "  v-for="type in Rates" :key="type">
 								<div class="card">
@@ -68,6 +74,7 @@
                                                                             <option value="VAN">Van</option>
                                                                             <option value="TRUCK">Truck</option>
                                                                             <option value="DRONE"> Drone </option>
+                                                                            <option value="DRONE"> Car </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

@@ -7,8 +7,8 @@
 				
 				<div class="row page-titles">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item active"><a href="javascript:void(0)">App</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+						<li class="breadcrumb-item "><a href="/dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item active" ><a href="/rate">Profile</a></li>
 					</ol>
                 </div>
                 <!-- row -->
@@ -187,11 +187,12 @@ import Api from './Api'
                    
                 })
             },
-           
             get_users_details(){
                 const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+                console.log("checking if profile");
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
                 .then(response => {
+                    console.log(response.data);
                     this.name = response.data.name
                     this.address = response.data.address
                     this.email = response.data.email
@@ -203,6 +204,7 @@ import Api from './Api'
                     this.description = response.data.description
                 })
                 .catch(error =>{
+                    console.log(error.response);
                 })
             },
             setAddress(place){
@@ -216,3 +218,9 @@ import Api from './Api'
         }
     })
 </script>
+<style scoped>
+    .img-fluid {
+        width: 100px;
+        height: 100px;
+    }
+</style>

@@ -11,6 +11,22 @@ const routes = [
     component: () => import('../views/Auth/Register.vue')
   },
   {
+    path: '/forgot-pwd',
+    name: 'ForgotPwd',
+    component: () => import('../views/Auth/ForgotPwd.vue')
+  },
+  {
+    path: '/validate-token',
+    name: 'ValidateResetToken',
+    component: () => import('../views/Auth/ValidateResetToken.vue')
+  },
+  {
+    path: '/confirm-password-reset/:token',
+    name: 'ConfirmPwd',
+    component: () => import('../views/Auth/ConfirmPwd.vue'),
+    props: true
+  },
+  {
     path: '/',
     name: 'Login',
     component: () => import('../views/Auth/Login.vue'),
@@ -65,7 +81,46 @@ const routes = [
     name: 'Notifications',
     component: () => import("../views/Notifications.vue"),
     meta: {requiresAuth: true}
-  }
+  },
+  {
+    path: '/quick-tour',
+    name: 'QuickTour',
+    component: () => import("../views/QuickTour.vue"),
+    meta: {requiresAuth:true}
+  },
+  {
+    path: '/headsup',
+    name: 'Headsup',
+    component: () => import ("../views/Headsup"),
+    meta: {requiresAuth:true}
+  },
+  {
+    path: '/asset/:type',
+    name: 'Asset',
+    component: () => import("../views/Asset"),
+    meta: {requiresAuth:true},
+    props: true
+  },
+  {
+    path: '/assetUpdate/:id',
+    name: 'Update',
+    component: () => import("../views/Asset"),
+    meta: {requiresAuth:true},
+    props: true
+  },
+  {
+    path: '/select-transport-type',
+    name: 'SelectTransportType',
+    component: () => import("../views/SelectTransportType"),
+    meta: {requiresAuth:true}
+  },
+  {
+    path: '/asset-list',
+    name: 'AssetList',
+    component: () => import("../views/AssetList"),
+    meta: {requiresAuth:true}
+  },
+ 
 
 ]
 

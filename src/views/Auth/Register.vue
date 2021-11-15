@@ -20,7 +20,7 @@
 									<div class="text-center mb-3">
 										<a href="index.html"><img src="../../statics/fav.png" alt=""></a>
 									</div>
-                                    <h4 class="text-center mb-4">Merchant Signup</h4>
+                                    <h4 class="text-center mb-4">Partner Signup</h4>
                                     <form @submit.prevent="register">
                                         <div class="mb-3">
                                             <label class="mb-1" ><strong>Company Name</strong></label>
@@ -56,9 +56,18 @@
                                        
                                         <div class="mb-3">
                                             <label class="mb-1" ><strong>Password</strong></label>
-                                            <input type="password" class="form-control"  v-model="password" name="password" required>
+                                            <input type="password" class="form-control"  v-model="password" name="password" id="PasswordShow" required >
+                                             <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="color:#929496" @click="passwordToggle()" ></span>
+                                   
                                         </div>
-                                      
+                                       <div class="row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="mb-3">
+                                               <div class="form-check custom-checkbox ms-1">
+													<input type="checkbox" class="form-check-input" id="basic_checkbox_1" required>
+													<label class="form-check-label" for="basic_checkbox_1">Accept <a href="https://mytransporter.io/merchant_terms.html" target="_blank">Terms & Condition</a></label>
+												</div>
+                                            </div>
+                                        </div>
                                         <div class="text-center mt-4">
                                             <button  class="btn btn-primary btn-block" :disabled="loading">Sign me up</button>
                                         </div>
@@ -93,13 +102,21 @@ export default {
             country: 'NG',
             first_name:'',
             transport_types: null,
-            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK', 'BICYCLE'],
+            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK', 'BICYCLE', 'CAR'],
             errors: [],
             loading: false
         }
     },
     components: { Multiselect },
     methods: {
+        passwordToggle(){
+            var x = document.getElementById("PasswordShow");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        },
         register(e){
             this.loading = true
               var output =  this.codes.filter(code => {
@@ -125,8 +142,7 @@ export default {
                         title:'Awesome!!!',
                         message:'Account Created',
                     })
-                    console.log(response.data);
-                this.$router.push('/')
+                this.$router.push('/activate')
                  })
             .catch(error =>{
                 if(error.response){
@@ -139,6 +155,7 @@ export default {
                 this.loading = false
             })
         },
+       
         computed: {
             countryCode(){
                 return this.codes.filter(code => {
@@ -184,6 +201,16 @@ export default {
 }
 .multiselect__content-wrapper {
     margin-right: 90% !important 
+}
+a:hover {
+    color: #ff6600;
+}
+.field-icon {
+  float: right;
+  /* margin-left: -20px; */
+  margin-top: -2.3em;
+  position: relative;
+  z-index: 2;
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

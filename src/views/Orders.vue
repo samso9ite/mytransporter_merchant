@@ -208,6 +208,9 @@
 											</div>
 										</td>
 										<td> 
+											<div class="btn sharp btn-primary tp-btn" data-bs-toggle="dropdown">
+																	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="12" cy="5" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="12" cy="19" r="2"/></g></svg>
+																</div>
 											<div class="dropdown-menu dropdown-menu-end">
 												<a class="dropdown-item" @click="approveOrder(order_reference)">Approve Order</a>
 												<a class="dropdown-item" @click="rejectOrder(order_reference)">Reject Order</a>
@@ -221,7 +224,7 @@
 										</div>
 										<div class="modal-body profile">
 											<div class="text-center">
-												<img :src="lo" class="img-fluid rounded-circle" alt="" v-if="order.user.image !== null">
+												<img :src="order.user.image" class="img-fluid rounded-circle" alt="" v-if="order.user.image !== null" width="200px !important" height="200px !important">
 												<img src="../statics/avatar.png" class="img-fluid rounded-circle" alt="" v-else>
 											</div>
 											<br>
@@ -260,7 +263,9 @@
 											</tr>
                                         </tbody>
                                     </table>
-                                </div>
+
+									<!-- <a class="btn btn-secondary btn-lg btn-block text-white " @click="cancelOrder">Cancel Order</a> -->
+                        		  </div>
 								</div>
 							</div>
 						</div>
@@ -338,7 +343,8 @@ import Api from "./Api.js"
 			})
 			.catch(err => {
 			})
-		}
+		}, 
+		
 	},
 	computed: {
 		completed_orders: function (){
@@ -361,5 +367,8 @@ import Api from "./Api.js"
 .modal { 
    background-color: rgba(0, 0, 0, 0.5)
 }
-
+.img-fluid {
+    max-width: 100%;
+    height: 200px !important;
+}
 </style>
