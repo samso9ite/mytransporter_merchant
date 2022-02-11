@@ -36,18 +36,14 @@
 												<label class="text-black font-w500">Last Name</label>
 												<input type="text" class="form-control" v-model="last_name" required>
 											</div>
+											<div>
 												<label class="text-black font-w500">Phone Number</label>
                                                  
 											 <div class="input-group mb-3">
-												 <span class="col-lg-3">                                   
-                                                    <select class="default-select btn-color sel_style wide" name="country" v-model="country">
-                                                    <option value="Nigeria">+234</option>
-                                                    <option value="United">+236</option>
-                                                    <option value="+34">+237</option>
-                                                </select>
-                                            </span>
-										    <input type="text" class="form-control" placeholder="XXXX XXXXX XXXX" name="phone" v-model='phone' required>
-                                        </div>
+												<VuePhoneNumberInput v-model="phone" ref="phone_number" required default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" />
+                                        	</div>
+											</div>
+											<br>
 											<div class="mb-3">
 												<label class="text-black font-w500">Email</label>
 												<input type="text" class="form-control" v-model="email_address" placeholder="example@gmail.com">
@@ -97,10 +93,7 @@
 										</div>
 									</div>
 									<div>
-										<!-- <a href="javascript:void(0);" class="btn btn-outline-primary rounded"><i class="fa fa-check-square me-2 scale4" aria-hidden="true"></i>Active</a> -->
-										<!-- <a href="javascript:void(0);" class="btn btn-outline-warning rounded ms-2">Edit</a>
-										<a href="javascript:void(0);" class="btn btn-danger rounded ms-2">Delete</a> -->
-									</div>
+								</div>
 								</div>							
 							</div>
 						</div>
@@ -124,7 +117,6 @@
 										<th>Address</th>
 										<th>Phone</th>
 										<th> Email</th>
-										<th>Gender </th>
 									</tr>
 								</thead>
 								<tbody>
@@ -141,7 +133,6 @@
 										<td>{{team.user.address}}</td>
 										<td>{{team.user.phone}} </td>
 										<td>{{team.user.email}}</td>
-										<td>{{team.user.gender}}</td>
 										<td>
 											<div class="d-flex">
 												<a  data-bs-toggle="modal" data-bs-target="#changePermission">
@@ -205,10 +196,12 @@
 
 <script>
 import SideBar from '../components/SideBar.vue'
+import VuePhoneNumberInput from 'vue-phone-number-input'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 import Api from "./Api"
     export default({
         name: 'Teams',
-        components: {SideBar},
+        components: {SideBar, VuePhoneNumberInput},
 		data(){
 			return{
 				teams: [],
@@ -234,6 +227,7 @@ import Api from "./Api"
 			},
 			createTeam(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+				this.phone = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
 				const formData = {
 					first_name:this.first_name, last_name: this.last_name, phone: this.phone, country: this.country, password:this.password,
 					email_address: this.email_address, merchant_id: merchant_token, permission: this.permission
@@ -245,6 +239,10 @@ import Api from "./Api"
                         message:'Staff Account Created',
                     })
 					$('#addNewRider').modal('hide')
+					if (this.$store.state.user.is_verified == false){
+                        this.$router.push('/transactions')
+                    }
+					this.getTeams()
 				})
 				.catch(error => {
 					if(error.response){
@@ -283,16 +281,12 @@ import Api from "./Api"
     })
 </script>
 <style scoped>
-	.sel_style{
-     height: 55px;
-     width: 100%;
-     margin-right:-1%;
-     border-radius: 20px 0px 0px 20px;
-     padding-top:7px;
-     font-weight:400;
-     border-color: transparent;
-    padding: 5px;
-	}
+
+.vue-phone-number-input{
+    border-radius: 20px !important;
+    width: 100%;
+    height: 20px !important
+}
 	.btn-color{
 		background-color: rgb(241 235 235 / 70%);   
 	}

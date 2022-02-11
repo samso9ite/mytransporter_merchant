@@ -10,12 +10,7 @@
 						<li class="breadcrumb-item"><a href="/asset-list">Asset List</a></li>
 					</ol>
                 </div>
-				<!-- <div class="form-head mb-4 d-flex flex-wrap align-items-center">
-					<div class="me-auto">
-						<h2 class="font-w600 mb-0">Order List</h2>
-						<p class="text-light">View All Orders</p>
-					</div>	
-				</div> -->
+			
 
 				<router-link :to="'/select-transport-type'"> <button class="btn btn-rounded btn-large btn-primary" type="submit"> Add Asset  </button></router-link>
 				<div class="row mb-4 align-items-center">
@@ -80,8 +75,8 @@
 											<a href="javascript:void(0);" class="btn-close" data-bs-dismiss="modal" ></a>
 										</div>
 										<div class="modal-body profile">
-											<div class="text-center">
-												<img :src="asset.image" alt="" v-if="asset.image !== null">
+											<div class="text-center" >
+												<img :src="asset.image" alt="" v-if="asset.image !== null"  style="max-height:750px; max-width:750px; overflow: hidden">
 												<h3> </h3>
 											</div>
 										</div>
@@ -118,8 +113,6 @@ import Api from './Api'
 			    Api.axios_instance.post(Api.baseUrl+'/merchant/portal/assets/get', {merchant_id:merchant_token})
                 .then(res => {
                     this.assets = res.data
-                    console.log(res.data);
-                    
                 })
                 .catch(err => {
                     console.log(err.response)

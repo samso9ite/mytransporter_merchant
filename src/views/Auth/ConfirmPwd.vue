@@ -28,7 +28,6 @@
                                                 <button class="btn btn-primary btn-block" :disabled="loading">SUBMIT</button>
                                             </div>
                                         </form>
-                                       
                                     </div>
                                 </div>
                             </div>

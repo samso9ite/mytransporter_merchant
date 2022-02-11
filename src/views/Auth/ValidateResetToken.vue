@@ -21,7 +21,14 @@
                                         <form @submit.prevent="submitForm">
                                             <div class="mb-3">
                                                 <label class="mb-1"><strong>Enter Token </strong></label>
-                                                <input type="number" class="form-control" name="token" v-model="token" required>
+                                                  <vue-otp-2
+                                                    length="4"
+                                                    join-character="-"
+                                                    inputmode="numeric"
+                                                    pattern="[0-9]*"
+                                                    @onComplete="complete" 
+                                                    />
+                                                <!-- <input type="number" class="form-control" name="token" v-model="token" required> -->
                                             </div>
                                             <div class="text-center">
                                                 <button class="btn btn-primary btn-block" :disabled="loading">SUBMIT</button>
@@ -45,14 +52,15 @@ export default ({
     name: 'ValidateResetToken',
     data(){
         return{
-            token: '',
             errors: '',
             loading: false
         }
     },
     methods:{
-        submitForm(e){
-            Api.axios_instance.post(Api.baseUrl+'/auth/user/password_reset/validate_token/', {token:this.token})
+        complete(value){
+            let all_token = value
+            let user_token = all_token.toString().replace(/,/g, "")
+            Api.axios_instance.post(Api.baseUrl+'/auth/user/password_reset/validate_token/', {token:user_token})
             .then(response =>{
                 this.$router.push('/confirm-password-reset/' + this.token)
             })

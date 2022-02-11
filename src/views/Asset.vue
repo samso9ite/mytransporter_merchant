@@ -34,15 +34,6 @@
 													</div>
 												</div>
                                               </li>
-                                            <!-- <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                                <div class="input-group mb-3">
-													<span class="input-group-text">Back View</span>
-													<div class="form-file">
-														<input type="file" class="form-file-input form-control">
-													</div>
-												</div>
-                                            </li>
-                                            -->
                                         </ul>
                                     </form>
         </div>
@@ -80,7 +71,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="lastName"  class="form-label">Assigned User </label>
-                        <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="assigned_user">
+                        <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="assigned_user" >
                             <option v-for="team in teams" :key="team" :value="team.user.uid">{{team.user.first_name}} {{team.user.last_name}}</option>
                         </select>
                     </div>
@@ -138,9 +129,6 @@ export default ({
   },
 
 methods: {
-    handleFileUpload(){
-        this.file = this.$refs.file.files[0];
-        },
     getTeams(){
         const merchant = JSON.parse(localStorage.getItem('merchant_id'))
         Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/get/', {merchant_id: merchant})
@@ -148,6 +136,34 @@ methods: {
             this.teams = response.data
         })
     },
+    getAssetDetails(){
+        const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+        this.getTeams()
+        console.log(this.teams);
+        this.update_asset_id = this.$route.params.id
+        Api.axios_instance.post(Api.baseUrl+'/merchant/portal/assets/get', {merchant_id:merchant_token})
+            .then(res => {
+                this.all_assets = res.data
+                this.asset = this.all_assets.filter(asset => asset.asset_id === this.update_asset_id)[0]
+                this.asset_no = this.asset.asset_no
+                this.file = this.asset.image
+                this.asset_color = this.asset.asset_colour
+                this.asset_manufacturer = this.asset.asset_manufacturer
+                this.asset_year = this.asset.asset_year
+                this.assigned_year = this.asset.assigned_year
+                this.asset_description = this.asset.asset_description
+                this.transport_type = this.asset.transport_type
+                let default_user = this.teams.filter(team => team.email_address === this.asset.assigned_user)
+                this.assigned_user= default_user[0].user.uid
+            })
+    },
+    // assign_user(){
+        
+    // }
+    handleFileUpload(){
+        this.file = this.$refs.file.files[0];
+        },
+  
     createAsset(){
         const merchant = JSON.parse(localStorage.getItem('merchant_id'))
             this.transport_type = this.$route.params.type
@@ -176,25 +192,7 @@ methods: {
         })
     },
     
-    getAssetDetails(){
-        const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
-        this.update_asset_id = this.$route.params.id
-        console.log(this.asset.assigned_user );
-        Api.axios_instance.post(Api.baseUrl+'/merchant/portal/assets/get', {merchant_id:merchant_token})
-            .then(res => {
-                this.all_assets = res.data
-                this.asset = this.all_assets.filter(asset => asset.asset_id === this.update_asset_id)[0]
-                this.asset_no = this.asset.asset_no
-                this.file = this.asset.image
-                this.asset_color = this.asset.asset_colour
-                this.asset_manufacturer = this.asset.asset_manufacturer
-                this.asset_year = this.asset.asset_year
-                this.assigned_year = this.asset.assigned_year
-                this.asset_description = this.asset.asset_description
-                this.assigned_user = this.asset.assigned_user 
-                this.transport_type = this.asset.transport_type
-            })
-    },
+
     updateAsset(){
         const merchant = JSON.parse(localStorage.getItem('merchant_id'))
         this.update_asset_id = this.$route.params.id
@@ -223,8 +221,8 @@ methods: {
         })
     }
 },
-mounted(){
-    this.getTeams()
+mounted: async function(){
+    await this.getTeams()
     this.getAssetDetails()
 }
 })

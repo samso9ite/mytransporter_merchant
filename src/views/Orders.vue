@@ -97,12 +97,12 @@
 											
 										</div>
 									</div>
-									<div class="col-xl-2 col-xxl-12 my-2">
-										<div class="dropdown d-inline-block">
-											<div class="dropdown-toggle mb-0 fs-18 " data-bs-toggle="dropdown">
-												<span class="font-w400 text-primary">Filter by status</span>
+									<div class="col-xl-2 col-xxl-12 my-2" >
+										<div class="dropdown d-inline-block" >
+											<div class="dropdown-toggle mb-0 fs-18 " v-on:click="toggle()" >
+												<span class="font-w400 text-primary" >Filter by status</span>
 											</div>
-											<div class="dropdown-menu dropdown-menu-left">
+											<div class="dropdown-menu dropdown-menu-left" :class="toggleDropdown" >
 												<a class="dropdown-item"  @click="change_status(0)"> Order Assigned</a>
 												<a class="dropdown-item"  @click="change_status(1)">Pending Orders</a>
 												<a class="dropdown-item"  @click="change_status(9)">Cancelled Orders</a>
@@ -207,7 +207,7 @@
 												<a data-bs-toggle="modal" :data-bs-target="`#viewDetails` + order.reference"  class="btn  shadow btn-xs sharp me-1" style="color:#ff6600"><i class="fa fa-eye"></i></a>
 											</div>
 										</td>
-										<td> 
+										<!-- <td> 
 											<div class="btn sharp btn-primary tp-btn" data-bs-toggle="dropdown">
 																	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="12" cy="5" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="12" cy="19" r="2"/></g></svg>
 																</div>
@@ -215,7 +215,7 @@
 												<a class="dropdown-item" @click="approveOrder(order_reference)">Approve Order</a>
 												<a class="dropdown-item" @click="rejectOrder(order_reference)">Reject Order</a>
 											</div>
-										</td>
+										</td> -->
 										<div class="modal fade" :id="'viewDetails'+order.reference">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
@@ -244,22 +244,36 @@
                                                 </td>
                                             </tr>
 											<tr>
-												<td v-if="order.payment !== null"><h5>Amount: ₦{{order.payment.transaction_amount}}</h5></td>
-												<td  v-if="order.payment !== null"><h5> Payment Status: {{order.payment.transaction_status.transaction_status_name}}</h5></td>
+												<td v-if="order.payment"><h5>Amount: ₦{{order.payment.transaction_amount}}</h5></td>
+												<td  v-if="order.payment"><h5> Payment Status: {{order.payment.transaction_status.transaction_status_name}}</h5></td>
 											</tr>
 											<tr>
 												<td><h5>Merchant Fee: ₦{{order.merchant_fee}}</h5></td>
-												<td v-if="order.payment !== null"><h5> Transaction Type: {{order.payment.transaction_type.name}}</h5></td>
+												<td v-if="order.payment"><h5> Transaction Type: {{order.payment.transaction_type.name}}</h5></td>
 											</tr>
 											<tr>
 												<td><h5>Pickup Location: {{order.pickup_location}}</h5></td>
 												<td><h5> Destination: {{order.destination}}</h5></td>
 											</tr>
 											<tr>
+												<td><h5>Transport Type: {{order.transport_type.code}}</h5></td>
+												<td><h5> Discount: {{order.discount}}</h5></td>
+											</tr>
+											<tr>
+												<td><h5>Status: {{order.status.name}}</h5></td>
+												<td v-if="order.ratings"><h5> Ratings: {{order.ratings}}</h5></td>
+											</tr>
+											<tr>
 												<td  colspan="2"><h5> Item Description: {{order.item_description}}</h5></td>
 											</tr>
 											<tr>
 												<td  colspan="2"><h5> Extra Description: {{order.extra_description}}</h5></td>
+											</tr>
+											<tr v-if="order.review">
+												<td  colspan="2"><h5> Review: {{order.review}}</h5></td>
+											</tr>
+											<tr v-if="order.cancellation_reason">
+												<td  colspan="2"><h5> Review: {{order.cancellation_reason}}</h5></td>
 											</tr>
                                         </tbody>
                                     </table>
@@ -301,12 +315,17 @@ import Api from "./Api.js"
 			status: '0',
 			order_list: [],
 			main_order_list: [],
+			toggleActiveDropdown: false
 			}
 		},
 		async mounted() {
 			await this.get_orders()
 	},
 	methods: {
+		toggle(){
+			this.toggleActiveDropdown = !this.toggleActiveDropdown
+			console.log("Showing");
+		},
 		get_orders(){
 			const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/get/', {merchant_id:merchant_token})
@@ -314,6 +333,7 @@ import Api from "./Api.js"
 				console.log(response.data);
 				this.$store.commit('storeOrders', {orders:response.data.orders.results})
 				this.order_list = this.$store.state.orders
+				console.log(this.order_list);
 				this.main_order_list = this.$store.state.orders
 			})
 		},
@@ -355,6 +375,9 @@ import Api from "./Api.js"
 		},
 		canceled_orders: function (){
 			return this.main_order_list.filter(order => order.status.id === 9).length
+		},
+		toggleDropdown: function(){
+			return this.toggleActiveDropdown ? "show" : ""
 		}
 	}
 	})

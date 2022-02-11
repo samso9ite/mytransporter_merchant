@@ -73,12 +73,12 @@
 											
 										</div>
 									</div>
-									<div class="col-xl-2 col-xxl-12 my-2">
-										<div class="dropdown d-inline-block">
-											<div class="dropdown-toggle mb-0 fs-18 " data-bs-toggle="dropdown">
-												<span class="font-w400 text-primary">Filter by status</span>
+									<div class="col-xl-2 col-xxl-12 my-2" v-on:click="toggle()">
+										<div class="dropdown d-inline-block" v-on:click="toggle()">
+											<div class="dropdown-toggle mb-0 fs-18 "  v-on:click="toggle()">
+												<span class="font-w400 text-primary" v-on:click="toggle()">Filter by status</span>
 											</div>
-											<div class="dropdown-menu dropdown-menu-left">
+											<div class="dropdown-menu dropdown-menu-left" :class="toggleDropdown" >
 												<a class="dropdown-item"  @click="change_status(2)"> Successfull Transactions</a>
 												<a class="dropdown-item"  @click="change_status(1)">Failed Transactions</a>
 											</div>
@@ -94,203 +94,203 @@
 				</div>
 
 				<div class="row">
-				<div class="col-xl-6 col-xxl-6">
-					<div class="col-xl-12">
-						<div class="card overflow-hidden">
-							<div class="card-body">
-								<div class="text-center">
-									<div class="profile-photo">
-										<img src="images/wallet.svg" width="60" class="img-fluid" alt="">
-									</div>
-									<h3 class="mt-4 mb-1">Wallet</h3>
-									<!-- <p class="text-muted">Senior Manager</p> -->
-									<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Withdraw</a> 	<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#fundWallet">Top Up</a>
-									<div class="modal fade modal fade bd-example-modal-lg" id="exampleModalCenter">
-										<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title"><b>Input Amount</b></h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal">
-													</button>
-												</div>
-												<div class="modal-body">
-													<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-														<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+					<div class="col-xl-6 col-xxl-6">
+						<div class="col-xl-12">
+							<div class="card overflow-hidden">
+								<div class="card-body">
+									<div class="text-center">
+										<div class="profile-photo">
+											<img src="images/wallet.svg" width="60" class="img-fluid" alt="">
+										</div>
+										<h3 class="mt-4 mb-1">Wallet</h3>
+										<!-- <p class="text-muted">Senior Manager</p> -->
+										<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Withdraw</a> 	<a class="btn btn-outline-primary btn-rounded mt-3 px-5" data-bs-toggle="modal" data-bs-target="#fundWallet">Top Up</a>
+										<div class="modal fade modal fade bd-example-modal-lg" id="exampleModalCenter">
+											<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title"><b>Input Amount</b></h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal">
 														</button>
-														<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
 													</div>
-												<div class="basic-form" v-if="all_account">
-												<div class="col-lg-12">
-													<div class="table-responsive" >
-														<table class="table header-border  verticle-middle" > 
-															<tbody >
-																<tr v-for="bank in all_account" :key="bank" class="bank" :class="{'bank_active' : bank.id  === id}" @click="select_account(bank.id)">
-																	<td>{{bank.account_name}}</td>
-																	<td style="color:#ff6600"><strong>{{bank.account_number}}</strong></td>
-																	<td>{{bank.bank_name}}</td>
-																	<!-- <td>
-																		<div class="form-check">
-																			<input class="form-check-input" type="radio" name="accnt" v-model="accnt" :value="bank.id" checked>
-																		</div>
-																	</td> -->
-																</tr>
-															</tbody>
-														</table>
+													<div class="modal-body">
+														<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+															<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+															</button>
+															<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+														</div>
+													<div class="basic-form" v-if="all_account">
+													<div class="col-lg-12">
+														<div class="table-responsive" >
+															<table class="table header-border  verticle-middle" > 
+																<tbody >
+																	<tr v-for="bank in all_account" :key="bank" class="bank" :class="{'bank_active' : bank.id  === id}" @click="select_account(bank.id)">
+																		<td>{{bank.account_name}}</td>
+																		<td style="color:#ff6600"><strong>{{bank.account_number}}</strong></td>
+																		<td>{{bank.bank_name}}</td>
+																		<!-- <td>
+																			<div class="form-check">
+																				<input class="form-check-input" type="radio" name="accnt" v-model="accnt" :value="bank.id" checked>
+																			</div>
+																		</td> -->
+																	</tr>
+																</tbody>
+															</table>
+														</div>
 													</div>
+													<div class="row">
+														<div class="mb-2 col-lg-8" >
+															<label class="sr-only">Amount</label>
+															<input type="text" class="form-control" placeholder="Amount" name="amount" v-model="amount">
+														</div>
+														<div class="col-lg-4">
+															<button  class="btn btn-primary mb-2 btn-bg" @click="withdraw" :disabled="loading">Withdraw </button>
+														</div>
+													</div>
+													<br>
 												</div>
-												<div class="row">
-													<div class="mb-2 col-lg-8" >
-														<label class="sr-only">Amount</label>
-														<input type="text" class="form-control" placeholder="Amount" name="amount" v-model="amount">
+													<h3 v-else> Please Add a Bank Account </h3>		
 													</div>
-													<div class="col-lg-4">
-														<button  class="btn btn-primary mb-2 btn-bg" @click="withdraw" :disabled="loading">Withdraw </button>
-													</div>
+													
 												</div>
-												<br>
-											</div>
-												<h3 v-else> Please Add a Bank Account </h3>		
-												</div>
-												
 											</div>
 										</div>
-									</div>
 
-									<div class="modal fade modal fade bd-example-modal-lg" id="fundWallet"> 
-										<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title"><b>Input Amount</b></h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal">
-													</button>
-												</div>
-												<div class="modal-body">
-													<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-														<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+										<div class="modal fade modal fade bd-example-modal-lg" id="fundWallet"> 
+											<div class=" modal-dialog modal-dialog-centered  modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title"><b>Input Amount</b></h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal">
 														</button>
-														<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
 													</div>
-												<div class="basic-form">
-												
-												<div class="row">
-													<div class="mb-2 col-lg-8" >
-														<label class="sr-only">Amount</label>
-														<input type="text" class="form-control" placeholder="Amount" name="amount" v-model="amount">
+													<div class="modal-body">
+														<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+															<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+															</button>
+															<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+														</div>
+													<div class="basic-form">
+													
+													<div class="row">
+														<div class="mb-2 col-lg-8" >
+															<label class="sr-only">Amount</label>
+															<input type="text" class="form-control" placeholder="Amount" name="amount" v-model="amount">
+														</div>
+														<div class="col-lg-4">
+															<button  class="btn btn-primary mb-2 btn-bg" @click="payWithPaystack" :disabled="loading">Top Up Wallet </button>
+														</div>
 													</div>
-													<div class="col-lg-4">
-														<button  class="btn btn-primary mb-2 btn-bg" @click="payWithPaystack" :disabled="loading">Top Up Wallet </button>
+													<br>
+												</div>
 													</div>
 												</div>
-												<br>
 											</div>
-												</div>
-											</div>
-										</div>
-									</div> 
-									
-								</div>
-							</div>
-							
-							<div class="card-footer pt-0 pb-0 text-center">
-								<div class="row">
-									<div class="col-4 pt-3 pb-3 border-end">
-										<h3 class="mb-1">₦{{pending_balance}}</h3><span>Pending Balance</span>
-									</div>
-									<div class="col-4 pt-3 pb-3 border-end">
-										<h3 class="mb-1">₦{{wallet_balance}}</h3><span>Available</span>
-									</div>
-									<div class="col-4 pt-3 pb-3">
-										<h3 class="mb-1">₦0.00</h3><span>Refund</span>
+										</div> 
+										
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
-				</div>	
-
-				<div class="col-xl-6 col-xxl-6">
-					<div class="card col-lg-12" style="background-color:#473b52">	
-					<div class="card-header border-0 pb-0 align-items-center justify-content-center" v-if="all_account.length">
-						<div class="table-responsive" >
-						<table class="table table-responsive-md" style="color:#fff"> 
-							<tbody >
-								<tr v-for="bank in all_account" :key="bank">
-
-									<td>{{bank.account_name}}</td>
-									<td style="color:#ff6600"><strong>{{bank.account_number}}</strong></td>
-									<td>{{bank.bank_name}}</td>
-									<td>
-										<div class="d-flex">
-											<!-- <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a> -->
-											<a href="#" class="btn btn-primary shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+								
+								<div class="card-footer pt-0 pb-0 text-center">
+									<div class="row">
+										<div class="col-4 pt-3 pb-3 border-end">
+											<h3 class="mb-1">₦{{pending_balance}}</h3><span>Pending Balance</span>
 										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="accordion accordion-primary" id="accordion-one" style="color:white">
-								  <div class="accordion-item">
-										<button type="button" class="btn btn-rounded" style="color:white" @click="getAllBanks" data-bs-toggle="collapse" data-bs-target="#collapseOne"><span
-												class="btn-icon-start text-primary" ><i class="fa fa-plus"></i>
-											</span>Add Bank Account
-										</button>
-									<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one">
-									  <div class="accordion-body-text">
-										  <div class="row">
-                                            <div class="col-sm-6">
-                                                <select class="default-select form-control wide mb-3" v-model="bank_code">
-													<option v-for="bank in all_banks" :key="bank" :value="bank.code" >{{bank.name}}</option>
-												</select>
-                                            </div>
-                                            <div class="col-sm-6 mt-2 mt-sm-0">
-                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
-                                            </div>
-											<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
-                                        </div>
-										<a class="btn btn-outline-primary btn-rounded mt-3 px-5" style="color:white; border-color:white" @click="addAccount" :disabled="loading">Add Account</a>
+										<div class="col-4 pt-3 pb-3 border-end">
+											<h3 class="mb-1">₦{{wallet_balance}}</h3><span>Available</span>
+										</div>
+										<div class="col-4 pt-3 pb-3">
+											<h3 class="mb-1">₦0.00</h3><span>Refund</span>
 										</div>
 									</div>
-								  </div>
+								</div>
 							</div>
-					
 						</div>
-					</div>
-					<div class="card-header border-0 pb-0" v-else>
-						<div class="col-lg-12" >
-							<h3 style="color:white">Bank account hasn't been added</h3>
-							
-					
-						<div class="accordion accordion-primary" id="accordion-one" style="color:white">
-								  <div class="accordion-item">
-										<button type="button" class="btn btn-rounded" style="color:white" @click="getAllBanks" data-bs-toggle="collapse" data-bs-target="#collapseOne"><span
-												class="btn-icon-start text-primary" ><i class="fa fa-plus"></i>
-											</span>Add Bank 
-										</button>
-									<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one">
-									  <div class="accordion-body-text">
-										  <div class="row">
-                                            <div class="col-sm-6">
-                                                <select class="default-select form-control wide mb-3" v-model="bank_code">
-													<option v-for="bank in all_banks" :key="bank" :value="bank.code" >{{bank.name}}</option>
-												</select>
-                                            </div>
-                                            <div class="col-sm-6 mt-2 mt-sm-0">
-                                                <input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
-                                            </div>
-											<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
-                                        </div>
-										<a class="btn btn-outline-primary btn-rounded mt-3 px-5 " style="color:white; border-color:white" @click="addAccount">Add Account</a>
+					</div>	
+
+					<div class="col-xl-6 col-xxl-6">
+						<div class="card col-lg-12" style="background-color:#473b52">	
+						<div class="card-header border-0 pb-0 align-items-center justify-content-center" v-if="all_account.length">
+							<div class="table-responsive" >
+							<table class="table table-responsive-md" style="color:#fff"> 
+								<tbody >
+									<tr v-for="bank in all_account" :key="bank">
+
+										<td>{{bank.account_name}}</td>
+										<td style="color:#ff6600"><strong>{{bank.account_number}}</strong></td>
+										<td>{{bank.bank_name}}</td>
+										<td>
+											<div class="d-flex">
+												<!-- <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a> -->
+												<a href="#" class="btn btn-primary shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="accordion accordion-primary" id="accordion-one" style="color:white">
+									<div class="accordion-item">
+											<button type="button" class="btn btn-rounded" style="color:white" @click="getAllBanks" data-bs-toggle="collapse" data-bs-target="#collapseOne"><span
+													class="btn-icon-start text-primary" ><i class="fa fa-plus"></i>
+												</span>Add Bank Account
+											</button>
+										<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one">
+										<div class="accordion-body-text">
+											<div class="row">
+												<div class="col-sm-6">
+													<select class="default-select form-control wide mb-3" v-model="bank_code">
+														<option v-for="bank in all_banks" :key="bank" :value="bank.code" >{{bank.name}}</option>
+													</select>
+												</div>
+												<div class="col-sm-6 mt-2 mt-sm-0">
+													<input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
+												</div>
+												<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
+											</div>
+											<a class="btn btn-outline-primary btn-rounded mt-3 px-5" style="color:white; border-color:white" @click="addAccount" :disabled="loading">Add Account</a>
+											</div>
 										</div>
 									</div>
-								  </div>
+								</div>
+						
+							</div>
+						</div>
+						<div class="card-header border-0 pb-0" v-else>
+							<div class="col-lg-12" >
+								<h3 style="color:white">Bank account hasn't been added</h3>
+								
+						
+							<div class="accordion accordion-primary" id="accordion-one" style="color:white">
+									<div class="accordion-item">
+											<button type="button" class="btn btn-rounded" style="color:white" @click="getAllBanks" data-bs-toggle="collapse" data-bs-target="#collapseOne"><span
+													class="btn-icon-start text-primary" ><i class="fa fa-plus"></i>
+												</span>Add Bank 
+											</button>
+										<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one">
+										<div class="accordion-body-text">
+											<div class="row">
+												<div class="col-sm-6">
+													<select class="default-select form-control wide mb-3" v-model="bank_code">
+														<option v-for="bank in all_banks" :key="bank" :value="bank.code" >{{bank.name}}</option>
+													</select>
+												</div>
+												<div class="col-sm-6 mt-2 mt-sm-0">
+													<input type="text" class="form-control" placeholder="Account Number" v-model="account_number" v-on:input="verifyAccount" required>
+												</div>
+												<h5 class="text-center" style="color:white" v-if="accnt_name"> Verify Account: {{accnt_name}} </h5> 
+											</div>
+											<a class="btn btn-outline-primary btn-rounded mt-3 px-5 " style="color:white; border-color:white" @click="addAccount">Add Account</a>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				</div>
-				</div>
+					</div>
+					</div>
 			
-				<div class="col-12">
+					<div class="col-12">
 					<div class="card">
 						<div class="card-body">
 								<div class="row">
@@ -309,8 +309,6 @@
 										<th>Ref</th>
 										<th>Channel</th>
 										<th> Description</th>
-										<th>Customer Name</th>
-										<th>Customer Number</th>
 										<th>Date</th>
 										<th>Amount</th>
 										<th>Status</th>
@@ -329,8 +327,6 @@
 											<td>{{transaction.transaction_reference}}</td>
 											<td>{{transaction.payment_channel}}</td>
 											<td class="wspace-no">{{transaction.transaction_description}}</td>
-											<td>{{transaction.transaction_user.first_name}} {{transaction.transaction_user.last_name}}</td>
-											<td>{{transaction.transaction_user.phone}}</td>
 											<td>{{transaction.transaction_date}}</td>
 											<td><a href="javascript:void(0);" class="btn btn-secondary light btn-sm">₦ {{transaction.transaction_amount}}</a></td>
 											<td><span class="badge light badge-secondary">{{transaction.transaction_status.transaction_status_name}}</span></td>
@@ -360,6 +356,7 @@ import Api from './Api'
         components: {SideBar},
 		data(){
 			return{
+				toggleActiveDropdown: false,
 				payments : [],
 				total: '',
 				id: '',
@@ -388,6 +385,10 @@ import Api from './Api'
 			});
 		},
 		methods: {
+		toggle(){
+		this.toggleActiveDropdown = !this.toggleActiveDropdown
+		console.log("Showing");
+		},
 				loadScript(callback) {
             const script = document.createElement("script");
             script.src = "https://js.paystack.co/v1/inline.js";
@@ -460,7 +461,6 @@ import Api from './Api'
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
 				Api.axios_instance.post(Api.baseUrl +'/merchant/portal/payment/history', {merchant_id: merchant_token})
 				.then(response => {
-					console.log(response.data)
 					this.all_payments = response.data.results
 					this.payments = response.data.results
 					this.total = response.data.count
@@ -511,7 +511,6 @@ import Api from './Api'
 				}
 				Api.axios_instance.post(Api.baseUrl +'/merchant/portal/bank_account/verify', formData)
 				.then(res => {
-					console.log(res.data);
 					this.account_name = res.data.data.account_name
 					this.verified_accnt_num = res.data.data.account_number
 					this.bank_name = res.data.data.bank_name
@@ -541,6 +540,9 @@ import Api from './Api'
                         message:'New Bank Account Added',
                     })
 					$('#collapseOne').collapse('hide');
+					if (this.$store.state.user.is_verified == false){
+                        this.$router.push('/dashboard')
+                    }
 					this.getBanks()
 				})
 				.catch(err => {
@@ -583,6 +585,9 @@ import Api from './Api'
 			this.getBanks()
 		},
 		computed: {
+			toggleDropdown: function(){
+				return this.toggleActiveDropdown ? "show" : ""
+			},
 			accnt_name: function(){
 				return this.account_name
 			},

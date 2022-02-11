@@ -17,7 +17,8 @@ let token = await localStorage.getItem('token')
     if (token == null) {
     //   return JSON.parse(token)[0].access_token;
     }
-  token = token ? JSON.parse(token)?.access : null;
+  // token = token ? JSON.parse(token)?.access : null;
+  token =  JSON.parse(token)?.access
   token ? config.headers.Authorization = `Bearer ${token}` : null;
   config.headers['Access-Key'] = 'vwznw2mw.O7U8tx23y0vyC5eUClLNyYqaIAJ08P40';
   return config;

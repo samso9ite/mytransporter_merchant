@@ -24,12 +24,19 @@
                                         </div>
                                         <form @submit.prevent="submitForm">
                                             <div class="mb-3">
-                                                <label class="mb-1"><strong>Enter Verification Code </strong></label>
-                                                <input type="number" class="form-control" name="token" v-model="token" required>
+                                               <center> <label class="mb-1"><strong>Enter Verification Code </strong></label> </center> <br><br>
+                                                  <vue-otp-2
+                                                    length="4"
+                                                    join-character="-"
+                                                    inputmode="numeric"
+                                                    pattern="[0-9]*"
+                                                    @onComplete="submitForm" 
+                                                    />
+                                                <!-- <input type="number" class="form-control" name="token" v-model="token" required> -->
                                             </div>
-                                            <div class="text-center">
+                                            <!-- <div class="text-center">
                                                 <button class="btn btn-primary btn-block" :disabled="loading">SUBMIT</button>
-                                            </div>
+                                            </div> -->
                                         </form>
                                        
                                     </div>
@@ -49,18 +56,26 @@ export default ({
     name: 'ActivateAccount',
     data(){
         return{
-            token: '',
-            errors: '',
+            errors: [],
             loading: false
         }
     },
     methods:{
-        submitForm(e){
-            Api.axios_instance.post(Api.baseUrl+'/merchant/portal/activate/account', {token:this.token})
+        submitForm(value){
+            let all_token = value
+            let user_token = all_token.toString().replace(/,/g, "")
+            this.loading = true
+            const data = {
+                merchant_id: this.$store.state.registeration.merchant_id,
+                token: user_token
+            }
+            Api.axios_instance.post(Api.baseUrl+'/merchant/portal/activate/account', data)
             .then(response =>{
                 this.$router.push('/')
+                // console.log(this.response);
             })
             .catch(error => {
+                console.log(error.response);
                 if (error.response){
                     for(const property in error.response.data){
                         this.errors.push(`${error.response.data[property]}`)
@@ -95,4 +110,6 @@ export default ({
   -o-background-size: cover;
   background-size: cover;
 }
+.vue-otp-2 div input{max-width:50px !important;}
+
 </style>

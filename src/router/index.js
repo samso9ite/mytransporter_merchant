@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Store } from 'vuex'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -120,6 +122,13 @@ const routes = [
     component: () => import("../views/AssetList"),
     meta: {requiresAuth:true}
   },
+
+  {
+    path: '/promo',
+    name: 'AddPromo',
+    component: () => import("../views/AddPromo"),
+    meta: {requiresAuth:true}
+  },
  
 
 ]
@@ -145,6 +154,9 @@ router.beforeEach((to, from, next) => {
   }
 
   if((to.name === 'Login' || to.name ==='Register') && window.localStorage.getItem('isAuthenticated') === 'true') next({name: 'Dashboard'})
+  else next()
+
+  if((to.name === 'Dashboard' || to.name === "Orders" || to.name === "AddPromo" || to.name === "AssetList"  ) && window.localStorage.getItem('is_verified') === 'false') next({name: 'Headsup'})
   else next()
 })
 

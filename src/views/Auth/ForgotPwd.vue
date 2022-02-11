@@ -20,16 +20,9 @@
                                     <form @submit.prevent="submitForm">
                                           <div class="mb-3">
                                             <label class="mb-1"><strong>Mobile Number</strong></label>
-                                             <div class="input-group mb-3">
-                                                 <span class="col-lg-3">                                   
-                                                    <select class="default-select btn-color sel_style wide" name="country" v-model="country" required>
-                                                    <option v-for="i in codes" :value="i.country" :key="i.code">{{i.code}}</option>
-                                                 </select>
-                                            </span>
-										    <input type="text" class="form-control" placeholder="" name="phone" v-model='phone' required>
-
-                                        </div>
-                                        </div>
+                                              <VuePhoneNumberInput v-model="phone_number" :class="checking" ref="phone_number" default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" required="true" />
+                                            </div>
+                                            <br><br>
                                          <div class="text-center">
                                            <button type="submit" class="btn btn-primary btn-block" :disabled="loading">Reset Password</button>
                                         </div>
@@ -47,28 +40,22 @@
 
 <script>
    import Api from  '../Api'
+   import VuePhoneNumberInput from 'vue-phone-number-input'
+   import 'vue-phone-number-input/dist/vue-phone-number-input.css'
     export default({
         name: 'ForgotPwd',
         data(){
             return{
-                phone: '',
+                phone_number: '',
                 errors: [],
-                country: 'NG',
-                countryCod : '',
-                codes: [{country: "NG", code:"+234"}, {country:"South Africa", code: "+235"}, {country:"Ghana", code: "+233"}],
                 loading: false
             }
         },
+        components: {VuePhoneNumberInput},
         methods: {
             submitForm(e){
-                this.loading = true
-                var output =  this.codes.filter(code => {
-                return code.country == this.country
-                })
-                if (output[0].country === this.country){
-                    this.countryCod = output[0].code
-                }
-                let phoneData = this.countryCod + this.phone
+               
+                let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
                     Api.axios_instance.post(Api.baseUrl+'/auth/user/password_reset/', {phone:phoneData})
                     .then(res => {
                         this.$router.push('validate-token')
@@ -111,6 +98,11 @@
      font-weight:400;
      border-color: transparent;
     padding: 5px;
+}
+.vue-phone-number-input{
+    border-radius: 20px !important;
+    width: 100%;
+    height: 20px !important
 }
 .btn-color{
     background-color: rgb(241 235 235 / 70%);   

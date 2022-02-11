@@ -67,10 +67,8 @@ export default {
             const merchant_id = JSON.parse(localStorage.getItem('merchant_id'))
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/trasnport_types/get', {merchant_id:merchant_id})
                 .then(response => { 
-                    console.log(response.data);
                     this.types = response.data
-                    console.log(this.types);
-			    })
+                })
                 .catch(err => { })
         },
     },

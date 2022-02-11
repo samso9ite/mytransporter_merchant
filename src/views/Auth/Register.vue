@@ -29,7 +29,7 @@
                                           <div class="mb-3">
                                             <label class="mb-2"><strong>Transport Type</strong></label>
                                             <div class="row">
-                                               <Multiselect v-model="transport_types" :options="options" :multiple="true"  />
+                                               <Multiselect v-model="transport_types" :options="options" :multiple="true" class="form-class" />
                                         </div>
                                         </div>
                                          <label class="mb-3"><strong>First & Last Name</strong></label>
@@ -40,15 +40,10 @@
                                         </div>
                                         <label class="mb-3"><strong>Mobile Number</strong></label>
                                                 <div class="input-group mb-3">
-                                                    <span class="col-lg-3">                                   
-                                                        <select class="default-select btn-color sel_style wide" name="country" v-model="country">
-                                                        <option v-for="i in codes" :value="i.country" :key="i.code">{{i.code}}</option>
-                                                    </select>
-                                                </span>
-                                                <input type="text" class="form-control" placeholder="" name="phone" v-model='phone' required>
+                                                <VuePhoneNumberInput v-model="phone_number"  ref="phone_number" default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" required/>
 
                                         </div>
-                                        
+                                        <br>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Email</strong></label>
                                             <input type="email" class="form-control" placeholder="hello@example.com" name="email" v-model="email" required>
@@ -56,8 +51,12 @@
                                        
                                         <div class="mb-3">
                                             <label class="mb-1" ><strong>Password</strong></label>
-                                            <input type="password" class="form-control"  v-model="password" name="password" id="PasswordShow" required >
-                                             <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="color:#929496" @click="passwordToggle()" ></span>
+                                             <VuePassword
+                                                v-model="password"
+                                                :disableStrength= true
+                                                />
+                                            <!-- <input type="password" class="form-control"  v-model="password" name="password" id="PasswordShow" required >
+                                             <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="color:#929496" @click="passwordToggle()" ></span> -->
                                    
                                         </div>
                                        <div class="row d-flex justify-content-between mt-4 mb-2">
@@ -89,6 +88,9 @@
 <script>
 import Api from "../Api.js"
 import Multiselect from 'vue-multiselect'
+import VuePassword from 'vue-password';
+import VuePhoneNumberInput from 'vue-phone-number-input'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 export default {
     name:"Register",
     data(){
@@ -97,9 +99,7 @@ export default {
             last_name:'',
             email:'',
             password:'',
-            phone:'',
-            codes: [{country: "NG", code:"+234"}, {country:"South Africa", code: "+235"}, {country:"Ghana", code: "+233"}],
-            country: 'NG',
+            phone_number:'',
             first_name:'',
             transport_types: null,
             options: ['BIKE', 'DRONE', 'VAN', 'TRUCK', 'BICYCLE', 'CAR'],
@@ -107,25 +107,19 @@ export default {
             loading: false
         }
     },
-    components: { Multiselect },
+    components: { Multiselect, VuePhoneNumberInput, VuePassword },
     methods: {
-        passwordToggle(){
-            var x = document.getElementById("PasswordShow");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        },
+        // passwordToggle(){
+        //     var x = document.getElementById("PasswordShow");
+        //     if (x.type === "password") {
+        //         x.type = "text";
+        //     } else {
+        //         x.type = "password";
+        //     }
+        // },
         register(e){
             this.loading = true
-              var output =  this.codes.filter(code => {
-                return code.country == this.country
-              })
-            if (output[0].country === this.country){
-                this.countryCod = output[0].code
-            }
-            var phoneData = this.countryCod + this.phone 
+            let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
             const formData = {
                 phone: phoneData,
                 email:this.email,
@@ -138,6 +132,7 @@ export default {
             }
             Api.axios_instance.post(Api.baseUrl+'/merchant/portal/register', formData)
             .then(response => {
+                this.$store.commit('store_merchant_id', {merchant_id:response.data.merchant_id})
                 this.$toast.success({
                         title:'Awesome!!!',
                         message:'Account Created',
@@ -173,22 +168,19 @@ export default {
     min-height: 55px !important;
     background: #ff6600 !important;    
     margin-right: 20px !important;
+    width :  95% 
 }
 .multiselect * {
     margin-right: 28px !important;
 }
-.sel_style{
-     height: 55px;
-     width: 100%;
-     margin-right:-1%;
-     border-radius: 20px 0px 0px 20px;
-     padding-top:7px;
-     font-weight:400;
-     border-color: transparent;
-    padding: 5px;
-}
+
 .btn-color{
     background-color: rgb(241 235 235 / 70%);   
+}
+.vue-phone-number-input{
+    border-radius: 20px !important;
+    width: 100%;
+    height: 20px !important
 }
 .bg {
   /* The image used */
@@ -211,6 +203,9 @@ a:hover {
   margin-top: -2.3em;
   position: relative;
   z-index: 2;
+}
+.form-control{
+    border-radius: 0px !important
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

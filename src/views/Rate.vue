@@ -64,26 +64,32 @@
                                                             <div class="row col-mb-3">
                                                            
                                                                 <div class="row" style="margin-top:2em">
-                                                                    <div class="col-lg-3">
+                                                                    <div class="col-lg-5">
                                                                     <h5 style="margin-top:1em"> Transport Type:</h5>
                                                                     </div> 
-                                                                    <div class="col-lg-9">
-                                                                        <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="transport_type">
-                                                                            <option value="BIKE">Bike</option>
-                                                                            <option value="BICYCLE">Bicycle</option>
-                                                                            <option value="VAN">Van</option>
-                                                                            <option value="TRUCK">Truck</option>
-                                                                            <option value="DRONE"> Drone </option>
-                                                                            <option value="DRONE"> Car </option>
+                                                                    <div class="col-lg-7">
+                                                                        <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="transport_type"  @change="rateChange">
+                                                                           <option value="" selected disabled>---Select Transport Type---</option>
+                                                                            <option :value="type.transport_type.code" v-for="(type, index) in Rates" :key="index">{{type.transport_type.code}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                     <div class="row"  style="margin-top:1em">
-                                                                    <div class="col-lg-3">
+                                                                <div class="row"  style="margin-top:1em">
+                                                                    <div class="col-lg-5">
                                                                     <h5 style="margin-top:1em"> Amount:</h5>
                                                                     </div> 
-                                                                    <div class="col-lg-9">
-                                                                        <input type="number" class="form-control" id="email" placeholder="100" v-model="rate" required>
+                                                                    <div class="col-lg-7">
+
+                                                                        <input type="number" class="form-control" placeholder="0.00" v-model="rate" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row"  style="margin-top:1em">
+                                                                    <div class="col-lg-5">
+                                                                    <h5 style="margin-top:1em">Lowest Capped Amount:</h5>
+                                                                    </div> 
+                                                                    <div class="col-lg-7">
+
+                                                                        <input type="number" class="form-control" placeholder="0.00" v-model="capped_amount" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row " style="margin-top:2em; ">
@@ -128,9 +134,12 @@ import Api from './Api'
         data(){
             return{
                 rate: '',
-                transport_type: 'BIKE',
+                transport_type: '',
                 is_active: false,
-                types: []
+                types: [],
+                selectedRate: 0.00,
+                selectedRateActive: '',
+                capped_amount: 0.00
             }
         },
         methods: {
@@ -139,21 +148,35 @@ import Api from './Api'
                     rate: this.rate,
                     transport_type_code: this.transport_type,
                     is_active: this.is_active,
-                    merchant_id : JSON.parse(localStorage.getItem('merchant_id'))
+                    merchant_id : JSON.parse(localStorage.getItem('merchant_id')),
+                    lowest_capped_amount: this.capped_amount
                 }
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/rate/update', formData)
                 .then(response => {
+                    this.$toast.success({
+                        title:'Awesome!!!',
+                        message:'Rate has been updated',
+                    })
+                    if (this.$store.state.user.is_verified == false){
+                        this.$router.push('/profile')
+                   }
                    this.getRates()
-                })
+                  })
                 .catch(err => {
                 })
+            },
+            rateChange(){
+                let check = this.types.filter(type => type.transport_type.code === this.transport_type)
+                this.is_active = check[0].is_active
+                this.rate = check[0].rate
+                this.capped_amount = check[0].lowest_capped_amount
             },
             getRates(){
                 const merchant_id = JSON.parse(localStorage.getItem('merchant_id'))
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/trasnport_types/get', {merchant_id:merchant_id})
                 .then(response => { 
-                    console.log(response.data);
                     this.types = response.data
+                    console.log(this.types);
 					this.$store.commit('getRates', {all_rate:response.data})
 			    })
                 .catch(err => {
@@ -175,4 +198,8 @@ import Api from './Api'
 	.donut-chart-sale small, .donut-chart-sale .small {
 		position: relative !important;
 	}
+    .btn-secondary:hover {
+    background-color: #ff6600;
+    border-color: #ff5430;
+}
 </style>

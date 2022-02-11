@@ -351,23 +351,33 @@
 															</span>
 															<div class="fs-12 text-primary">Van Delivery</div>
 														</div>
-														<div class="text-center">
+														<!-- <div class="text-center">
 															<span class="ticket-icon-1 mb-3">
 																<i class="fa fa-clock-o" aria-hidden="true"></i>
 															</span>
 															<div class="fs-12 text-primary">{{moment(order.expected_pickup_time).fromNow()}}</div>
+														</div> -->
+														</a>
+															
+														<div class="text-center"  @click="approveOrder(order.reference)">
+																<a  class="dropdown-item"> 
+																	<span class="ticket-icon-1 mb-3">
+																	<span class="ticket-icon-1 mb-3">
+																		<i class="fa fa-check" aria-hidden="true"></i>
+																	</span>
+																</span>
+																</a>
+															<div class="fs-12 text-primary">Approve</div>
 														</div>
-														<div class="text-center">
-															<span class="ticket-icon-1 mb-3">
-																<div class="btn sharp btn-primary tp-btn" data-bs-toggle="dropdown">
-																	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="12" cy="5" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="12" cy="19" r="2"/></g></svg>
-																</div>
-																<div class="dropdown-menu dropdown-menu-end">
-																	<a class="dropdown-item" @click="approveOrder(order.reference)">Approve Order</a>
-																	<a class="dropdown-item" @click="rejectOrder(order.reference)">Reject Order</a>
-																</div>
-															</span>
-															<div class="fs-12 text-primary">Action</div>
+														<div class="text-center"  @click="rejectOrder(order.reference)">
+															<a class="dropdown-item">
+																<span class="ticket-icon-1 mb-3">
+																	<span class="ticket-icon-1 mb-3">
+																		<i class="fa fa-close" aria-hidden="true"></i>
+																	</span>
+																</span>
+															</a>
+															<div class="fs-12 text-primary">Reject</div>
 														</div>
 													</div>
 												</div>
@@ -413,11 +423,17 @@
 									
 									<div class="card-footer pt-0 pb-0 text-center">
 										<div class="row">
-											<div class="col-6 pt-3 pb-3 border-end">
-												<h3 class="mb-1">₦{{pending_wallet_balance}}</h3><span>Pending</span>
+											<div class="col-6 pt-3 pb-3 border-end" v-if="pending_wallet_balance">
+												<h3 class="mb-1" >₦{{pending_wallet_balance}}</h3><span>Pending</span>
 											</div>
-											<div class="col-6 pt-3 pb-3 border-end">
+											<div class="col-6 pt-3 pb-3 border-end" v-else>
+												<h3 class="mb-1" >₦0.00</h3><span>Pending</span>
+											</div>
+											<div class="col-6 pt-3 pb-3 border-end"  v-if="wallet_balance">
 												<h3 class="mb-1">₦{{wallet_balance}}</h3><span>Available</span>
+											</div>
+											<div class="col-6 pt-3 pb-3 border-end"  v-else>
+												<h3 class="mb-1">₦0.00</h3><span>Available</span>
 											</div>
 											<!-- <div class="col-4 pt-3 pb-3">
 												<h3 class="mb-1">₦45</h3><span>Referral</span>
@@ -459,7 +475,7 @@ export default ({
 			pending_wallet_balance: this.$store.state.user.pending_wallet_balance,
 			staffs: '',
 			loading: false,
-			color: 'black',
+			// color: 'black',
 			errors: '',
 			orders_details: ''
         }
@@ -516,9 +532,9 @@ export default ({
                         title:'Awesome!!!',
                         message:'Order approved',
                 })
+				this.getPendingOrders()
 			})
 			.catch(error => {
-				console.log(error.response);
 				if(error.response){
 					this.$toast.error({
 					title:'Hey!!!',
@@ -538,6 +554,7 @@ export default ({
                         title:'Awesome!!!',
                         message:'Order rejected',
                 })
+				this.getPendingOrders()
 			})
 			.catch(err => {
 			})

@@ -5,12 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    registeration: {
+      merchant_id: ''
+    },
     user: {
       pending_wallet_balance: '',
       wallet_balance: '',
       username: '',
       logo: '' ,
-      email: ''
+      email: '',
+      is_verified: '',
+      has_added_asset: '',
+      has_added_team: '',
+      has_set_profile: '',
+      has_set_rate: '',
     },
     headsUp: {
       transport_rate: '',
@@ -24,6 +32,9 @@ export default new Vuex.Store({
     notifications: ''
   },
   mutations: {
+    store_merchant_id(state, payload){
+      state.registeration.merchant_id = payload.merchant_id
+    },
     get_banks(state, payload){
       state.banks = payload.banks
     },
@@ -49,7 +60,14 @@ export default new Vuex.Store({
     profileDetails(state, payload){
       state.user.logo = payload.logo,
       state.user.email = payload.email,
-      state.user.username = payload.username
+      state.user.username = payload.username,
+      state.user.wallet_balance = payload.wallet_balance,
+      state.user.pending_wallet_balance = payload.pending_wallet_balance,
+      state.user.is_verified = payload.is_verified,
+      state.user.has_added_asset = payload.has_added_asset,
+      state.user.has_added_team = payload.has_added_team,
+      state.user.has_set_profile = payload.has_set_profile,
+      state.user.has_set_rate = payload.has_set_rate
     }
   },
   actions: {

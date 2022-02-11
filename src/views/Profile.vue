@@ -19,7 +19,8 @@
                                
                                 <div class="profile-info">
 									<div class="profile-photo">
-										<img :src="logo" class="img-fluid rounded-circle" alt="">
+                                       <img :src="logo" class="img-fluid rounded-circle" alt="" v-if="logo">
+                                       <img src="../statics/avatar.png" v-else />
 									</div>
 									<div class="profile-details">
 										<div class="profile-name px-3 pt-2">
@@ -73,7 +74,9 @@
                                                               <div class="row mb-3" style="margin-top:15px">
                                                                    <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Mobile Number</label>
-                                                                    <input type="number" placeholder="Phone number" class="form-control" v-model="phone">
+                                                                    <VuePhoneNumberInput v-model="phone" ref="phone_number" required default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" />
+                                                              
+                                                                    <!-- <input type="number" placeholder="Phone number" class="form-control" v-model="phone"> -->
                                                                 </div>
                                                                 <div class="col-lg-6 ">  
                                                                     <label class="form-label">Upload Company Logo</label>
@@ -90,7 +93,7 @@
                                                                <div class="row">
                                                                     <div class="col-lg-6">
                                                                     <label class="form-label">Office Address</label>
-                                                                    <GmapAutocomplete placeholder="Input office address" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
+                                                                    <GmapAutocomplete placeholder="Addres" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
                                                                 </div>
                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">State</label>
@@ -129,9 +132,11 @@
 <script>
 import SideBar from '../components/SideBar.vue'
 import Api from './Api'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
+import VuePhoneNumberInput from 'vue-phone-number-input'
     export default({
         name: 'Profile',
-        components: {SideBar},
+        components: {SideBar, VuePhoneNumberInput},
        data(){
 			return {
                 name: '',
@@ -155,6 +160,26 @@ import Api from './Api'
              handleFileUpload(){
                 this.file = this.$refs.file.files[0];
             },
+            get_users_details(){
+                const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+                console.log("checking if profile");
+                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
+                .then(response => {
+                    console.log(response.data);
+                    this.name = response.data.name
+                    this.address = response.data.address
+                    this.email = response.data.email
+                    this.state = response.data.state
+                    this.website = response.data.website
+                    this.rc_number = response.data.rc_number
+                    this.logo = response.data.logo
+                    this.phone = response.data.phone
+                    this.description = response.data.description
+                })
+                .catch(error =>{
+                    console.log(error.response);
+                })
+            },
             update_profile(){
                 const merchant = JSON.parse(localStorage.getItem('merchant_id'))
                 const formData = new FormData()
@@ -176,6 +201,9 @@ import Api from './Api'
                         title:'Success',
                         message:'Profile Updated',
                     })
+                    if (this.$store.state.user.is_verified == false){
+                        this.$router.push('/teams')
+                    }
                     get_users_details()
                 })
                 .catch(error =>{
@@ -187,26 +215,7 @@ import Api from './Api'
                    
                 })
             },
-            get_users_details(){
-                const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
-                console.log("checking if profile");
-                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
-                .then(response => {
-                    console.log(response.data);
-                    this.name = response.data.name
-                    this.address = response.data.address
-                    this.email = response.data.email
-                    this.state = response.data.state
-                    this.website = response.data.website
-                    this.rc_number = response.data.rc_number
-                    this.logo = response.data.logo
-                    this.phone = response.data.phone
-                    this.description = response.data.description
-                })
-                .catch(error =>{
-                    console.log(error.response);
-                })
-            },
+      
             setAddress(place){
                 this.address = place.formatted_address
                 this.latitude =  place.geometry.location.lat()

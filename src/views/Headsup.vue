@@ -21,7 +21,8 @@
 							<div class="card-body">
                                 <div class="row">
                                     <div class="" >
-                                        <img src="../statics/1_1.png" align="left"  style="margin-right:20px !important"/> <br> Get to set the rate of all your registered transport channels per kilometre.<br><br><router-link :to="'/rate'" target="_blank"> <a style="color: #ff6600"> <b>Set Rate Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a></router-link>
+                                        <img src="../statics/1_1.png" align="left"  style="margin-right:20px !important"/> <br> Get to set the rate of all your registered transport channels per kilometre.<br><br> <a :class="has_set_rate ? 'has_set_rate' : 'defaultClass'"  @click="routeRate"> <b>Set Rate Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a>
+                                       
                                     </div>
                                   </div>
                             </div>
@@ -35,7 +36,7 @@
 							<div class="card-body">
                                 <div class="row">
                                     <div class="" >
-                                        <img src="../statics/2.png" align="left"  style="margin-right:20px !important"/> <br> Set the company's  logo and other vital details about the company from this <br><br><router-link :to="'/profile'" target="_blank"> <a  style="color: #ff6600"> <b>Set Profile Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a></router-link>
+                                        <img src="../statics/2.png" align="left"  style="margin-right:20px !important"/> <br> Set the company's  logo and other vital details about the company from this <br><br> <a :class="has_set_profile ? 'has_set_profile' : 'defaultClass'"  @click="routeProfile"> <b>Set Profile Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a>
                                     </div>
                                 </div>
                                
@@ -50,7 +51,7 @@
 							<div class="card-body">
                                 <div class="row">
                                     <div class="" >
-                                        <img src="../statics/3.png" align="left"  style="margin-right:20px !important"/> <br> Get to add staffs to manage your orders assigning role to the staff registered.<br><br><router-link :to="'/teams'" target="_blank"> <a style="color: #ff6600"> <b>Add Team Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a></router-link>
+                                        <img src="../statics/3.png" align="left"  style="margin-right:20px !important"/> <br> Get to add staffs to manage your orders assigning role to the staff registered.<br><br><a :class="has_added_team ? 'has_added_team' : 'defaultClass'"  @click="routeTeams"> <b>Add Team Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a>
                                     </div>
                                 </div>
                                
@@ -69,7 +70,7 @@
 							<div class="card-body">
                                 <div class="row">
                                     <div class="" >
-                                        <img src="../statics/4.png" align="left"  style="margin-right:20px !important"/> <br> Add one or more bank accounts to receive payments when orders are completed.<br><br><router-link :to="'/transactions'" target="_blank"> <a style="color: #ff6600"> <b>Add Account Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a></router-link>
+                                        <img src="../statics/4.png" align="left"  style="margin-right:20px !important"/> <br> Add one or more bank accounts to receive payments when orders are completed.<br><br> <a :class="has_set_transactions ? 'has_added_team' : 'defaultClass'"  @click="routeTransactions"> <b>Add Account Now <i class="fa fa-arrow-right" aria-hidden="true"></i> </b></a>
                                     </div>
                                     <!-- <div>
                                          <p> </p>
@@ -118,16 +119,59 @@ export default ({
            tensport_rate: false,
            profile: false,
            team: false,
-           account: false
+           account: false,
+           disabled: true,
+           has_added_asset: this.$store.state.user.has_added_asset,
+           has_added_team: this.$store.state.user.has_added_team,
+           has_set_profile: this.$store.state.user.has_set_profile,
+           has_set_rate: this.$store.state.has_set_rate
        }
+   },
+   methods: {
+        routeRate(){
+            if (this.has_set_rate == false){
+                this.$router.push('/rate')
+            }
+        },
+        routeProfile(){
+            if(this.has_set_profile == false ){
+                this.$router.push('/profile')
+            }
+        },
+        routeTeams(){
+            if(this.has_added_team == false){
+                this.$router.push('/teams')
+            }
+        },
+        routeTransactions(){
+            this.$router.push('/transactions')
+        },
+        routeDashboard(){
+            this.$router.push('/dashboard')
+        }
    }
 })
+
 </script>
 
 <style scoped>
+.has_set_rate {
+    color: grey;
+}
+.has_set_rate {
+    color: grey;
+}
+.has_set_profile {
+    color: grey;
+}
+.defaultClass{
+    color: #ff6600;
+    cursor: pointer
+}
 @media screen and (max-width: 500px) {
   .column {
     width: 50%;
   }
 }
+
 </style>
