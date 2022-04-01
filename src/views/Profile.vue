@@ -50,13 +50,11 @@
                                             </li>
                                         </ul>
                                         <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
                                         </div>
                                         <div class="tab-content">
-                                            
-                                          
                                             <div id="profile-settings" class="tab-pane fade active show">
                                                 <div class="pt-3">
                                                     <div class="settings-form">
@@ -69,7 +67,6 @@
                                                                     <label class="form-label">Email</label>
                                                                     <input type="email" placeholder="Email" class="form-control" v-model="email">
                                                                 </div>
-                                                               
                                                             </div>
                                                               <div class="row mb-3" style="margin-top:15px">
                                                                    <div class="mb-3 col-md-6">
@@ -95,21 +92,43 @@
                                                                     <label class="form-label">Office Address</label>
                                                                     <GmapAutocomplete placeholder="Addres" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
                                                                 </div>
-                                                                <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">State</label>
-                                                                    <input type="text" class="form-control" v-model="state">
+                                                                <div class="col-lg-6">
+                                                                     <label class="form-label">About the Company</label>  
+                                                                    <textarea class="form-control" placeholder="Type your message..." v-model="description"></textarea>
                                                                 </div>
                                                                
                                                             </div>
+
+                                                            <div class="row col-mb-3">
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label class="form-label">Country </label>
+                                                                    <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="country">
+                                                                        <option value="" selected disabled>---Select Country ---</option>
+                                                                        <option :value="country">Nigeria</option>
+                                                                    </select>
+                                                                    <!-- <country-select v-model="country" :country="country"  topCountry="NG" class="form-control"  /> -->
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="form-label">State</label>  
+                                                                    <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="state"  @change="onChange($event)">
+                                                                        <option value="" selected disabled>---Select State ---</option>
+                                                                        <option value="Lagos">Lagos </option>
+                                                                        <option value="Ibadan">Ibadan </option>
+                                                                        <option value="Abeokuta">Abeokuta </option>
+                                                                        <option value="Abuja">Abuja </option>
+                                                                        <option value="Jos">Jos </option>
+                                                                    </select>
+                                                                    <!-- <region-select v-model="region" :country="country" :region="region" :regionName=true class="form-control" @change="select_region()"/> -->
+                                                                    <!-- <region-select v-model="state_code" :country="country" :region="region"  class="form-control" /> -->
+                                                                </div>
+                                                            </div>
+
                                                             <div class="row col-mb-3">
                                                                  <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Website</label>
                                                                     <input type="text" class="form-control" v-model="website">
                                                                 </div>
-                                                                <div class="col-lg-6">
-                                                                     <label class="form-label">About the Company</label>  
-                                                                    <textarea class="form-control" placeholder="Type your message..." v-model="description"></textarea>
-                                                                </div>
+                                                               
                                                             </div>
                                                             <br>
                                                             <button class="btn btn-rounded btn-large btn-primary" type="submit" @click="update_profile">Update Profile  </button>
@@ -145,7 +164,9 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
                 address: '',
                 phone: '',
                 state:'',
+                country: '',
                 logo:'',
+                state_code: '',
                 rc_number: '',
                 pending_wallet_balance: '',
                 wallet_balance: '',
@@ -153,19 +174,41 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
                 longitude: '', 
                 description: '',
                 errors: []  ,
-                file:''
+                file:'',
+                region: '',
 			}
 		},
+        watch: {
+            stateCode () {
+                this.onChange(this.state)
+                console.log(this.state);
+            }
+        },
         methods: {
-             handleFileUpload(){
+            handleFileUpload(){
                 this.file = this.$refs.file.files[0];
+            },
+            onChange(event){
+                if(event.target.value == "Lagos"){
+                    this.state_code = "LA"
+                }
+                else if(event.target.value == "Abuja"){
+                    this.state_code = "ABJ"
+                }
+                else if(event.target.value == "Jos"){
+                    this.state_code = "JO"
+                }
+                 else if(event.target.value == "Ibadan"){
+                    this.state_code = "IB"
+                }
+                 else if (event.target.value == "Abeokuta"){
+                    this.state_code = "AB"
+                }
             },
             get_users_details(){
                 const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
-                console.log("checking if profile");
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/get', {merchant_id: merchant_token})
                 .then(response => {
-                    console.log(response.data);
                     this.name = response.data.name
                     this.address = response.data.address
                     this.email = response.data.email
@@ -180,30 +223,30 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
                     console.log(error.response);
                 })
             },
+            select_region(){
+                this.state_code = this.region
+            },
             update_profile(){
                 const merchant = JSON.parse(localStorage.getItem('merchant_id'))
                 const formData = new FormData()
                 formData.append('address', this.address)
                 formData.append('name', this.name)
-                formData.append('state', this.state)
+                formData.append('state', this.region)
                 formData.append('address', this.email)
                 formData.append('merchant_id', merchant)
                 formData.append('description', this.description)
                 formData.append('latitude', this.latitude)
                 formData.append('longitude', this.longitude)
                 formData.append('website', this.website)
+                formData.append('country', this.country)
                 formData.append('logo', this.file)
-                console.log(formData.get('merchant_id'))
-                console.log(formData.get('website'))
+                formData.append('state_code', this.state_code)
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
                 .then(response => {
                     this.$toast.success({
                         title:'Success',
                         message:'Profile Updated',
                     })
-                    if (this.$store.state.user.is_verified == false){
-                        this.$router.push('/teams')
-                    }
                     get_users_details()
                 })
                 .catch(error =>{
@@ -215,12 +258,15 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
                    
                 })
             },
-      
+            clearErrors(){
+                this.errors.splice(0);
+            },
             setAddress(place){
                 this.address = place.formatted_address
                 this.latitude =  place.geometry.location.lat()
                 this.longitude =  place.geometry.location.lng()
-          }
+            },
+           
         },
         mounted(){
             this.get_users_details()

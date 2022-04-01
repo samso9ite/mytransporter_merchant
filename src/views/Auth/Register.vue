@@ -13,7 +13,7 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                      <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
                                         </div>
@@ -110,7 +110,7 @@ export default {
     components: { Multiselect, VuePhoneNumberInput, VuePassword },
     methods: {
         // passwordToggle(){
-        //     var x = document.getElementById("PasswordShow");
+        // /8/     var x = document.getElementById("PasswordShow");
         //     if (x.type === "password") {
         //         x.type = "text";
         //     } else {
@@ -127,7 +127,7 @@ export default {
                 name: this.company_name,
                 last_name: this.last_name,
                 first_name: this.first_name,
-                country: this.country,
+                // country: this.country,
                 transport_types: this.transport_types
             }
             Api.axios_instance.post(Api.baseUrl+'/merchant/portal/register', formData)
@@ -149,6 +149,9 @@ export default {
             .finally(() => {
                 this.loading = false
             })
+        },
+        clearErrors(){
+                this.errors.splice(0);
         },
        
         computed: {

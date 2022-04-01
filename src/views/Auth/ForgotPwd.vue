@@ -19,8 +19,9 @@
                                     </div>
                                     <form @submit.prevent="submitForm">
                                           <div class="mb-3">
-                                            <label class="mb-1"><strong>Mobile Number</strong></label>
-                                              <VuePhoneNumberInput v-model="phone_number" :class="checking" ref="phone_number" default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" required="true" />
+                                            <label class="mb-1"><strong>Email</strong></label>
+                                            <input type="email" class="form-control" name="email" v-model="email"  required>
+                                              <!-- <VuePhoneNumberInput v-model="phone_number" :class="checking" ref="phone_number" default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" required="true" /> -->
                                             </div>
                                             <br><br>
                                          <div class="text-center">
@@ -46,7 +47,8 @@
         name: 'ForgotPwd',
         data(){
             return{
-                phone_number: '',
+                // phone_number: '',
+                email: '',
                 errors: [],
                 loading: false
             }
@@ -55,8 +57,8 @@
         methods: {
             submitForm(e){
                
-                let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
-                    Api.axios_instance.post(Api.baseUrl+'/auth/user/password_reset/', {phone:phoneData})
+                // let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
+                    Api.axios_instance.post(Api.baseUrl+'/auth/user/password_reset/', {email:this.email})
                     .then(res => {
                         this.$router.push('validate-token')
                         this.$toast.success({
@@ -75,7 +77,10 @@
                     .finally( () => {
                         this.loading = false
                     })
-                }
+                },
+            clearErrors(){
+                this.errors.splice(0);
+            },
         }
     })
 </script>
@@ -90,13 +95,13 @@
     background-size: cover;
 }
 .sel_style{
-     height: 55px;
-     width: 100%;
-     margin-right:-1%;
-     border-radius: 20px 0px 0px 20px;
-     padding-top:7px;
-     font-weight:400;
-     border-color: transparent;
+    height: 55px;
+    width: 100%;
+    margin-right:-1%;
+    border-radius: 20px 0px 0px 20px;
+    padding-top:7px;
+    font-weight:400;
+    border-color: transparent;
     padding: 5px;
 }
 .vue-phone-number-input{

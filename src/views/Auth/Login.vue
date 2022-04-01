@@ -13,18 +13,27 @@
 									</div>
                                     <h4 class="text-center mb-4">Sign in your account</h4>
                                     <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
                                     </div>
                                     <form @submit.prevent="submitForm">
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Mobile Number</strong></label>
-                                             <div class="input-group mb-3">
-                                             <VuePhoneNumberInput v-model="phone_number" ref="phone_number" required default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" />
+                                        <div class="mb-3" v-if="phone_active">
+                                            <label class="mb-1"><strong>Phone Number </strong></label>
+                                            <div class="input-group mb-3">
+                                                <VuePhoneNumberInput v-model="phone_number" ref="phone_number" required default-country-code="NG" size="lg" :preferred-countries="['NG', 'AE', 'DM', 'CM', 'PG', 'KE']" />
+                                            </div>
+                                            <p @click="set_phone_active()"  style="padding-top:20px"> Switch to email</p>
                                         </div>
+
+                                        <div class="mb-3" v-else>
+                                            <label class="mb-1"><strong> Email </strong></label>
+                                            <div class="input-group mb-3">
+                                                <input type="email" class="form-control" name="email" v-model="email" placeholder="youremail@gmail.com">
+                                            </div>
+                                            <p @click="set_phone_active()" > Switch to phone</p>
                                         </div>
-                                        <br>
+                                    
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
                                                <VuePassword
@@ -69,15 +78,26 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
             return{
                 password: '',
                 errors: [],
+                email: '',
+                phone_active: false,
                 phone_number:'',
                 loading: false,
                }
         },
         methods: {
+            set_phone_active(){
+                this.phone_active = !this.phone_active
+            },
             submitForm(e){
                 this.loading = true
                 let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
-                const formData = {password: this.password, email: phoneData}
+                let formData;
+                if (this.phone_active){
+                    formData = {password: this.password, email: phoneData} 
+                }
+                else{
+                     formData = {password: this.password, email: this.email} 
+                }
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/login', formData)
                 .then(response => {
                     window.localStorage.setItem('token', JSON.stringify(response.data.token))
@@ -115,14 +135,9 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
                     this.loading = false
                 })
               },
-            passwordToggle(){
-                var x = document.getElementById("PasswordShow");
-                if (x.type === "password") {
-                    x.type = "text";
-                } else {
-                    x.type = "password";
-                }
-            }
+               clearErrors(){
+                    this.errors.splice(0);
+            },
         }
     }) 
 </script>

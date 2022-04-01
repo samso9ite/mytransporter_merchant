@@ -14,7 +14,7 @@
                                         </div>
                                         <h4 class="text-center mb-4">Validate Reset Token</h4>
                                          <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}</strong></span>
                                         </div>

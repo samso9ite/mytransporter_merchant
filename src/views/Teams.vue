@@ -23,7 +23,7 @@
 									</div>
 									<div class="modal-body">
 										<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
                                             </button>
                                             <span v-for="error in errors" :key="error"><strong>{{error}}</strong></span>
                                         </div>
@@ -135,17 +135,17 @@
 										<td>{{team.user.email}}</td>
 										<td>
 											<div class="d-flex">
-												<a  data-bs-toggle="modal" data-bs-target="#changePermission">
+												<a  data-bs-toggle="modal" data-bs-target="#updateDetails">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 														<path d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z" stroke="#FF7B31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 													</svg>
 												</a>
-												<a href="javascript:void(0);" class="ms-4">
-													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<path d="M3 6H5H21" stroke="#FF3131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-														<path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="#FF3131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-													</svg>
-
+												
+												<a data-bs-toggle="modal" data-bs-target="#changePermission" style="margin-left: 20px">
+													<i class="fa fa-user" style="color:#ff6600; font-size:20px"> </i>
+													<!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z" stroke="#FF7B31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+													</svg> -->
 												</a>
 
 												<div class="modal fade" id="changePermission">
@@ -179,7 +179,53 @@
 														</div>
 													</div>
 												</div>
+												<div class="modal" id="updateDetails" >
+							<div class="modal-dialog" role="document" >
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Update Team</h5>
+										<a href="javascript:void(0);" class="btn-close" data-bs-dismiss="modal"></a>
+									</div>
+									<div class="modal-body">
+										<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
+                                            </button>
+                                            <span v-for="error in errors" :key="error"><strong>{{error}}</strong></span>
+                                        </div>
+										<!-- <form enctype="multipart/form-data"> -->
+											<div class="mb-3">
+												<label class="text-black font-w500">Next of Kin</label>
+												<input type="text" class="form-control" v-model="next_of_kin" placeholder="Next of Kin" required>
 											</div>
+											<div class="mb-3">
+												<label class="text-black font-w500">Drivers License</label>
+												 <div class="form-file">
+													<input type="file" id="file" ref="file" class="form-file-input form-control" v-on:change="handleFileUpload()">
+												</div>
+											</div>
+											
+											<br>
+											<div class="mb-3">
+												<label class="text-black font-w500">Riders Permit</label>
+												<div class="form-file">
+													<input type="file" id="file" ref="riders_permit" class="form-file-input form-control" v-on:change="handleUpload()">
+												</div>
+											</div>
+											
+											<div class="mb-3">
+												<label class="text-black font-w500">Guarantor</label>
+												<input type="text" class="form-control" v-model="guarantor" placeholder="Guarantor" required>
+											</div>
+											<div class="form-group">
+												<button type="button" class="btn btn-primary" @click="updateTeamDetails(team.user.uid)">Update Details</button>
+											</div
+											>
+										<!-- </form> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 										</td>
 									</tr>
 								</tbody>
@@ -204,7 +250,9 @@ import Api from "./Api"
         components: {SideBar, VuePhoneNumberInput},
 		data(){
 			return{
+				next_of_kin: '',
 				teams: [],
+				guarantor: '',
 				first_name: '',
 				last_name: '',
 				country: 'Nigeria',
@@ -212,16 +260,18 @@ import Api from "./Api"
 				phone: '',
 				password: '',
 				permission: 1,
-				errors: []
+				errors: [],
+				license: '',
+				riders_permit: ''
 			}
 		},
 
-		methods: {
+		methods: {	
 			getTeams(){
 				const merchant = JSON.parse(localStorage.getItem('merchant_id'))
-				console.log(merchant);
 				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/get/', {merchant_id: merchant})
                 .then(response => {
+					console.log(response.data);
 					this.teams = response.data
 				})
 			},
@@ -240,7 +290,7 @@ import Api from "./Api"
                     })
 					$('#addNewRider').modal('hide')
 					if (this.$store.state.user.is_verified == false){
-                        this.$router.push('/transactions')
+                        this.$router.push('/headsup')
                     }
 					this.getTeams()
 				})
@@ -273,6 +323,38 @@ import Api from "./Api"
 					}
 				}
 				})
+			},
+			clearErrors(){
+                this.errors.splice(0);
+            },
+			handleFileUpload(){
+                this.license = this.$refs.file[0].files;
+				// console.log(this.license);
+			},
+			handleUpload(){
+               this.riders_permit = this.$refs.riders_permit[0].files;
+			//    console.log(this.riders_permit);
+            },
+			updateTeamDetails(merchant_user_id){
+				const merchant = JSON.parse(localStorage.getItem('merchant_id'))
+                const formData = new FormData()
+                formData.append('guarantor', this.guarantor)
+                formData.append('next_of_kin', this.next_of_kin)
+                formData.append('drivers_license', this.license)
+                formData.append('riders_permit', this.riders_permit)
+				formData.append('merchant_id', merchant)
+				formData.append('merchant_user_id', merchant_user_id)
+				// Api.axios_instance.defaults.headers['Content-Type'] = "multipart/form-data";
+				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/team/update/details', formData)
+                .then(response => {
+					this.$toast.success({
+                        title:'Success',
+                        message:'Team Updated',
+                    })
+               	})
+				.catch(error => {
+					console.log(error.response);
+				})
 			}
 		},
 		mounted() {
@@ -280,13 +362,13 @@ import Api from "./Api"
 		}
     })
 </script>
-<style scoped>
 
-.vue-phone-number-input{
-    border-radius: 20px !important;
-    width: 100%;
-    height: 20px !important
-}
+<style scoped>
+	.vue-phone-number-input{
+		border-radius: 20px !important;
+		width: 100%;
+		height: 20px !important
+	}
 	.btn-color{
 		background-color: rgb(241 235 235 / 70%);   
 	}
@@ -294,8 +376,7 @@ import Api from "./Api"
 		background-color: #ff6600 !important;
 		border-color: #ff6600;
 	}
-.modal { 
-   background-color: rgba(0, 0, 0, 0.5)
-}
-
+	.modal { 
+		background-color: rgba(0, 0, 0, 0.5)
+	}
 </style>

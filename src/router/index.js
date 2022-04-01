@@ -129,6 +129,13 @@ const routes = [
     component: () => import("../views/AddPromo"),
     meta: {requiresAuth:true}
   },
+
+  {
+    path: '/special-route',
+    name: 'AddSpecialRoute',
+    component: () => import("../views/SpecialRoute"),
+    meta: {requiresAuth:true}
+  },
  
 
 ]
@@ -156,8 +163,8 @@ router.beforeEach((to, from, next) => {
   if((to.name === 'Login' || to.name ==='Register') && window.localStorage.getItem('isAuthenticated') === 'true') next({name: 'Dashboard'})
   else next()
 
-  if((to.name === 'Dashboard' || to.name === "Orders" || to.name === "AddPromo" || to.name === "AssetList"  ) && window.localStorage.getItem('is_verified') === 'false') next({name: 'Headsup'})
-  else next()
+  // if((to.name === 'Dashboard' || to.name === "Orders" || to.name === "AddPromo" || to.name === "AssetList"  ) && window.localStorage.getItem('is_verified') === 'false') next({name: 'Headsup'})
+  // else next()
 })
 
 router.beforeResolve((to, from, next) => {

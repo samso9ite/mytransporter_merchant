@@ -418,7 +418,7 @@ import Api from './Api'
 			this.scriptLoaded &&
         	this.scriptLoaded.then(() => {
             const paystackOptions = {
-                key: 'pk_live_d5c3223d4a02d4f2467144d2009ea4c8bc94e2b9',
+                key: 'pk_live_7f774de7bb00dc0e58ac0ddb8aeaba8dd3f4dab3',
 				email: JSON.parse(window.localStorage.getItem('email')),
                 firstname: JSON.parse(window.localStorage.getItem('name)')),
                 lastname: JSON.parse(window.localStorage.getItem('name')),
@@ -578,7 +578,7 @@ import Api from './Api'
 				.finally(() => {
 					this.loading = false
 				})
-			}
+			},
 		},
 		mounted(){
 			this.getPaymentHistory()

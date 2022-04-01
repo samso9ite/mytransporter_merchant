@@ -15,7 +15,13 @@
                     <div class="col-xl-10">
                         <div class="card">
                             <div class="card-body">
+                                
                                 <div class="row">
+                                    <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
+                                        </button>
+                                        <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+                                </div>
                                     <h3 class="mb-3" style="margin-bottom:30px">SET ALL {{$route.params.type}} DETAILS</h3><br><br>
                                     <!-- <AssetForm v-for="asset in assets" :key="asset" v-on:selectTeams="getTeams"/> -->
                                      <div class="col-lg-4 order-lg-2 mb-4">
@@ -125,6 +131,7 @@ export default ({
         assets: [{
           
         }],
+        errors: []
     }
   },
 
@@ -214,12 +221,21 @@ methods: {
                 title:'Success',
                 message:'Asset Updated',
             })
+            this.$router.push('/asset-list')
             this.getAssetDetails()
        })
         .catch(err => {
-            console.log(err.response)
+            if(error.response){
+                for(const property in error.response.data){
+                    this.errors.push(`${error.response.data[property]}`)
+                }
+            }
+            // console.log(err.response)
         })
-    }
+    },
+    clearErrors(){
+        this.errors.splice(0);
+    },
 },
 mounted: async function(){
     await this.getTeams()

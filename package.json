@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "axios": "^0.21.4",
+    "caniuse-lite": "^1.0.30001323",
     "core-js": "^3.6.5",
     "cxlt-vue2-toastr": "^1.1.1",
     "luxon": "^1.28.0",
     "vue": "^2.6.14",
     "vue-country-code": "^1.1.2",
+    "vue-country-region-select": "^2.0.16",
     "vue-datetime": "*",
     "vue-moment": "^4.1.0",
     "vue-multiselect": "^2.1.6",

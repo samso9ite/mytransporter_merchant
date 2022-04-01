@@ -147,6 +147,7 @@
 							</a>
 						</router-link>
                     </li>
+					
 					<li>
 						<router-link :to="'/promo'"> 
 							<a class="ai-icon" aria-expanded="false">
@@ -163,7 +164,16 @@
 							</a>
 						</router-link>
                     </li>
-                   
+
+					 <li>
+						<router-link :to="'/special-route'"> 
+							<a class="ai-icon"  aria-expanded="false">
+								<i class="fa fa-map-marker" aria-hidden="true"></i>
+									<span class="nav-text">Special Routes</span>
+							</a>
+						</router-link>
+                    </li>
+					
                 </ul>
 				<div class="plus-box">
 					<p class="fs-16 font-w500 mb-4" style="color: white;">Get goods delivered in minutes</p>

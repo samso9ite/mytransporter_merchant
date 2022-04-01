@@ -9,6 +9,7 @@ import VueCountryCode from "vue-country-code";
 import Datetime from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
 import VueOtp2 from 'vue-otp-2';
+import vueCountryRegionSelect from 'vue-country-region-select'
 
 Vue.config.productionTip = false
 var toastrConfigs = {
@@ -23,7 +24,7 @@ Vue.use(VueGoogleMaps, {
     key: "AIzaSyAFbHM1j8bJmZ5cqqyFM48HkKMAldFq6qc",
     libraries: "places",
   },
-}).use(CxltToastr, toastrConfigs).use(VueCountryCode).use(Datetime).use(VueOtp2);
+}).use(CxltToastr, toastrConfigs).use(VueCountryCode).use(Datetime).use(VueOtp2).use(vueCountryRegionSelect);
 // Vue.use(VueToastr, {});
 
 new Vue({

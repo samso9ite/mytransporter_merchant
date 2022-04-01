@@ -366,6 +366,9 @@ import Api from "./Api.js"
 		}, 
 		
 	},
+	clearErrors(){
+        this.errors.splice(0);
+    },
 	computed: {
 		completed_orders: function (){
 			return this.main_order_list.filter(order => order.status.id === 8).length
@@ -379,7 +382,8 @@ import Api from "./Api.js"
 		toggleDropdown: function(){
 			return this.toggleActiveDropdown ? "show" : ""
 		}
-	}
+	},
+
 	})
 </script>
 

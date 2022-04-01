@@ -52,6 +52,11 @@
                      <div class="col-xl-4">
                           <div class="card card-body px-3 pt-3 pb-0">
                                <div class="custom-tab-1">
+                                     <div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
+                                            </button>
+                                            <span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+                                    </div>
                                         <ul class="nav nav-tabs">
                                             <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab" class="nav-link active show">Set Rate</a>
                                             </li>
@@ -139,7 +144,8 @@ import Api from './Api'
                 types: [],
                 selectedRate: 0.00,
                 selectedRateActive: '',
-                capped_amount: 0.00
+                capped_amount: 0.00,
+                errors: []
             }
         },
         methods: {
@@ -158,11 +164,16 @@ import Api from './Api'
                         message:'Rate has been updated',
                     })
                     if (this.$store.state.user.is_verified == false){
-                        this.$router.push('/profile')
+                        this.$router.push('/headsup')
                    }
                    this.getRates()
                   })
-                .catch(err => {
+                .catch(error =>{
+                    if(error.response){
+                        for(const property in error.response.data){
+                            this.errors.push(`${error.response.data[property]}`)
+                        }
+                    }
                 })
             },
             rateChange(){
@@ -176,12 +187,19 @@ import Api from './Api'
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/trasnport_types/get', {merchant_id:merchant_id})
                 .then(response => { 
                     this.types = response.data
-                    console.log(this.types);
-					this.$store.commit('getRates', {all_rate:response.data})
+                    this.$store.commit('getRates', {all_rate:response.data})
 			    })
-                .catch(err => {
+                .catch(error =>{
+                    if(error.response){
+                        for(const property in error.response.data){
+                            this.errors.push(`${error.response.data[property]}`)
+                        }
+                    }
                 })
-            }
+            },
+            clearErrors(){
+                this.errors.splice(0);
+            },
         },
         mounted(){
             this.getRates()

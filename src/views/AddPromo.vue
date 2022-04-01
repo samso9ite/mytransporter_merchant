@@ -230,8 +230,6 @@ import { Datetime } from 'vue-datetime';
             },
 
             update_promo(promo_id){
-                console.log(promo_id);
-                console.log("Checking if working");
                 const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
                 const data = {start_date:this.start_date, expiry_date:this.expiry_date, promo_id:this.promo_id, value:this.value, promo_type:this.promo_type, value_type:this.value_type, code:this.code, usage_type:this.usage_type, merchant_id:merchant_token}
                 this.loading=true

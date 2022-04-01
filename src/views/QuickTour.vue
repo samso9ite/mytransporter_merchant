@@ -31,45 +31,53 @@
 													</div>
 												</div>
 												<br><br>
-												<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
-													<span class="me-3 bgl-primary text-primary">
-														<img src="../statics/settings.png" />
-													</span>
-													<div class="media-body event-size">
-														<span class="fs-18 d-block mb-1 text-primary"><b> Set Rate</b></span>
-														<span class="fs-18 font-w500 event-size-1">Set the rate of all registered transport channels per kilometre, also get to update the rate anytime.</span>
-													</div>
-												</div>
-
-												<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
-													<span class="me-3 bgl-primary text-primary">
-														<img src="../statics/wallet_1.png" />
-													</span>
-													<div class="media-body event-size">
-														<span class="fs-18 d-block mb-1 text-primary"><b>Payments</b></span>
-														<span class="fs-18 font-w500 event-size-1">Get an overiew of all transactions also a list of all transactions that has taken place. Add your bank account for withdrawal, also make withdrawal through this section.</span>
-													</div>
-												</div>
-
-												<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
-													<span class="me-3 bgl-primary text-primary">
-														<img src="../statics/team_1.png"/>
+												<router-link :to="'/rate'">
+													<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px" >	
+														<span class="me-3 bgl-primary text-primary">
+															<img src="../statics/settings.png" />
 														</span>
-													<div class="media-body event-size">
-														<span class="fs-18 d-block mb-1 text-primary"><b>Teams</b></span>
-														<span class="fs-18 font-w500 event-size-1">Get to add staffs to manage your orders assigning role to the staff registered.</span>
+														<div class="media-body event-size">
+															<span class="fs-18 d-block mb-1 text-primary"><b> Set Rate</b></span>
+															<span class="fs-18 font-w500 event-size-1">Set the rate of all registered transport channels per kilometre, also get to update the rate anytime.</span>
+															
+														</div>
 													</div>
-												</div>
+												</router-link>
 
-												<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
-													<span class="me-3 bgl-primary text-primary">
-														<img src="../statics/settings.png"/>
+												<router-link :to="'/transactions'">
+													<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
+														<span class="me-3 bgl-primary text-primary">
+															<img src="../statics/wallet_1.png" />
 														</span>
-													<div class="media-body event-size">
-														<span class="fs-18 d-block mb-1 text-primary"><b>Settings</b></span>
-														<span class="fs-18 font-w500 event-size-1">Get to update the company details from this section, adding company's logo and other vital details about the company.</span>
+														<div class="media-body event-size">
+															<span class="fs-18 d-block mb-1 text-primary"><b>Payments</b></span>
+															<span class="fs-18 font-w500 event-size-1">Get an overiew of all transactions also a list of all transactions that has taken place. Add your bank account for withdrawal, also make withdrawal through this section.</span>
+														</div>
 													</div>
-												</div>
+												</router-link>
+												<router-link :to="'/teams'">
+													<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
+														<span class="me-3 bgl-primary text-primary">
+															<img src="../statics/team_1.png"/>
+															</span>
+														<div class="media-body event-size">
+															<span class="fs-18 d-block mb-1 text-primary"><b>Teams</b></span>
+															<span class="fs-18 font-w500 event-size-1">Get to add staffs to manage your orders assigning role to the staff registered.</span>
+														</div>
+													</div>
+												</router-link>
+
+												<router-link :to="'/profile'">
+													<div class="media event-card p-3 rounded align-items-center" style="margin-top:30px">	
+														<span class="me-3 bgl-primary text-primary">
+															<img src="../statics/settings.png"/>
+															</span>
+														<div class="media-body event-size">
+															<span class="fs-18 d-block mb-1 text-primary"><b>Settings</b></span>
+															<span class="fs-18 font-w500 event-size-1">Get to update the company details from this section, adding company's logo and other vital details about the company.</span>
+														</div>
+													</div>
+												</router-link>
 											<span style="margin-top:30px"><router-link :to="'/rate'"> <button class="btn btn-rounded btn-large btn-primary" >Set Transport Rate </button> </router-link> </span>
 									
 										</div>

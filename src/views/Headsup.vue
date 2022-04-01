@@ -129,7 +129,7 @@ export default ({
    },
    methods: {
         routeRate(){
-            if (this.has_set_rate == false){
+            if (this.has_set_rate == false ){
                 this.$router.push('/rate')
             }
         },
