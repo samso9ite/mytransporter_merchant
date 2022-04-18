@@ -87,10 +87,10 @@
                                                                
                                                             </div>
                                                            
-                                                               <div class="row">
-                                                                    <div class="col-lg-6">
+                                                            <div class="row col-mb-3">
+                                                                <div class="col-lg-6">
                                                                     <label class="form-label">Office Address</label>
-                                                                    <GmapAutocomplete placeholder="Addres" class="form-control" @place_changed="setAddress" > </GmapAutocomplete>
+                                                                    <GmapAutocomplete placeholder="Address" class="form-control" @place_changed="setAddress" :value="this.address" > </GmapAutocomplete>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                      <label class="form-label">About the Company</label>  
@@ -99,7 +99,7 @@
                                                                
                                                             </div>
 
-                                                            <div class="row col-mb-3">
+                                                            <div class="row col-mb-3" style="margin-top:10px">
                                                                 <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Country </label>
                                                                     <select class="me-sm-2 default-seBusiness Ownerlect form-control wide" id="inlineFormCustomSelect" v-model="country">
@@ -118,8 +118,6 @@
                                                                         <option value="Abuja">Abuja </option>
                                                                         <option value="Jos">Jos </option>
                                                                     </select>
-                                                                    <!-- <region-select v-model="region" :country="country" :region="region" :regionName=true class="form-control" @change="select_region()"/> -->
-                                                                    <!-- <region-select v-model="state_code" :country="country" :region="region"  class="form-control" /> -->
                                                                 </div>
                                                             </div>
 
@@ -132,8 +130,7 @@
                                                             </div>
                                                             <br>
                                                             <button class="btn btn-rounded btn-large btn-primary" type="submit" @click="update_profile">Update Profile  </button>
-                                                        <!-- </form> -->
-                                                    </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -181,7 +178,6 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
         watch: {
             stateCode () {
                 this.onChange(this.state)
-                console.log(this.state);
             }
         },
         methods: {
@@ -218,45 +214,90 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
                     this.logo = response.data.logo
                     this.phone = response.data.phone
                     this.description = response.data.description
+                    this.latitude = response.data.latitude
+                    this.longitude = response.data.longitude
                 })
                 .catch(error =>{
                     console.log(error.response);
                 })
-            },
+            }, 
             select_region(){
                 this.state_code = this.region
             },
             update_profile(){
                 const merchant = JSON.parse(localStorage.getItem('merchant_id'))
-                const formData = new FormData()
-                formData.append('address', this.address)
-                formData.append('name', this.name)
-                formData.append('state', this.region)
-                formData.append('address', this.email)
-                formData.append('merchant_id', merchant)
-                formData.append('description', this.description)
-                formData.append('latitude', this.latitude)
-                formData.append('longitude', this.longitude)
-                formData.append('website', this.website)
-                formData.append('country', this.country)
-                formData.append('logo', this.file)
-                formData.append('state_code', this.state_code)
-                Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
-                .then(response => {
-                    this.$toast.success({
-                        title:'Success',
-                        message:'Profile Updated',
+                let formData ;
+                if (this.$store.state.user.has_set_profile){
+                    console.log(merchant);
+                    console.log("Has profile added");
+                    const formData = new FormData()
+                    formData.append('address', this.address)
+                    formData.append('name', this.name)
+                    formData.append('state', this.region)
+                    formData.append('email', this.email)
+                    formData.append('merchant_id', merchant)
+                    formData.append('description', this.description)
+                    formData.append('latitude', this.latitude)
+                    formData.append('longitude', this.longitude)
+                    formData.append('website', this.website)
+                    formData.append('country', this.country)
+                    formData.append('logo', this.file)
+                    formData.append('state_code', this.state_code)
+                    console.log(formData);
+                    console.log(formData);
+                    Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
+                    .then(response => {
+                        this.$toast.success({
+                            title:'Success',
+                            message:'Profile Updated',
+                        })
+                        get_users_details()
                     })
-                    get_users_details()
-                })
-                .catch(error =>{
-                    if(error.response){
-                        for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data.detail}`)
+                    .catch(error =>{
+                        if(error.response){
+                            for(const property in error.response.data){
+                                this.errors.push(`${property}:${error.response.data.detail}`)
+                            }
                         }
-                    }
                    
                 })
+                }
+                else{
+                    console.log(merchant);
+                    console.log("Doesn't have profile added");
+                    const formData = new FormData()
+                    formData.append('address', this.address)
+                    formData.append('name', this.name)
+                    formData.append('state', this.region)
+                    formData.append('address', this.email)
+                    formData.append('merchant_id', merchant)
+                    formData.append('description', this.description)
+                    formData.append('latitude', this.latitude)
+                    formData.append('longitude', this.longitude)
+                    formData.append('website', this.website)
+                    formData.append('country', this.country)
+                    formData.append('logo', this.file)
+                    formData.append('state_code', this.state_code)
+                    formData.append('has_set_profile', true)
+                    Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', formData)
+                    .then(response => {
+                        this.$toast.success({
+                            title:'Success',
+                            message:'Profile Updated',
+                        })
+                        console.log(response.data);
+                        get_users_details()
+                    })
+                    .catch(error =>{
+                        if(error.response){
+                            for(const property in error.response.data){
+                                this.errors.push(`${property}:${error.response.data.detail}`)
+                            }
+                        }
+                    
+                    })
+                }
+            
             },
             clearErrors(){
                 this.errors.splice(0);
@@ -270,6 +311,7 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
         },
         mounted(){
             this.get_users_details()
+
         }
     })
 </script>

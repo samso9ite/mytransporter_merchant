@@ -102,7 +102,7 @@ export default {
             phone_number:'',
             first_name:'',
             transport_types: null,
-            options: ['BIKE', 'DRONE', 'VAN', 'TRUCK', 'BICYCLE', 'CAR'],
+            options: ['BIKE', 'TRUCK'],
             errors: [],
             loading: false
         }

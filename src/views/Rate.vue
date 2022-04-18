@@ -150,11 +150,16 @@ import Api from './Api'
         },
         methods: {
             updateRate(){
+                let merchant_id_public = JSON.parse(localStorage.getItem('merchant_id'));
+                 if(this.$store.state.user.has_set_rate){
+                    Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', {merchant_id:merchant_id_public, has_set_rate:true})
+                    this.$store.commit('updateHasSetRate', {has_set_rate:true})
+                }
                 const formData = {
                     rate: this.rate,
                     transport_type_code: this.transport_type,
                     is_active: this.is_active,
-                    merchant_id : JSON.parse(localStorage.getItem('merchant_id')),
+                    merchant_id : merchant_id_public,
                     lowest_capped_amount: this.capped_amount
                 }
                 Api.axios_instance.post(Api.baseUrl+'/merchant/portal/rate/update', formData)
@@ -175,6 +180,8 @@ import Api from './Api'
                         }
                     }
                 })
+               
+               
             },
             rateChange(){
                 let check = this.types.filter(type => type.transport_type.code === this.transport_type)
@@ -188,6 +195,7 @@ import Api from './Api'
                 .then(response => { 
                     this.types = response.data
                     this.$store.commit('getRates', {all_rate:response.data})
+                    console.log(response.data);
 			    })
                 .catch(error =>{
                     if(error.response){
@@ -197,6 +205,7 @@ import Api from './Api'
                     }
                 })
             },
+            
             clearErrors(){
                 this.errors.splice(0);
             },

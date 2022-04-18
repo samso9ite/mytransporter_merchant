@@ -277,6 +277,10 @@ import Api from "./Api"
 			},
 			createTeam(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
+				if (this.$store.state.user.is_verified == false){
+						Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', {merchant_id:merchant_token, has_added_team:true})
+						this.$store.commit('updateUserSettingsStatus', {has_added_team:true}) 
+				}
 				this.phone = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
 				const formData = {
 					first_name:this.first_name, last_name: this.last_name, phone: this.phone, country: this.country, password:this.password,
@@ -289,9 +293,9 @@ import Api from "./Api"
                         message:'Staff Account Created',
                     })
 					$('#addNewRider').modal('hide')
-					if (this.$store.state.user.is_verified == false){
+				  if (this.$store.state.user.is_verified == false){
                         this.$router.push('/headsup')
-                    }
+                   }
 					this.getTeams()
 				})
 				.catch(error => {

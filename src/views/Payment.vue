@@ -523,9 +523,14 @@ import Api from './Api'
 			},
 			addAccount(){
 				this.loading = true
+				 let merchant_id_public = JSON.parse(localStorage.getItem('merchant_id'));
+				if (this.$store.state.user.is_verified == false){
+						Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', {merchant_id:merchant_id_public, has_added_team:true})
+						this.$store.commit('updateUserSettingsStatus', {has_added_team:true}) 
+				}
 				this.bank_name= this.all_banks.filter(bank => bank.code === this.bank_code)
 				const formData = {
-					merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
+					merchant_id: merchant_id_public,
 					account_number: this.verified_accnt_num,
 					account_name: this.account_name,
 					bank_name: this.bank_name[0].name,

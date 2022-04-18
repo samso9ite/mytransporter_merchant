@@ -173,24 +173,31 @@ methods: {
   
     createAsset(){
         const merchant = JSON.parse(localStorage.getItem('merchant_id'))
-            this.transport_type = this.$route.params.type
-            const formData = new FormData()
-                formData.append('image', this.file)
-                formData.append('asset_no', this.asset_no)
-                formData.append('asset_manufacturer', this.asset_manufacturer)
-                formData.append('asset_year', this.asset_year)
-                formData.append('assigned_year', this.assigned_year)
-                formData.append('asset_description', this.asset_description)
-                formData.append('transport_type', this.transport_type)
-                formData.append('assigned_user', this.assigned_user)
-                formData.append('merchant_id', merchant)
-                formData.append('asset_colour', this.asset_color)
+        if(this.$store.state.user.has_added_asset){
+            Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', {merchant_id:merchant, has_added_asset:true})
+            this.$store.commit('updateUserSettingsStatus', {has_added_asset:true})
+        }
+        this.transport_type = this.$route.params.type
+        const formData = new FormData()
+        formData.append('image', this.file)
+        formData.append('asset_no', this.asset_no)
+        formData.append('asset_manufacturer', this.asset_manufacturer)
+        formData.append('asset_year', this.asset_year)
+        formData.append('assigned_year', this.assigned_year)
+        formData.append('asset_description', this.asset_description)
+        formData.append('transport_type', this.transport_type)
+        formData.append('assigned_user', this.assigned_user)
+        formData.append('merchant_id', merchant)
+        formData.append('asset_colour', this.asset_color)
         Api.axios_instance.post(Api.baseUrl+'/merchant/portal/assets/addorupdate', formData)
         .then(res => {
              this.$toast.success({
                 title:'Success',
                 message:'Asset Added',
             })
+            if (this.$store.state.user.is_verified == false){
+                this.$router.push('/headsup')
+            }
             this.$refs.image.reset(); 
             this.$refs.textDetails.reset(); 
         })

@@ -90,9 +90,9 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
             },
             submitForm(e){
                 this.loading = true
-                let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
                 let formData;
                 if (this.phone_active){
+                    let phoneData = this.$refs.phone_number.phoneFormatted.replace(/\s/g, "");
                     formData = {password: this.password, email: phoneData} 
                 }
                 else{
@@ -158,10 +158,10 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
     height: 80px !important
 }
 .bg {
-  /* The image used */ 
+  /* The image used  */
   background-image: url("../../statics/bg13.png");
  background-blend-mode: overlay;
--webkit-background-size: cover;
+  -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
@@ -177,7 +177,6 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 
 .field-icon {
   float: right;
-  /* margin-left: -20px; */
   margin-top: -2.3em;
   position: relative;
   z-index: 2;

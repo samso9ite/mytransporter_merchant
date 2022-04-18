@@ -303,7 +303,7 @@
 											<h4 class="fs-20">Pending Orders</h4>
 										</div>
 									
-										<perfect-scrollbar>
+										<perfect-scrollbar  v-if="pending_orders">
 											<div class="card-body pt-0" id="EventListContent">
 													<pulse-loader :loading="loading" color="#ff6600" :size="size"></pulse-loader>
 												
@@ -351,13 +351,7 @@
 															</span>
 															<div class="fs-12 text-primary">Van Delivery</div>
 														</div>
-														<!-- <div class="text-center">
-															<span class="ticket-icon-1 mb-3">
-																<i class="fa fa-clock-o" aria-hidden="true"></i>
-															</span>
-															<div class="fs-12 text-primary">{{moment(order.expected_pickup_time).fromNow()}}</div>
-														</div> -->
-														</a>
+															</a>
 															
 														<div class="text-center"  @click="approveOrder(order.reference)">
 																<a  class="dropdown-item"> 
@@ -383,6 +377,10 @@
 												</div>
 											</div>
 										</perfect-scrollbar>
+
+										<h4 v-else> No Pending Orders </h4>
+
+
 									</div>
 							
 							</div>
@@ -477,7 +475,7 @@ export default ({
 			loading: false,
 			// color: 'black',
 			errors: '',
-			orders_details: ''
+			orders_details: []
         }
     },
 	 created: function () {

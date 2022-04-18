@@ -68,7 +68,14 @@ export default new Vuex.Store({
       state.user.has_added_team = payload.has_added_team,
       state.user.has_set_profile = payload.has_set_profile,
       state.user.has_set_rate = payload.has_set_rate
+    },
+    updateUserSettingsStatus(state, payload){
+      state.user.has_set_rate = payload.has_set_rate,
+      state.user.has_added_team = payload.has_added_team,
+      state.user.has_set_profile = payload.has_set_profile,
+      state.user.has_added_asset = payload.has_added_asset
     }
+    
   },
   actions: {
   },

@@ -224,7 +224,7 @@ import Api from "./Api"
 					price: this.price_update,
 					route_id: route_id
 				}	
-				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/special/routes/addorupdate', formData)
+				Api.axios_instance.post(Api.baseUrl+'/merchant/portal/special/routes/addorupdate', formData) 
 				.then(response => {
 						this.$toast.success({
                         title:'Awesome!!!',
