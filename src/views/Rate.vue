@@ -81,7 +81,7 @@
                                                                 </div>
                                                                 <div class="row"  style="margin-top:1em">
                                                                     <div class="col-lg-5">
-                                                                    <h5 style="margin-top:1em"> Amount:</h5>
+                                                                    <h5 style="margin-top:1em"> Amount/KM:</h5>
                                                                     </div> 
                                                                     <div class="col-lg-7">
 

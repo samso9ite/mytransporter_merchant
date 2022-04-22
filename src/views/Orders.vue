@@ -103,10 +103,11 @@
 												<span class="font-w400 text-primary" >Filter by status</span>
 											</div>
 											<div class="dropdown-menu dropdown-menu-left" :class="toggleDropdown" >
+												<a class="dropdown-item"  @click="change_status(12)"> All Orders </a>
 												<a class="dropdown-item"  @click="change_status(0)"> Order Assigned</a>
 												<a class="dropdown-item"  @click="change_status(1)">Pending Orders</a>
 												<a class="dropdown-item"  @click="change_status(9)">Cancelled Orders</a>
-												<a class="dropdown-item"  @click="change_status(10)">Refunded</a>
+												<a class="dropdown-item"  @click="change_status(10)" >Refunded</a>
 												<a class="dropdown-item"  @click="change_status(6)">Awaiting Orders</a>
 												<a class="dropdown-item"  @click="change_status(8)">Completed Orders</a>
 												<a class="dropdown-item"  @click="change_status(7)">Enroute Orders</a>
@@ -127,6 +128,10 @@
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header" v-if="status == 0">
+							<h4 class="card-title">All Orders</h4>
+						</div>
+
+						<div class="card-header" v-if="status == 12">
 							<h4 class="card-title">All Orders</h4>
 						</div>
 					
@@ -167,13 +172,13 @@
 							<table class="table mb-4 dataTablesCard card-table" id="orderTable">
 								<thead>
 									<tr>
-										<th>
+										<!-- <th>
 											<div class="form-check checkbox-secondary" >
 											  <input class="form-check-input" type="checkbox" value="" id="checkAll">
 											  <label class="form-check-label" for="checkAll">
 											  </label>
 											</div>
-										</th>
+										</th> -->
 										<th>Order ID</th>
 										<th>Date</th>
 										<th>Cust Name </th>
@@ -182,18 +187,20 @@
 										<th>Channel</th>
 										<th>Status</th>
 										<th>Amount</th>
+										<th v-if="status == 8 || status == 1" > Commission </th>
 										<th v-if="status == 1"> Action </th>
+										
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="order in order_list" :key='order'>
-										<td>
+										<!-- <td>
 											<div class="form-check checkbox-secondary">
 											  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
 											  <label class="form-check-label" for="flexCheckDefault2">
 											  </label>
 											</div>
-										</td>
+										</td> -->
 										<td>{{order.reference}}</td>
 										<td>{{order.order_date}}</td>
 										<td>{{order.user.first_name}} {{order.user.last_name}}</td>
@@ -202,15 +209,18 @@
 										<td>{{order.transport_type.name}}</td>
 											<td><span class="badge light badge-secondary">{{order.status.name}}</span></td>
 										<td><a href="javascript:void(0);" class="btn btn-secondary light btn-sm">₦{{order.transport_fee}}</a></td>
+										<td v-if="status == 8 || status == 1">
+											<a href="javascript:void(0);" class="btn btn-secondary light btn-sm">₦ {{order.transport_fee / 100}}</a>
+										</td>
 										<td>
 											<div class="d-flex">
 												<a data-bs-toggle="modal" :data-bs-target="`#viewDetails` + order.reference"  class="btn  shadow btn-xs sharp me-1" style="color:#ff6600"><i class="fa fa-eye"></i></a>
 											</div>
 										</td>
-										<!-- <td> 
+									<!-- <td> 
 											<div class="btn sharp btn-primary tp-btn" data-bs-toggle="dropdown">
-																	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="12" cy="5" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="12" cy="19" r="2"/></g></svg>
-																</div>
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="12" cy="5" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="12" cy="19" r="2"/></g></svg>
+											</div>
 											<div class="dropdown-menu dropdown-menu-end">
 												<a class="dropdown-item" @click="approveOrder(order_reference)">Approve Order</a>
 												<a class="dropdown-item" @click="rejectOrder(order_reference)">Reject Order</a>
@@ -234,13 +244,13 @@
                                             <tr>
                                                 <td><h5>Name: {{order.user.first_name}} {{order.user.last_name}}</h5></td>
                                                 <td>
-                                                <h5>Phone : {{order.user.phone}} </h5>
+                                                	<h5>Phone : {{order.user.phone}} </h5>
                                                 </td>
                                             </tr>
 											 <tr>
                                                 <td><h5>Email: {{order.user.email}} </h5></td>
                                                 <td>
-                                                <h5>Address : {{order.user.address}} </h5>
+                                                	<h5>Address : {{order.user.address}} </h5>
                                                 </td>
                                             </tr>
 											<tr>
@@ -276,17 +286,19 @@
 												<td  colspan="2"><h5> Review: {{order.cancellation_reason}}</h5></td>
 											</tr>
                                         </tbody>
+										
                                     </table>
-
-									<!-- <a class="btn btn-secondary btn-lg btn-block text-white " @click="cancelOrder">Cancel Order</a> -->
+										<!-- <a class="btn btn-secondary btn-lg btn-block text-white " @click="cancelOrder">Cancel Order</a> -->
                         		  </div>
 								</div>
 							</div>
 						</div>
-							</div>
-									</tr>
-
-								</tbody>
+					</div>
+				</tr>
+			</tbody>
+				<tfoot > 
+					<tr> <td style="text-align:center;" colspan="10"> <h3>Total Amount: <span class="badge light badge-secondary" style="margin-right:10px; font-size:24px"> ₦{{totalAmount}}</span> </a>  <span v-if="status == 8 || status == 1">Total Commission : <span class="badge light badge-secondary" style="font-size:24px"> ₦{{totalAmount / 10}} </span> </span> </h3>  </td> </tr>
+				</tfoot>
 							</table>
 							
 						</div>
@@ -315,7 +327,9 @@ import Api from "./Api.js"
 			status: '0',
 			order_list: [],
 			main_order_list: [],
-			toggleActiveDropdown: false
+			toggleActiveDropdown: false,
+			total_amount: 0,
+			total_commssion: 0
 			}
 		},
 		async mounted() {
@@ -324,23 +338,27 @@ import Api from "./Api.js"
 	methods: {
 		toggle(){
 			this.toggleActiveDropdown = !this.toggleActiveDropdown
-			console.log("Showing");
 		},
 		get_orders(){
 			const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
 			Api.axios_instance.post(Api.baseUrl+'/merchant/portal/orders/get/', {merchant_id:merchant_token})
 			.then(response => {
-				console.log(response.data);
 				this.$store.commit('storeOrders', {orders:response.data.orders.results})
 				this.order_list = this.$store.state.orders
-				console.log(this.order_list);
 				this.main_order_list = this.$store.state.orders
 			})
 		},
 		change_status(status){
 			this.status = status
 			this.order_list = this.main_order_list
-			this.order_list = this.order_list.filter(order => order.status.id === status)
+			if(status === 12){
+				this.order_list
+			}
+			else{
+				this.order_list = this.order_list.filter(order => order.status.id === status)
+			}
+			this.toggle()
+			this.total_amount = 0
 		},
 		approveOrder(order_reference){
 			const postData = {
@@ -364,11 +382,13 @@ import Api from "./Api.js"
 			.catch(err => {
 			})
 		}, 
-		
+		displayAllOrders(){
+			this.main_order_list
+		},
+		clearErrors(){
+			this.errors.splice(0);
+		},
 	},
-	clearErrors(){
-        this.errors.splice(0);
-    },
 	computed: {
 		completed_orders: function (){
 			return this.main_order_list.filter(order => order.status.id === 8).length
@@ -381,10 +401,17 @@ import Api from "./Api.js"
 		},
 		toggleDropdown: function(){
 			return this.toggleActiveDropdown ? "show" : ""
+		},
+		totalAmount: function(){
+			this.order_list.map(order => (
+				this.total_amount += parseFloat(order.transport_fee)
+			))
+			return this.total_amount.toFixed(2)
 		}
+		
 	},
 
-	})
+})
 </script>
 
 <style scoped>

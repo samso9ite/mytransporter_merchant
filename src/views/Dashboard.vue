@@ -530,7 +530,8 @@ export default ({
                         title:'Awesome!!!',
                         message:'Order approved',
                 })
-				this.getPendingOrders()
+				this.pending_orders = this.pending_orders.filter(order => (order.reference === order_reference))
+				// this.getPendingOrders()
 			})
 			.catch(error => {
 				if(error.response){
@@ -552,10 +553,12 @@ export default ({
                         title:'Awesome!!!',
                         message:'Order rejected',
                 })
-				this.getPendingOrders()
+				this.pending_orders = this.pending_orders.filter(order => (order.reference === order_reference))
+				// this.getPendingOrders()
 			})
-			.catch(err => {
-			})
+			// .catch(err => {
+
+			// })
 		}
 	},
 	mounted(){

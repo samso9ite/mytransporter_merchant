@@ -121,6 +121,7 @@
 														</div>
 													<div class="basic-form" v-if="all_account">
 													<div class="col-lg-12">
+														<perfect-scrollbar>
 														<div class="table-responsive" >
 															<table class="table header-border  verticle-middle" > 
 																<tbody >
@@ -137,6 +138,7 @@
 																</tbody>
 															</table>
 														</div>
+														</perfect-scrollbar>
 													</div>
 													<div class="row">
 														<div class="mb-2 col-lg-8" >
@@ -210,6 +212,11 @@
 
 					<div class="col-xl-6 col-xxl-6">
 						<div class="card col-lg-12" style="background-color:#473b52">	
+							<div class="alert alert-danger alert-dismissible alert-alt fade show" v-if="errors.length">
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close" @click="clearErrors">
+										</button>
+										<span v-for="error in errors" :key="error"><strong>{{error}}<br></strong></span>
+								</div>
 						<div class="card-header border-0 pb-0 align-items-center justify-content-center" v-if="all_account.length">
 							<div class="table-responsive" >
 							<table class="table table-responsive-md" style="color:#fff"> 
@@ -332,6 +339,9 @@
 											<td><span class="badge light badge-secondary">{{transaction.transaction_status.transaction_status_name}}</span></td>
 									</tr>
 								</tbody>
+								<tfoot > 
+									<tr> <td style="text-align:center;" colspan="10"> <h3>Total Amount: <span class="badge light badge-secondary" style="margin-right:10px; font-size:17px"> ₦{{totalAmount}}</span> </a> </h3>  </td> </tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -350,10 +360,11 @@
 
 <script>
 import SideBar from '../components/SideBar.vue'
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import Api from './Api'
     export default({
         name: 'Payment',
-        components: {SideBar},
+        components: {SideBar, PerfectScrollbar},
 		data(){
 			return{
 				toggleActiveDropdown: false,
@@ -375,6 +386,7 @@ import Api from './Api'
 				accnt_num: '',
 				scriptLoaded: null,
 				url: '',
+				total_amount: 0
 			}
 		},
 		created() {
@@ -389,7 +401,7 @@ import Api from './Api'
 		this.toggleActiveDropdown = !this.toggleActiveDropdown
 		console.log("Showing");
 		},
-				loadScript(callback) {
+			loadScript(callback) {
             const script = document.createElement("script");
             script.src = "https://js.paystack.co/v1/inline.js";
             document.getElementsByTagName("head")[0].appendChild(script);
@@ -480,9 +492,12 @@ import Api from './Api'
 			},
 			
 			change_status(status){
-			this.status = status
-			this.payments = this.all_payments
-			this.payments = this.payments.filter(payment => payment.transaction_status.id === status)
+				this.status = status
+				this.payments = this.all_payments
+				this.payments = this.payments.filter(payment => payment.transaction_status.id === status)
+				this.total_amount = 0
+				this.toggle()
+				
 			},
 			getBanks(){
 				const merchant_token = JSON.parse(localStorage.getItem('merchant_id'))
@@ -523,14 +538,9 @@ import Api from './Api'
 			},
 			addAccount(){
 				this.loading = true
-				 let merchant_id_public = JSON.parse(localStorage.getItem('merchant_id'));
-				if (this.$store.state.user.is_verified == false){
-						Api.axios_instance.post(Api.baseUrl+'/merchant/portal/profile/update', {merchant_id:merchant_id_public, has_added_team:true})
-						this.$store.commit('updateUserSettingsStatus', {has_added_team:true}) 
-				}
 				this.bank_name= this.all_banks.filter(bank => bank.code === this.bank_code)
 				const formData = {
-					merchant_id: merchant_id_public,
+					merchant_id: JSON.parse(localStorage.getItem('merchant_id')),
 					account_number: this.verified_accnt_num,
 					account_name: this.account_name,
 					bank_name: this.bank_name[0].name,
@@ -545,12 +555,15 @@ import Api from './Api'
                         message:'New Bank Account Added',
                     })
 					$('#collapseOne').collapse('hide');
-					if (this.$store.state.user.is_verified == false){
-                        this.$router.push('/dashboard')
-                    }
 					this.getBanks()
 				})
-				.catch(err => {
+				.catch(error => {
+					  if(error.response){
+						this.errors = []
+                        for(const property in error.response.data){
+                            this.errors.push(`${property}:${error.response.data[property]}`)
+                        }
+                    }
 				})
 				.finally(() => {
 				this.loading = false;
@@ -571,13 +584,11 @@ import Api from './Api'
                     })
 				})
 				.catch(error => {
-					console.log(error.response)
-					  if(error.response){
-                        for(const property in error.response.data){
-                            this.errors.push(`${property}:${error.response.data[property]}`)
-                        }
-                        console.log(error.response);
-                    }
+					if(error.response){
+					for(const property in error.response.data){
+						this.errors.push(`${property}:${error.response.data[property]}`)
+					}
+				}
 					
 				})
 				.finally(() => {
@@ -611,11 +622,18 @@ import Api from './Api'
 			},
 			pending_balance: function (){
 				return this.$store.state.user.pending_wallet_balance
+			},
+			totalAmount: function(){
+				this.payments.map(payment => (
+					this.total_amount += parseFloat(payment.transaction_amount)
+				))
+				return this.total_amount.toFixed(2)
 			}
 				
 		}
     })
 </script>
+
 <style>
 	.btn-secondary:hover {
 		background-color: #ff6600 !important;
@@ -640,3 +658,4 @@ import Api from './Api'
 }
 
 </style>
+<style src="vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css"/>
